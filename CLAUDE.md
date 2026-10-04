@@ -21,3 +21,42 @@ kernel owns identity, the directory, the agents and approvals; this application 
   source document, gapless invoice numbers on issue. PHP presents those refusals; it never re-implements them.
 - Agents draft; a person posts, pays, sends, closes (approval categories in design §5).
 - Commit after every finished step on `main`; never push unless the owner asks.
+
+## Build order and the handoff (decided 2026-10-04)
+
+The same division of labour every earlier application used: a **planning-class model** writes what the database
+enforces, the specs and the exemplar; a **worker model (Sonnet 5.5)** replicates every other slice from a spec,
+stopping and escalating on any ambiguity rather than improvising. The handoff is a clean checkpoint, with everything
+a worker needs in this repository — never mid-slice.
+
+**Before the handoff (planning-class model):**
+1. **K13** in the kernel (`/var/www`): a migration seeding the `gl` catalog row (Finance / accounting / `feather-book-open`).
+2. **Phase 0, second half**: `db/001`–`0NN` with the accounting rules as triggers (balance, period open, immutable once
+   posted, one entry per source, gapless issue numbers, the control-account guard), the seeded chart (D11), the
+   statement functions (`gl_trial_balance`, `gl_profit_and_loss`, `gl_balance_sheet`, `gl_cash_flow`, `gl_account_activity`,
+   `gl_ar_aging`, `gl_ap_aging`), `gl_has_right()`, the `mcp_*` views; `db/proof/phase0_proof.sql` on a scratch database;
+   the kit copied from Help Desk and proven without a kernel (`tests/phase0/run.sh`); `maludb-os.json`,
+   `os/{expert,bookkeeper}.md`, the seven skills, `deploy/` with `ROOT_STEPS.sh` pinning 8184/8829/8830.
+3. **Phase 1**: `docs/gl-mcp-tool-surface.md`, `docs/gl-action-manifest.md`, `mcp/action_registry.json` (built clean by
+   `bin/build_action_registry.php --check`), and the ten specs in `docs/build-specs/` — `sso-shell`, then slices 1–9 of the
+   design §10, each in the shape of Help Desk's (`/srv/apps/helpdesk/docs/build-specs/tickets-core.md`): screens, files,
+   query-function signatures, actions with categories, log events, tools, acceptance, "Open questions" EMPTY.
+   **The owner approves Phase 1 as a whole before any PHP.**
+4. **Phase 2** (`sso-shell`) and **slice 1** (the chart and fiscal time — the CRUD exemplar for workers).
+5. **Slice 2, journal core — THE EXEMPLAR**: the lines editor and balance strip, post/reverse/void, the period gates, the
+   timeline, attachments; its proof suite `tests/phase3/slice2/run.sh` green. This is what every later slice copies.
+
+**The handoff point** = commit after slice 2 with design §16 saying "exemplar built; slices 3–9 open to workers".
+
+**After the handoff (worker model — Sonnet 5.5):** slices 3 → 9 in order, one at a time, each on the exemplar's
+pattern from its spec: screens + handlers + `log_activity()` + manifest entries + the tools' query functions, proven at
+375 and 1280 on a scratch database, the spec's "Built and proven" and the design §16 updated, one commit per slice. Then
+**Phase 4** (the two MCP servers over the same query functions, `app_roles`, the `shares[]` tools, the registry wrapper,
+the agents' grants — Help Desk's `tests/phase4/run.sh` is the pattern), and **Phase 5** with the owner (`apply`, DNS,
+MaluMail, the hires, the opening balances, the end-to-end proof of §10).
+
+**A worker's rules:** read this file, design §3 (rights), §5 (what pauses), §6 (the tables — never modify a migration,
+add one), §15 (D1–D14) and the slice's spec before touching a file; reads through `mcp_*` views, writes to base
+tables after the gate; the database's refusal is shown as a field error, never re-implemented in PHP; money events
+carry `amount` and `currency` in `after`; a question the spec does not answer stops the slice and is written into the
+spec's "Open questions" for the owner — never guessed.
