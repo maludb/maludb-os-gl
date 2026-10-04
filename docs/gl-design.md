@@ -509,9 +509,56 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 
 ## 16. State
 
+**PHASE 0 COMPLETE — 2026-10-04.** The schema `db/001`–`016` (2,900 lines: the mirror with sites as the ledger's own dimension;
+the activity log with the audit keys on every row; tokens; five roles and fourteen rights with `gl_has_right()`; the chart with the
+control-account and bank guards and the seeded chart with 14 posting rules; settings and gapless numbering; fiscal years made with
+their periods, close and reopen as functions; the journal's triggers — born a draft, posts only balanced in an open period with
+every control line naming its party, immutable once posted, reversal and void, the year-end close and its reversal; parties,
+attachments, notes; receivables — invoices numbered and posted on issue, credit notes, receipts and applications, the customer's
+claim, deposits through Undeposited funds, the secure link; payables — bills with the vendor-reference guard posted on approval,
+vendor credits, payments approved then recorded, payment runs; the kernel's AI statement kept verbatim and imported as one bill per
+provider rounded once to the cent, with the agree/differ check; cash — bank accounts over `is_bank` accounts, imported lines with
+the duplicate guard, matching to the cent, entries from fee lines, transfers, reconciliation that refuses out of balance and stamps
+its lines; recurring templates, notifications, the outbox, dispatches; the statements as SQL functions; 49 `mcp_*` views).
+**Proof:** `db/proof/phase0_proof.sql` — **151 checks** on the scratch database (every actor of §2, the life of an invoice and a
+bill and a receipt and a payment, every refusal by name, the statements to the cent, the AI bill's rounding, May and June
+reconciled, the close and its reversal, who sees what as the records and activity roles). `tests/phase0/run.sh` — the kit
+(Help Desk's identity, roles, sign-on, handler, HTTP and MCP common files, un-ticketed) against `php -S` and the fixture: **15
+checks**. The kernel's installer `plan` reads the repository clean (16 migrations, the catalog row K13 seeded by db/167, 50
+approval categories covered, seven skills, two agents proposed; the ports unfilled until `ROOT_STEPS.sh` step 0 pins them — D14).
+`maludb-os.json` (every port env in `env.required`, `grant_standing_departments: false` for K14, the three `shares[]`, the two agents
+with their grants and the Bookkeeper's duty, 50 approvals), `os/{expert,bookkeeper}.md`, seven skills (four runbooks),
+`deploy/` templates with the one public door `/i/`, `ROOT_STEPS.sh`, `kernel-registry-gl.json` (23 resolved entities).
+
+**Decisions taken while building** (conservative readings; the owner may overturn any):
+1. **Departments and sites are filters, never walls** (§3's "a Viewer who is a dept-admin sees only their departments" is NOT built):
+   a holder of a role sees the business's books whole — a trial balance with rows missing is worse than none. Per-department
+   visibility is an Extended option if a business wants it.
+2. **Sites are the ledger's own table** (`sites`, with an optional `kernel_location_id`): the directory feed carries no locations
+   and the ledger is unscoped, so the admin names a site and may pin it to the kernel's location for a scoped sibling's imports.
+3. **A document posts when it becomes true**: an invoice on ISSUE, a credit note on issue, a bill on APPROVAL, a receipt when
+   recorded, a deposit when recorded, a payment when RECORDED (after approval), a transfer at once — one transaction each, the
+   entry naming its source; there is no deferred "posting run" (the retired kernel spec's was a workaround for separate modules).
+4. **A reversed entry stays in the books** (status `reversed`, its reversal `posted`): the statements count both and the pair nets
+   to zero; the original period still shows the original. Only `void` (a draft) leaves the books.
+5. **A bank account's `opening_balance` is the bank's balance at the END of its opening date**; the ledger carries that balance by an
+   opening journal entry (source `opening`), so the ledger balance is the ledger's alone and "ledger = cleared" is a real check.
+6. **The year-end close needs every period closed and no draft dated in the year**; it opens the last period for one entry and
+   closes it again; reopening the year reverses the entry and leaves the periods closed.
+7. **The AI import's remainder goes on the largest department line**, once; a provider × currency with a zero total makes no bill;
+   a line with no department names "No department".
+8. **A match is to the cent and signed**, a transfer may be matched on both its accounts, a reconciled line is never unmatched or
+   deleted, only the latest completed reconciliation reopens, one in progress per account.
+9. **Writer functions are revoked from PUBLIC** (a function is PUBLIC-executable by default): the records role may read the
+   statements and the candidates and nothing that writes; the search tool's deny list names every `gl_*` writer.
+10. The kit's `require_visible()` replaces Help Desk's ticket gates: a record the member may not see does not exist to them.
+
+Next: **Phase 1** — `docs/gl-mcp-tool-surface.md` (every question of §7 a tool, the resolve table of `kernel-registry-gl.json`),
+`docs/gl-action-manifest.md` (the screens and the 50-odd actions with the categories `maludb-os.json` already names),
+`mcp/action_registry.json` built clean, and the ten specs in `docs/build-specs/` (`sso-shell` + slices 1–9, `journal-core` the
+exemplar) — the checkpoint before any PHP. Then Phase 2, slice 1, slice 2 (the exemplar), and the handoff to the worker model
+(CLAUDE.md, "Build order and the handoff").
+
 **2026-10-04 — the plan approved.** The plan written (this document) and the repository `maludb/maludb-os-gl` created
 private in the org and cloned to `/srv/apps/gl`; the owner answered all fourteen questions of §13 the same day, every
-recommendation taken (§15, D1–D14). Nothing else exists yet. Next: **Phase 0's second half** — the schema `db/001`–`0NN`
-and its proof on a scratch database, the kit from Help Desk, `maludb-os.json`, `os/{expert,bookkeeper}.md`, the seven
-skills, `deploy/` with `ROOT_STEPS.sh` pinning 8184/8829/8830 — and **K13** (the catalog seed) in the kernel, then
-Phase 1 (the tool surface, the manifest, the ten specs) as the checkpoint before any PHP.
+recommendation taken (§15, D1–D14).

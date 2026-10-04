@@ -11,4 +11,5 @@ never by default, never granted to every department. Built with `htmx-php-builde
 `maludb-os-integration` 0.5.1, served as `gl.<domain>`.
 
 - **The plan:** `docs/gl-design.md` (Phase 0, 2026-10-04 — **approved**; the owner's fourteen decisions are §15).
-- Status: approved plan. Next: the schema and its proof, the kit, `maludb-os.json`, agents, skills, deploy (Phase 0's second half); no PHP before the Phase 1 checkpoint.
+- Status: **Phase 0 complete** (2026-10-04) — the schema db/001–016 proven by 151 checks (`db/proof/phase0_proof.sql`), the kit proven without a kernel (`tests/phase0/run.sh`, 15 checks), `maludb-os.json`, two agents, seven skills, deploy templates. Next: Phase 1 (the tool surface, the action manifest, the slice specs) — the checkpoint before any PHP.
+- Proofs: `tests/setup_dev.sh` builds the scratch database; `tests/phase0/run.sh` runs both proofs.

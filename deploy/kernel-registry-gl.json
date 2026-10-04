@@ -1,0 +1,32 @@
+{
+  "schema": "maludb-os.registry/1",
+  "app_key": "gl",
+  "name": "General Ledger",
+  "note": "The installer (bin/app_install.php, step 'registry') writes mcp/registries/gl.json in the kernel from this file's `resolve` block plus mcp/action_registry.json. Each resolve tool answers a plain LIST of rows carrying id_field and label_field when given `q` alone. The tools are the Phase 1 tool surface's names; Phase 4 builds them (mcp/records_server.py). A repeated param (bills, invoices, receipts) is a list of ids, never resolved by name.",
+  "resolve": {
+    "account": {"tool": "find_accounts", "query_param": "q", "id_field": "account_id", "label_field": "label", "params": ["account", "debit_account", "credit_account", "tax_account", "income_account", "expense_account", "retained_earnings_account"]},
+    "customer": {"tool": "find_customers", "query_param": "q", "id_field": "customer_id", "label_field": "name", "params": ["customer"]},
+    "vendor": {"tool": "find_vendors", "query_param": "q", "id_field": "vendor_id", "label_field": "name", "params": ["vendor"]},
+    "invoice": {"tool": "find_invoices", "query_param": "q", "id_field": "invoice_id", "label_field": "label", "params": ["invoice"]},
+    "bill": {"tool": "find_bills", "query_param": "q", "id_field": "bill_id", "label_field": "label", "params": ["bill"]},
+    "journal_entry": {"tool": "find_journal_entries", "query_param": "q", "id_field": "journal_entry_id", "label_field": "label", "params": ["entry", "journal_entry"]},
+    "receipt": {"tool": "find_receipts", "query_param": "q", "id_field": "receipt_id", "label_field": "label", "params": ["receipt"]},
+    "payment": {"tool": "find_payments", "query_param": "q", "id_field": "payment_id", "label_field": "label", "params": ["payment"]},
+    "deposit": {"tool": "find_deposits", "query_param": "q", "id_field": "deposit_id", "label_field": "label", "params": ["deposit"]},
+    "payment_run": {"tool": "find_payment_runs", "query_param": "q", "id_field": "payment_run_id", "label_field": "label", "params": ["payment_run", "run"]},
+    "credit_note": {"tool": "find_credit_notes", "query_param": "q", "id_field": "credit_note_id", "label_field": "label", "params": ["credit_note"]},
+    "vendor_credit": {"tool": "find_vendor_credits", "query_param": "q", "id_field": "vendor_credit_id", "label_field": "label", "params": ["vendor_credit"]},
+    "bank_account": {"tool": "find_bank_accounts", "query_param": "q", "id_field": "bank_account_id", "label_field": "name", "params": ["bank_account", "from_bank_account", "to_bank_account", "deposit_to"]},
+    "bank_transaction": {"tool": "unmatched_bank_lines", "query_param": "q", "id_field": "bank_transaction_id", "label_field": "label", "params": ["bank_line", "bank_transaction"]},
+    "period": {"tool": "find_periods", "query_param": "q", "id_field": "fiscal_period_id", "label_field": "name", "params": ["period"]},
+    "fiscal_year": {"tool": "find_periods", "query_param": "q", "id_field": "fiscal_year_id", "label_field": "fiscal_year_name", "params": ["fiscal_year", "year"]},
+    "item": {"tool": "find_items", "query_param": "q", "id_field": "item_id", "label_field": "name", "params": ["item"]},
+    "tax_rate": {"tool": "find_tax_rates", "query_param": "q", "id_field": "tax_rate_id", "label_field": "name", "params": ["tax_rate"]},
+    "ai_statement": {"tool": "ai_statement_status", "query_param": "q", "id_field": "ai_statement_id", "label_field": "period", "params": ["statement", "ai_statement"]},
+    "reconciliation": {"tool": "find_reconciliations", "query_param": "q", "id_field": "bank_reconciliation_id", "label_field": "label", "params": ["reconciliation"]},
+    "recurring": {"tool": "find_recurring", "query_param": "q", "id_field": "recurring_template_id", "label_field": "name", "params": ["template", "recurring"]},
+    "member": {"tool": "find_members", "query_param": "q", "id_field": "member_id", "label_field": "display_name", "params": ["member", "to_member"]},
+    "department": {"tool": "find_departments", "query_param": "q", "id_field": "department_id", "label_field": "name", "params": ["department"]},
+    "site": {"tool": "find_sites", "query_param": "q", "id_field": "site_id", "label_field": "name", "params": ["site"]}
+  }
+}

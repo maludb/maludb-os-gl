@@ -1,0 +1,383 @@
+{
+  "claims": {
+    "1": {
+      "display_name": "SMOKE Owner",
+      "email": "owner@example.invalid",
+      "business_role": "super_admin",
+      "is_external": false,
+      "status": "active",
+      "departments": [
+        {
+          "id": 5,
+          "name": "IT",
+          "is_admin": true
+        }
+      ],
+      "capability": "admin",
+      "role": "admin",
+      "roles": [
+        "admin"
+      ],
+      "rights": [],
+      "scopes": [],
+      "scope": null
+    },
+    "26": {
+      "display_name": "SMOKE Vera",
+      "email": "vera@example.invalid",
+      "business_role": "user",
+      "is_external": false,
+      "status": "active",
+      "departments": [
+        {
+          "id": 6,
+          "name": "Front Office",
+          "is_admin": false
+        }
+      ],
+      "capability": "read",
+      "role": "user",
+      "roles": [
+        "user"
+      ],
+      "rights": [],
+      "scopes": [],
+      "scope": null
+    },
+    "27": {
+      "display_name": "SMOKE Bea",
+      "email": "bea@example.invalid",
+      "business_role": "user",
+      "is_external": false,
+      "status": "active",
+      "departments": [
+        {
+          "id": 3,
+          "name": "Accounting",
+          "is_admin": false
+        }
+      ],
+      "capability": "write",
+      "role": "bookkeeper",
+      "roles": [
+        "bookkeeper",
+        "user"
+      ],
+      "rights": [],
+      "scopes": [],
+      "scope": null
+    },
+    "28": {
+      "display_name": "SMOKE Carl",
+      "email": "carl@example.invalid",
+      "business_role": "user",
+      "is_external": false,
+      "status": "active",
+      "departments": [
+        {
+          "id": 3,
+          "name": "Accounting",
+          "is_admin": true
+        }
+      ],
+      "capability": "write",
+      "role": "controller",
+      "roles": [
+        "controller",
+        "user"
+      ],
+      "rights": [],
+      "scopes": [],
+      "scope": null
+    },
+    "29": {
+      "display_name": "SMOKE Ann",
+      "email": "ann@cpa.invalid",
+      "business_role": "user",
+      "is_external": true,
+      "status": "active",
+      "departments": [],
+      "capability": "write",
+      "role": "accountant",
+      "roles": [
+        "accountant",
+        "user"
+      ],
+      "rights": [],
+      "scopes": [],
+      "scope": null
+    }
+  },
+  "feed": {
+    "schema": "os.directory-changes/1",
+    "since": null,
+    "next": "2026-01-01T00:00:00.000000Z",
+    "full": true,
+    "members": [
+      {
+        "id": 1,
+        "display_name": "SMOKE Owner",
+        "email": "owner@example.invalid",
+        "member_kind": "human",
+        "business_role": "super_admin",
+        "is_external": false,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 5,
+            "name": "IT",
+            "is_admin": true,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 26,
+        "display_name": "SMOKE Vera",
+        "email": "vera@example.invalid",
+        "member_kind": "human",
+        "business_role": "user",
+        "is_external": false,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 6,
+            "name": "Front Office",
+            "is_admin": false,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 27,
+        "display_name": "SMOKE Bea",
+        "email": "bea@example.invalid",
+        "member_kind": "human",
+        "business_role": "user",
+        "is_external": false,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 3,
+            "name": "Accounting",
+            "is_admin": false,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 28,
+        "display_name": "SMOKE Carl",
+        "email": "carl@example.invalid",
+        "member_kind": "human",
+        "business_role": "user",
+        "is_external": false,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 3,
+            "name": "Accounting",
+            "is_admin": true,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 29,
+        "display_name": "SMOKE Ann",
+        "email": "ann@cpa.invalid",
+        "member_kind": "human",
+        "business_role": "user",
+        "is_external": true,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [],
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 40,
+        "display_name": "SMOKE Bookkeeper",
+        "email": null,
+        "member_kind": "agent",
+        "business_role": "user",
+        "is_external": false,
+        "status": "active",
+        "job_title": null,
+        "phone": null,
+        "timezone": "UTC",
+        "departments": [
+          {
+            "id": 3,
+            "name": "Accounting",
+            "is_admin": false,
+            "is_primary": true
+          }
+        ],
+        "updated_at": "2026-01-01T00:00:00Z"
+      }
+    ],
+    "departments": [
+      {
+        "id": 3,
+        "name": "Accounting",
+        "description": null,
+        "parent_id": null,
+        "manager_member_id": null,
+        "is_system": true,
+        "system_key": "accounting",
+        "archived_at": null,
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 5,
+        "name": "IT",
+        "description": null,
+        "parent_id": null,
+        "manager_member_id": null,
+        "is_system": true,
+        "system_key": "it",
+        "archived_at": null,
+        "updated_at": "2026-01-01T00:00:00Z"
+      },
+      {
+        "id": 6,
+        "name": "Front Office",
+        "description": null,
+        "parent_id": null,
+        "manager_member_id": null,
+        "is_system": true,
+        "system_key": "front_office",
+        "archived_at": null,
+        "updated_at": "2026-01-01T00:00:00Z"
+      }
+    ],
+    "memberships": [
+      {
+        "member_id": 1,
+        "department_id": 5,
+        "is_admin": true,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
+      },
+      {
+        "member_id": 26,
+        "department_id": 6,
+        "is_admin": false,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
+      },
+      {
+        "member_id": 27,
+        "department_id": 3,
+        "is_admin": false,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
+      },
+      {
+        "member_id": 28,
+        "department_id": 3,
+        "is_admin": true,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
+      },
+      {
+        "member_id": 40,
+        "department_id": 3,
+        "is_admin": false,
+        "is_primary": true,
+        "joined_at": "2026-01-01T00:00:00Z",
+        "left_at": null
+      }
+    ],
+    "deleted_departments": [],
+    "scopes": [],
+    "access": [
+      {
+        "member_id": 1,
+        "role": "admin",
+        "roles": [
+          "admin"
+        ],
+        "rights": [],
+        "capability": "admin",
+        "scopes": []
+      },
+      {
+        "member_id": 26,
+        "role": "user",
+        "roles": [
+          "user"
+        ],
+        "rights": [],
+        "capability": "read",
+        "scopes": []
+      },
+      {
+        "member_id": 27,
+        "role": "bookkeeper",
+        "roles": [
+          "bookkeeper",
+          "user"
+        ],
+        "rights": [],
+        "capability": "write",
+        "scopes": []
+      },
+      {
+        "member_id": 28,
+        "role": "controller",
+        "roles": [
+          "controller",
+          "user"
+        ],
+        "rights": [],
+        "capability": "write",
+        "scopes": []
+      },
+      {
+        "member_id": 29,
+        "role": "accountant",
+        "roles": [
+          "accountant",
+          "user"
+        ],
+        "rights": [],
+        "capability": "write",
+        "scopes": []
+      },
+      {
+        "member_id": 40,
+        "role": "bookkeeper",
+        "roles": [
+          "bookkeeper",
+          "user"
+        ],
+        "rights": [],
+        "capability": "write",
+        "scopes": []
+      }
+    ]
+  }
+}
