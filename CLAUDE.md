@@ -6,7 +6,7 @@ kernel owns identity, the directory, the agents and approvals; this application 
 
 ## Read first
 1. `docs/gl-design.md` — the plan (Phase 0): actors, roles, the memory model, the question inventory, the agents' door,
-   the build order, what the kernel owes (K13–K16, H1), the owner's decisions (§13, answers recorded in §15), the state (§16).
+   the build order, what the kernel owes (K13–K16, H1), the owner's decisions (§13, **all fourteen answered 2026-10-04, recorded as D1–D14 in §15** — rules, not questions), the state (§16).
 2. The plugin `maludb-os-integration` (`~/maludb-os-integration`, skill `os-integration` and its references) — how it fits.
 3. `/srv/apps/helpdesk` — the nearest exemplar (its design, kit, specs, proof suites); the kernel's retired
    `docs/build-specs/bookkeeping-ledger.md`, `sales-invoicing.md`, `expenses.md` — the prior art.

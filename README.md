@@ -10,5 +10,5 @@ An optional application: installed on request beside [maludb-os-core](https://gi
 never by default, never granted to every department. Built with `htmx-php-builder`, fitted to
 `maludb-os-integration` 0.5.1, served as `gl.<domain>`.
 
-- **The plan:** `docs/gl-design.md` (Phase 0, 2026-10-04 — awaiting the owner's answers to §13).
-- Status: planned. No schema, no PHP yet.
+- **The plan:** `docs/gl-design.md` (Phase 0, 2026-10-04 — **approved**; the owner's fourteen decisions are §15).
+- Status: approved plan. Next: the schema and its proof, the kit, `maludb-os.json`, agents, skills, deploy (Phase 0's second half); no PHP before the Phase 1 checkpoint.

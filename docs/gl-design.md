@@ -15,10 +15,10 @@ the kernel's retired bookkeeping, sales and expenses specs — `docs/build-specs
 > decision of 2026-09-22 stands: *the kernel keeps token accounting with dollar costs only — no books; the accounting
 > system is an optional application that receives the export.* This is that application.
 >
-> **Checkpoint.** This document and the owner's answers (§13) are Phase 0's first half; the schema in `db/`,
+> **Checkpoint.** This document and the owner's answers (§13, answered §15) are Phase 0's first half; the schema in `db/`,
 > `maludb-os.json`, `os/`, `skills/` and `deploy/` complete it. Phase 1 adds `docs/gl-mcp-tool-surface.md`,
 > `docs/gl-action-manifest.md` and the slice specs in `docs/build-specs/`. **No feature PHP is written until the
-> owner approves them together.** The decisions this document needs from the owner are §13.
+> owner approves them together.** The decisions this document needed from the owner are §13, answered in §15 (2026-10-04).
 
 ## 1. What General Ledger is, and is not
 
@@ -486,12 +486,32 @@ exist. K13 is small and comes first; K14 is a one-line guard worth having before
 - Vhost allow-list (public): `/i/`, `/api/v1/health`, `/mcp/records`, `/mcp/activity`.
 - Kernel files: `mcp/registries/gl.json` (made by the installer), the K13 catalog seed migration.
 
-## 15. The owner's answers
+## 15. The owner's answers (2026-10-04 — rules, not questions)
 
-*(Recorded here when given — rules, not questions, as Help Desk's §14.)*
+Every recommendation of §13 was taken, in one sitting, the same day the plan was written.
+
+| # | Decision | Where it lives |
+|---|---|---|
+| D1 | **"General Ledger", catalog key `gl`** — `gl.<domain>`, `maludb-os-gl`, `<tenant>_gl`, roles `gl_rw` / `gl_records_ro` / `gl_activity_ro` | `maludb-os.json`; §14 |
+| D2 | **Five roles**: Viewer (key `user`), Bookkeeper, Controller, Accountant (an external's role, **without** `ap.approve`), GL admin | §3; `gl_roles`; `app_roles` |
+| D3 | **Nobody by default**: not a default application; never installed with `--grant-standing-departments`; each person granted by the super-admin; the repository stays **private** | §10; K14; the org |
+| D4 | **Scope none**; departments and sites are dimensions on every line; one installation is one legal entity, one chart, one base currency | §3; `journal_lines.department_id` / `location_id` |
+| D5 | **The kernel's AI statement becomes one draft bill per provider per closed month**, lines by department, the provider a vendor, approved by the controller like any bill; open months shown, never imported | §8; slice 7; `ai_statements`, `bills.source = 'ai_usage'` |
+| D6 | **Two shipped agents, hired on install**: the expert (command bar) and the Bookkeeper (`30 6 * * *`); the morning note goes to the first super-admin until the owner names another | §5; `os/{expert,bookkeeper}.md`; `agents[]` |
+| D7 | **Agents draft; a person posts, pays, sends, closes**: posting and every money action pause under `money_out`, sending under `external_send`, `period_close` and `reconciliation_complete` refused to agents by the default policy | §5; `approvals[]` |
+| D8 | **No PDF renderer in v1**: an invoice is a print-ready page behind its secure link, mailed as a link plus an HTML summary; dompdf is the first Extended item | §4; §11; slice 4 |
+| D9 | **The customer's claim**: the secure page offers "I paid this on … by …" (`receipt_claims`, confirmed by the bookkeeper when the money shows); the link dies **180 days** after the invoice is paid | §4; `invoice_links_secure`; `gl_settings.link_lifetime_days` |
+| D10 | **Numbering**: invoices and credit notes gapless on issue (`INV-00001`, `CN-00001`); journal entries on post (`JE-000001`); bills at creation (`BILL-000001`, vendor reference unique per vendor); `RCT-`, `PAY-`, `DEP-`, `RUN-`; prefixes are settings | `document_sequences`; `gl_settings` |
+| D11 | **The seeded chart**: the kernel's retired 21 accounts plus Undeposited funds, Credit card, Rent, Software and hosting, Other income; **US-style sales tax** (output tax to 2100, purchase tax posted gross; input tax a later account) | §6; db/00N seed; `posting_rules` |
+| D12 | **Cash flow statement indirect** in v1 (net income adjusted by balance-sheet changes by subtype); the direct method Extended | §6 `gl_cash_flow()`; slice 3 |
+| D13 | **K13–K16 and H1 approved**, built in their own repositories beside this application, **K13 first** | §12 |
+| D14 | **Ports pinned before `apply`**: `APP_INTERNAL_PORT=8184`, `MCP_RECORDS_PORT=8829`, `MCP_ACTIVITY_PORT=8830`, all three in `env.required` | §14; `config/.env`; `deploy/ROOT_STEPS.sh` |
 
 ## 16. State
 
-**2026-10-04 — the plan written** (this document), the repository `maludb/maludb-os-gl` created private in the
-org and cloned to `/srv/apps/gl`; nothing else exists yet. Next: the owner's answers to §13, then Phase 0's second
-half (the schema and its proof, the kit, `maludb-os.json`, `os/`, `skills/`, `deploy/`) and K13 in the kernel.
+**2026-10-04 — the plan approved.** The plan written (this document) and the repository `maludb/maludb-os-gl` created
+private in the org and cloned to `/srv/apps/gl`; the owner answered all fourteen questions of §13 the same day, every
+recommendation taken (§15, D1–D14). Nothing else exists yet. Next: **Phase 0's second half** — the schema `db/001`–`0NN`
+and its proof on a scratch database, the kit from Help Desk, `maludb-os.json`, `os/{expert,bookkeeper}.md`, the seven
+skills, `deploy/` with `ROOT_STEPS.sh` pinning 8184/8829/8830 — and **K13** (the catalog seed) in the kernel, then
+Phase 1 (the tool surface, the manifest, the ten specs) as the checkpoint before any PHP.
