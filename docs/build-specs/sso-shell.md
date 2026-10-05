@@ -134,4 +134,7 @@ no MCP endpoint until then).
 - [ ] ▲ (the installed application on the live kernel — the owner's `apply`): a real launch from `app.<domain>`, the return trip with `?app=gl`.
 
 ## Open questions
+**Decided 2026-10-05:** the stand-in icon until the owner's artwork.
+
+*(As proposed:)*
 - The theme's logo: General Ledger needs its own mark (the owner's artwork); `feather-book-open` stands in.

@@ -126,4 +126,7 @@ The bank line a payment matches (6); the AI statement's bills (7 — they appear
 - [ ] **JSON mode**, `_partial=1`, run tokens, 375 and 1280, the registry reads 34 actions and 20 screens.
 
 ## Open questions
+**Decided 2026-10-05:** cheque numbers sequential from a first number typed at the run's approval.
+
+*(As proposed:)*
 - **Cheque numbers** assigned at a run's approval from a "first cheque number" (sequential per run). Proposed: yes; a per-bank-account "next cheque number" setting is Extended.

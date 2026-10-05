@@ -106,4 +106,7 @@ OFX/QFX (Extended); bank feeds (Later); the Bookkeeper's auto-matching (Phase 4 
 - [ ] The home's cash cards and the trend table; a Viewer sees the cards and 403 on match; JSON mode; 375 and 1280 (the match cards stack); the registry reads 14 actions and 12 screens.
 
 ## Open questions
+**Decided 2026-10-05:** hash date + amount + description + a per-file index when the bank gives no reference; the import result says so.
+
+*(As proposed:)*
 - **Hashing references** when the bank gives none: date + amount + description — two identical lines on one day (two equal fees) would collide and the second be skipped. Proposed: add a running index per file to the hash, and say so on the import result.

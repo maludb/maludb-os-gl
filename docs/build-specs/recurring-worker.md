@@ -95,4 +95,7 @@ The AI statement's import (7 — the worker only pulls); the agents' duties (Pha
 - [ ] JSON mode; 375 and 1280; the registry reads 5 actions and 5 screens.
 
 ## Open questions
+**Decided 2026-10-05:** the worker sends first reminders on its own once `reminder_days` is set; agents' reminders still pause.
+
+*(As proposed:)*
 - **Reminders by the worker without a person**: the clock sends step-1 reminders on its own once `reminder_days` is set (the owner's setting is the consent). Or should the worker only DRAFT the reminder as an outbox row with `send_after` null for a person to release? Proposed: the worker sends — the owner set the days.

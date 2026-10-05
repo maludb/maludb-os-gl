@@ -85,4 +85,7 @@ The Exports page (9); the audit page (9); the home's cards (Phase 2 shows the co
   tables scroll in `.table-responsive`).
 
 ## Open questions
+**Decided 2026-10-05:** tables and count cards only in v1; no charts.
+
+*(As proposed:)*
 - Charts: tables and count cards only in v1 (Projects vendored SVG charts; the cash trend on the home is a later small SVG)? Proposed: tables only.

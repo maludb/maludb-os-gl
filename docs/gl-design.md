@@ -520,7 +520,13 @@ agents)), the registry built from it clean (`mcp/action_registry.json`, no unres
 (3), `receivables` (4), `payables` (5), `cash` (6), `ai-statement` (7), `recurring-worker` (8), `reports-settings` (9). Every action and screen
 name in the specs matches the manifest. The installer's `plan` reads the repository clean with the registry present.
 
-**Questions for the owner at the checkpoint** (each has a proposed answer in its spec; silence = the proposal):
+**Phase 1 — APPROVED by the owner 2026-10-05**, with the nine answers below taken as recommended: (1) a document-born entry is reversed only
+by the document's void; (2) manual lines on a bank account's ledger account are allowed and offered as match candidates; (3) tables only, no
+charts in v1; (4) the claim's amount editable, defaulting to the balance; (5) reminder wording fixed in code; (6) cheque numbers sequential from a
+first number at a run's approval; (7) hashed references with a per-file index, stated on the result; (8) the worker sends first reminders once
+the reminder days are set; (9) the stand-in icon until the owner's artwork. Phase 2 begins the same day.
+
+**Questions for the owner at the checkpoint** (answered above, 2026-10-05):
 1. **Reversing a document-born entry from the journal page** — refused; the document's void does it (journal-core). Proposed: keep the refusal.
 2. **Manual lines on a bank account's ledger account** — allowed, and they become match candidates (journal-core). Proposed: yes.
 3. **Charts** — tables and count cards only in v1 (statements). Proposed: tables only.

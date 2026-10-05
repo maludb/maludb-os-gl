@@ -158,5 +158,8 @@ Vendors (5 — `contact_save` serves them from here); the bank line a deposit ma
 - [ ] **375 and 1280**: the lines editor on a phone, the invoice page's panels stacked, the public page at 375 whole with JavaScript off; the registry reads 40 actions and 22 screens as built.
 
 ## Open questions
+**Decided 2026-10-05:** the claim's amount is editable and defaults to the balance; reminder wording is three fixed steps in code.
+
+*(As proposed:)*
 - **The claim's amount**: default the balance due and let the customer change it (a partial payment), or fixed? Proposed: editable, the bookkeeper confirms the real amount.
 - **Reminder wording**: the three steps live in `app/features/invoices/mail.php` as text the admin cannot edit in v1. Proposed: yes, editable templates are Extended.

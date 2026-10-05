@@ -160,6 +160,9 @@ The statements (3); every document that posts (4–7 — their entries appear he
   every button ≥ 44 px, no console errors, the flows through the real screens (draft, add lines, post, reverse), JavaScript off; the registry reads the 11 actions and 4 screens as built.
 
 ## Open questions
+**Decided 2026-10-05:** a document-born entry is reversed only by the document's void (refused here); manual lines on a bank account's ledger account are allowed and become match candidates.
+
+*(As proposed:)*
 - **Reversing a document-born entry from the journal page.** The spec refuses it (the document's void does it). Should `journal.override` be allowed to reverse any entry from here regardless, leaving the
   document's status untouched? Proposed: no — the document and its entry must never disagree.
 - **Manual lines on a bank account's ledger account.** Allowed (an opening balance, a correction), and they appear as match candidates for the bank's lines (db/013). Confirm.
