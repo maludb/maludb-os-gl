@@ -1,231 +1,549 @@
 {
-  "schema": "maludb-os.application/1",
-  "catalog_key": "gl",
-  "name": "General Ledger",
-  "description": "The books: a chart of accounts, a double-entry journal with fiscal periods, the financial statements (P&L, balance sheet, trial balance, cash flow), accounts receivable (customers, invoices, receipts, deposits), accounts payable (vendors, bills, payment runs) and cash management that ties every bank account out to the bank's statement — with no bank feed and no way to move money. The kernel's monthly AI statement becomes one bill per provider.",
-  "business_area": "Finance",
-  "category": "accounting",
-  "icon": "feather-book-open",
-  "version": "0.1.0",
-  "criticality": "high",
-  "grant_standing_departments": false,
-  "vhost": {
-    "label": "gl",
-    "document_root": "html",
-    "internal_port_env": "APP_INTERNAL_PORT"
-  },
-  "database": {
-    "suffix": "gl",
-    "migrations": "db",
-    "roles": {
-      "rw": "gl_rw",
-      "records_ro": "gl_records_ro",
-      "activity_ro": "gl_activity_ro"
-    }
-  },
-  "env": {
-    "required": [
-      "APP_NAME",
-      "APP_URL",
-      "DB_HOST",
-      "DB_PORT",
-      "DB_NAME",
-      "DB_USER",
-      "DB_PASSWORD",
-      "MCP_RECORDS_DB_USER",
-      "MCP_RECORDS_DB_PASSWORD",
-      "MCP_ACTIVITY_DB_USER",
-      "MCP_ACTIVITY_DB_PASSWORD",
-      "APP_INTERNAL_PORT",
-      "MCP_RECORDS_PORT",
-      "MCP_ACTIVITY_PORT",
-      "ACTION_TOKEN_KEY",
-      "ACTIONS_RELAY_KEY",
-      "OS_APPLICATION_TOKEN",
-      "OS_INTERNAL_URL",
-      "OS_LAUNCHER_URL",
-      "APP_KEY",
-      "MALUDB_API_URL",
-      "MALUDB_API_TOKEN"
+    "schema": "maludb-os.application/1",
+    "catalog_key": "gl",
+    "name": "General Ledger",
+    "description": "The books: a chart of accounts, a double-entry journal with fiscal periods, the financial statements (P&L, balance sheet, trial balance, cash flow), accounts receivable (customers, invoices, receipts, deposits), accounts payable (vendors, bills, payment runs) and cash management that ties every bank account out to the bank's statement — with no bank feed and no way to move money. The kernel's monthly AI statement becomes one bill per provider.",
+    "business_area": "Finance",
+    "category": "accounting",
+    "icon": "feather-book-open",
+    "version": "0.1.0",
+    "criticality": "high",
+    "grant_standing_departments": false,
+    "vhost": {
+        "label": "gl",
+        "document_root": "html",
+        "internal_port_env": "APP_INTERNAL_PORT"
+    },
+    "database": {
+        "suffix": "gl",
+        "migrations": "db",
+        "roles": {
+            "rw": "gl_rw",
+            "records_ro": "gl_records_ro",
+            "activity_ro": "gl_activity_ro"
+        }
+    },
+    "env": {
+        "required": [
+            "APP_NAME",
+            "APP_URL",
+            "DB_HOST",
+            "DB_PORT",
+            "DB_NAME",
+            "DB_USER",
+            "DB_PASSWORD",
+            "MCP_RECORDS_DB_USER",
+            "MCP_RECORDS_DB_PASSWORD",
+            "MCP_ACTIVITY_DB_USER",
+            "MCP_ACTIVITY_DB_PASSWORD",
+            "APP_INTERNAL_PORT",
+            "MCP_RECORDS_PORT",
+            "MCP_ACTIVITY_PORT",
+            "ACTION_TOKEN_KEY",
+            "ACTIONS_RELAY_KEY",
+            "OS_APPLICATION_TOKEN",
+            "OS_INTERNAL_URL",
+            "OS_LAUNCHER_URL",
+            "APP_KEY",
+            "MALUDB_API_URL",
+            "MALUDB_API_TOKEN"
+        ],
+        "optional": [
+            "MALUMAIL_API_KEY",
+            "MALUMAIL_API_URL",
+            "MAIL_FROM",
+            "MAIL_FROM_NAME",
+            "ATTACHMENT_MAX_BYTES",
+            "GL_LINK_LIFETIME_DAYS",
+            "API_CORS_ORIGINS"
+        ]
+    },
+    "services": [
+        "deploy/gl-records-mcp.service",
+        "deploy/gl-activity-mcp.service",
+        "deploy/gl-activity-ingest.service",
+        "deploy/gl-activity-ingest.timer",
+        "deploy/gl-directory-sync.service",
+        "deploy/gl-directory-sync.timer",
+        "deploy/gl-worker.service",
+        "deploy/gl-worker.timer"
     ],
-    "optional": [
-      "MALUMAIL_API_KEY",
-      "MALUMAIL_API_URL",
-      "MAIL_FROM",
-      "MAIL_FROM_NAME",
-      "ATTACHMENT_MAX_BYTES",
-      "GL_LINK_LIFETIME_DAYS",
-      "API_CORS_ORIGINS"
+    "endpoints": [
+        {
+            "name": "Web UI",
+            "kind": "ui",
+            "path": "/",
+            "auth_kind": "none",
+            "agent_reachable": false
+        },
+        {
+            "name": "Health",
+            "kind": "http_api",
+            "path": "/api/v1/health",
+            "auth_kind": "none",
+            "agent_reachable": false
+        }
+    ],
+    "actions": {
+        "manifest": "docs/gl-action-manifest.md",
+        "registry": "mcp/action_registry.json",
+        "base_url_env": "APP_INTERNAL_PORT"
+    },
+    "skills": [
+        "skills/gl-basics",
+        "skills/the-chart-and-posting-rules",
+        "skills/writing-to-customers",
+        "skills/import-the-ai-statement",
+        "skills/match-the-bank",
+        "skills/month-end-close",
+        "skills/collections-review"
+    ],
+    "sso": {
+        "path": "/sso",
+        "logout_path": "/sso/logout"
+    },
+    "directory": {
+        "reads": true,
+        "writes": false
+    },
+    "assistant": {
+        "command_bar": true,
+        "agent": "expert"
+    },
+    "shares": [
+        {
+            "tool": "account_balances",
+            "description": "Ledger balances by account as of a date (for another application's dashboard)",
+            "scoped": false
+        },
+        {
+            "tool": "ap_due_summary",
+            "description": "Amounts due to vendors per week, no vendor named",
+            "scoped": false
+        },
+        {
+            "tool": "ar_aging_summary",
+            "description": "Receivables by aging bucket, no customer named",
+            "scoped": false
+        }
+    ],
+    "agents": [
+        {
+            "key": "expert",
+            "job_description": "os/expert.md",
+            "access_capability": "write",
+            "hired_on_install": true,
+            "roles": [
+                "bookkeeper"
+            ],
+            "tool_grants": {
+                "Records MCP": [
+                    "find_accounts",
+                    "account_balance",
+                    "account_activity",
+                    "trial_balance",
+                    "profit_and_loss",
+                    "balance_sheet",
+                    "cash_flow",
+                    "find_journal_entries",
+                    "get_journal_entry",
+                    "unposted_entries",
+                    "find_periods",
+                    "find_customers",
+                    "get_customer",
+                    "customer_statement",
+                    "find_invoices",
+                    "get_invoice",
+                    "ar_aging",
+                    "find_receipts",
+                    "open_claims",
+                    "find_vendors",
+                    "get_vendor",
+                    "find_bills",
+                    "get_bill",
+                    "ap_aging",
+                    "ap_due",
+                    "find_payments",
+                    "find_payment_runs",
+                    "ai_statement_status",
+                    "ai_statement_check",
+                    "cash_position",
+                    "find_bank_accounts",
+                    "unmatched_bank_lines",
+                    "match_candidates",
+                    "find_items",
+                    "find_tax_rates",
+                    "posting_rules",
+                    "gl_settings",
+                    "find_members",
+                    "find_departments",
+                    "find_sites",
+                    "records_search"
+                ],
+                "Activity MCP": [
+                    "record_history",
+                    "actor_timeline",
+                    "who_touched",
+                    "activity_search"
+                ],
+                "Actions MCP": [
+                    "journal_entry_draft",
+                    "journal_line_save",
+                    "journal_entry_post",
+                    "invoice_draft",
+                    "invoice_line_save",
+                    "invoice_send",
+                    "bill_draft",
+                    "bill_line_save",
+                    "customer_save",
+                    "vendor_save",
+                    "note_add"
+                ]
+            },
+            "skills": [
+                "skills/gl-basics",
+                "skills/the-chart-and-posting-rules",
+                "skills/writing-to-customers"
+            ]
+        },
+        {
+            "key": "bookkeeper",
+            "job_description": "os/bookkeeper.md",
+            "access_capability": "write",
+            "hired_on_install": true,
+            "roles": [
+                "bookkeeper"
+            ],
+            "duty": {
+                "name": "The morning books",
+                "schedule_cron": "30 6 * * *"
+            },
+            "tool_grants": {
+                "Records MCP": [
+                    "unposted_entries",
+                    "unmatched_bank_lines",
+                    "match_candidates",
+                    "ar_aging",
+                    "ap_due",
+                    "ai_statement_status",
+                    "ai_statement_check",
+                    "recurring_due",
+                    "open_claims",
+                    "cash_position",
+                    "find_invoices",
+                    "get_invoice",
+                    "find_bills",
+                    "get_bill",
+                    "find_bank_accounts",
+                    "find_accounts",
+                    "find_customers",
+                    "find_vendors",
+                    "find_periods",
+                    "gl_settings",
+                    "find_members",
+                    "records_search"
+                ],
+                "Activity MCP": [
+                    "record_history"
+                ],
+                "Actions MCP": [
+                    "ai_statement_pull",
+                    "ai_statement_import",
+                    "recurring_run",
+                    "bank_transaction_match",
+                    "journal_entry_draft",
+                    "journal_line_save",
+                    "invoice_remind",
+                    "note_add",
+                    "morning_note_send"
+                ]
+            },
+            "skills": [
+                "skills/gl-basics",
+                "skills/the-chart-and-posting-rules",
+                "skills/import-the-ai-statement",
+                "skills/match-the-bank",
+                "skills/month-end-close",
+                "skills/collections-review"
+            ]
+        }
+    ],
+    "approvals": [
+        {
+            "action": "account_archive",
+            "category": "other"
+        },
+        {
+            "action": "account_save",
+            "category": "other"
+        },
+        {
+            "action": "attachment_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "bank_account_archive",
+            "category": "other"
+        },
+        {
+            "action": "bank_account_save",
+            "category": "other"
+        },
+        {
+            "action": "bank_entry_from_line",
+            "category": "money_out"
+        },
+        {
+            "action": "bank_import_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "bill_approve",
+            "category": "money_out"
+        },
+        {
+            "action": "bill_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "bill_void",
+            "category": "money_out"
+        },
+        {
+            "action": "claim_confirm",
+            "category": "money_out"
+        },
+        {
+            "action": "credit_note_apply",
+            "category": "money_out"
+        },
+        {
+            "action": "credit_note_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "credit_note_issue",
+            "category": "money_out"
+        },
+        {
+            "action": "credit_note_unapply",
+            "category": "money_out"
+        },
+        {
+            "action": "credit_note_void",
+            "category": "money_out"
+        },
+        {
+            "action": "customer_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "deposit_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "deposit_record",
+            "category": "money_out"
+        },
+        {
+            "action": "deposit_void",
+            "category": "money_out"
+        },
+        {
+            "action": "fiscal_year_create",
+            "category": "other"
+        },
+        {
+            "action": "invoice_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "invoice_issue",
+            "category": "money_out"
+        },
+        {
+            "action": "invoice_remind",
+            "category": "external_send"
+        },
+        {
+            "action": "invoice_send",
+            "category": "external_send"
+        },
+        {
+            "action": "invoice_void",
+            "category": "money_out"
+        },
+        {
+            "action": "invoice_write_off",
+            "category": "money_out"
+        },
+        {
+            "action": "item_archive",
+            "category": "other"
+        },
+        {
+            "action": "item_save",
+            "category": "other"
+        },
+        {
+            "action": "journal_entries_post_batch",
+            "category": "money_out"
+        },
+        {
+            "action": "journal_entry_post",
+            "category": "money_out"
+        },
+        {
+            "action": "journal_entry_reverse",
+            "category": "money_out"
+        },
+        {
+            "action": "journal_entry_void",
+            "category": "deletion"
+        },
+        {
+            "action": "numbering_save",
+            "category": "other"
+        },
+        {
+            "action": "payment_approve",
+            "category": "money_out"
+        },
+        {
+            "action": "payment_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "payment_record",
+            "category": "money_out"
+        },
+        {
+            "action": "payment_run_approve",
+            "category": "money_out"
+        },
+        {
+            "action": "payment_run_record",
+            "category": "money_out"
+        },
+        {
+            "action": "payment_run_void",
+            "category": "money_out"
+        },
+        {
+            "action": "payment_void",
+            "category": "money_out"
+        },
+        {
+            "action": "period_close",
+            "category": "other"
+        },
+        {
+            "action": "period_reopen",
+            "category": "other"
+        },
+        {
+            "action": "posting_rule_save",
+            "category": "other"
+        },
+        {
+            "action": "receipt_apply",
+            "category": "money_out"
+        },
+        {
+            "action": "receipt_record",
+            "category": "money_out"
+        },
+        {
+            "action": "receipt_unapply",
+            "category": "money_out"
+        },
+        {
+            "action": "receipt_void",
+            "category": "money_out"
+        },
+        {
+            "action": "reconciliation_complete",
+            "category": "other"
+        },
+        {
+            "action": "reconciliation_reopen",
+            "category": "other"
+        },
+        {
+            "action": "recurring_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "recurring_save",
+            "category": "other"
+        },
+        {
+            "action": "recurring_toggle",
+            "category": "other"
+        },
+        {
+            "action": "settings_save",
+            "category": "other"
+        },
+        {
+            "action": "site_archive",
+            "category": "other"
+        },
+        {
+            "action": "site_save",
+            "category": "other"
+        },
+        {
+            "action": "statement_send",
+            "category": "external_send"
+        },
+        {
+            "action": "tax_rate_archive",
+            "category": "other"
+        },
+        {
+            "action": "tax_rate_save",
+            "category": "other"
+        },
+        {
+            "action": "transfer_record",
+            "category": "money_out"
+        },
+        {
+            "action": "transfer_void",
+            "category": "money_out"
+        },
+        {
+            "action": "vendor_credit_apply",
+            "category": "money_out"
+        },
+        {
+            "action": "vendor_credit_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "vendor_credit_issue",
+            "category": "money_out"
+        },
+        {
+            "action": "vendor_credit_unapply",
+            "category": "money_out"
+        },
+        {
+            "action": "vendor_credit_void",
+            "category": "money_out"
+        },
+        {
+            "action": "vendor_delete",
+            "category": "deletion"
+        },
+        {
+            "action": "year_end_close",
+            "category": "money_out"
+        },
+        {
+            "action": "year_reopen",
+            "category": "other"
+        }
     ]
-  },
-  "services": [
-    "deploy/gl-records-mcp.service",
-    "deploy/gl-activity-mcp.service",
-    "deploy/gl-activity-ingest.service",
-    "deploy/gl-activity-ingest.timer",
-    "deploy/gl-directory-sync.service",
-    "deploy/gl-directory-sync.timer",
-    "deploy/gl-worker.service",
-    "deploy/gl-worker.timer"
-  ],
-  "endpoints": [
-    {
-      "name": "Web UI",
-      "kind": "ui",
-      "path": "/",
-      "auth_kind": "none",
-      "agent_reachable": false
-    },
-    {
-      "name": "Health",
-      "kind": "http_api",
-      "path": "/api/v1/health",
-      "auth_kind": "none",
-      "agent_reachable": false
-    }
-  ],
-  "actions": {
-    "manifest": "docs/gl-action-manifest.md",
-    "registry": "mcp/action_registry.json",
-    "base_url_env": "APP_INTERNAL_PORT"
-  },
-  "skills": [
-    "skills/gl-basics",
-    "skills/the-chart-and-posting-rules",
-    "skills/writing-to-customers",
-    "skills/import-the-ai-statement",
-    "skills/match-the-bank",
-    "skills/month-end-close",
-    "skills/collections-review"
-  ],
-  "sso": {
-    "path": "/sso",
-    "logout_path": "/sso/logout"
-  },
-  "directory": {
-    "reads": true,
-    "writes": false
-  },
-  "assistant": {
-    "command_bar": true,
-    "agent": "expert"
-  },
-  "shares": [
-    {
-      "tool": "account_balances",
-      "description": "Ledger balances by account as of a date (for another application's dashboard)",
-      "scoped": false
-    },
-    {
-      "tool": "ap_due_summary",
-      "description": "Amounts due to vendors per week, no vendor named",
-      "scoped": false
-    },
-    {
-      "tool": "ar_aging_summary",
-      "description": "Receivables by aging bucket, no customer named",
-      "scoped": false
-    }
-  ],
-  "agents": [
-    {
-      "key": "expert",
-      "job_description": "os/expert.md",
-      "access_capability": "write",
-      "hired_on_install": true,
-      "roles": ["bookkeeper"],
-      "tool_grants": {
-        "Records MCP": [
-          "find_accounts", "account_balance", "account_activity", "trial_balance", "profit_and_loss", "balance_sheet", "cash_flow",
-          "find_journal_entries", "get_journal_entry", "unposted_entries", "find_periods",
-          "find_customers", "get_customer", "customer_statement", "find_invoices", "get_invoice", "ar_aging", "find_receipts", "open_claims",
-          "find_vendors", "get_vendor", "find_bills", "get_bill", "ap_aging", "ap_due", "find_payments", "find_payment_runs",
-          "ai_statement_status", "ai_statement_check", "cash_position", "find_bank_accounts", "unmatched_bank_lines", "match_candidates",
-          "find_items", "find_tax_rates", "posting_rules", "gl_settings", "find_members", "find_departments", "find_sites", "records_search"
-        ],
-        "Activity MCP": ["record_history", "actor_timeline", "who_touched", "activity_search"],
-        "Actions MCP": [
-          "journal_entry_draft", "journal_line_save", "journal_entry_post", "invoice_draft", "invoice_line_save", "invoice_send",
-          "bill_draft", "bill_line_save", "customer_save", "vendor_save", "note_add"
-        ]
-      },
-      "skills": ["skills/gl-basics", "skills/the-chart-and-posting-rules", "skills/writing-to-customers"]
-    },
-    {
-      "key": "bookkeeper",
-      "job_description": "os/bookkeeper.md",
-      "access_capability": "write",
-      "hired_on_install": true,
-      "roles": ["bookkeeper"],
-      "duty": {
-        "name": "The morning books",
-        "schedule_cron": "30 6 * * *"
-      },
-      "tool_grants": {
-        "Records MCP": [
-          "unposted_entries", "unmatched_bank_lines", "match_candidates", "ar_aging", "ap_due", "ai_statement_status", "ai_statement_check",
-          "recurring_due", "open_claims", "cash_position", "find_invoices", "get_invoice", "find_bills", "get_bill", "find_bank_accounts",
-          "find_accounts", "find_customers", "find_vendors", "find_periods", "gl_settings", "find_members", "records_search"
-        ],
-        "Activity MCP": ["record_history"],
-        "Actions MCP": [
-          "ai_statement_pull", "ai_statement_import", "recurring_run", "bank_transaction_match", "journal_entry_draft", "journal_line_save",
-          "invoice_remind", "note_add", "morning_note_send"
-        ]
-      },
-      "skills": ["skills/gl-basics", "skills/the-chart-and-posting-rules", "skills/import-the-ai-statement", "skills/match-the-bank", "skills/month-end-close", "skills/collections-review"]
-    }
-  ],
-  "approvals": [
-    {"action": "journal_entry_post", "category": "money_out"},
-    {"action": "journal_entry_reverse", "category": "money_out"},
-    {"action": "journal_entries_post_batch", "category": "money_out"},
-    {"action": "year_end_close", "category": "money_out"},
-    {"action": "invoice_issue", "category": "money_out"},
-    {"action": "invoice_void", "category": "money_out"},
-    {"action": "invoice_write_off", "category": "money_out"},
-    {"action": "credit_note_issue", "category": "money_out"},
-    {"action": "credit_note_apply", "category": "money_out"},
-    {"action": "receipt_record", "category": "money_out"},
-    {"action": "receipt_apply", "category": "money_out"},
-    {"action": "receipt_void", "category": "money_out"},
-    {"action": "deposit_record", "category": "money_out"},
-    {"action": "deposit_void", "category": "money_out"},
-    {"action": "bill_approve", "category": "money_out"},
-    {"action": "bill_void", "category": "money_out"},
-    {"action": "vendor_credit_issue", "category": "money_out"},
-    {"action": "payment_approve", "category": "money_out"},
-    {"action": "payment_record", "category": "money_out"},
-    {"action": "payment_void", "category": "money_out"},
-    {"action": "payment_run_approve", "category": "money_out"},
-    {"action": "payment_run_record", "category": "money_out"},
-    {"action": "transfer_record", "category": "money_out"},
-    {"action": "transfer_void", "category": "money_out"},
-    {"action": "bank_entry_from_line", "category": "money_out"},
-    {"action": "invoice_send", "category": "external_send"},
-    {"action": "invoice_remind", "category": "external_send"},
-    {"action": "statement_send", "category": "external_send"},
-    {"action": "reconciliation_complete", "category": "other"},
-    {"action": "reconciliation_reopen", "category": "other"},
-    {"action": "period_close", "category": "other"},
-    {"action": "period_reopen", "category": "other"},
-    {"action": "year_reopen", "category": "other"},
-    {"action": "customer_delete", "category": "deletion"},
-    {"action": "vendor_delete", "category": "deletion"},
-    {"action": "attachment_delete", "category": "deletion"},
-    {"action": "bank_import_delete", "category": "deletion"},
-    {"action": "recurring_delete", "category": "deletion"},
-    {"action": "journal_entry_void", "category": "deletion"},
-    {"action": "account_save", "category": "other"},
-    {"action": "account_archive", "category": "other"},
-    {"action": "fiscal_year_create", "category": "other"},
-    {"action": "tax_rate_save", "category": "other"},
-    {"action": "item_save", "category": "other"},
-    {"action": "posting_rule_save", "category": "other"},
-    {"action": "bank_account_save", "category": "other"},
-    {"action": "recurring_save", "category": "other"},
-    {"action": "site_save", "category": "other"},
-    {"action": "settings_save", "category": "other"},
-    {"action": "numbering_save", "category": "other"}
-  ]
 }

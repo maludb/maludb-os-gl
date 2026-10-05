@@ -6,7 +6,7 @@ kernel owns identity, the directory, the agents and approvals; this application 
 
 ## Read first
 1. `docs/gl-design.md` — the plan (Phase 0): actors, roles, the memory model, the question inventory, the agents' door,
-   the build order, what the kernel owes (K13 built as db/167; K14–K16, H1 owed), the owner's decisions (§13, **all fourteen answered 2026-10-04, recorded as D1–D14 in §15** — rules, not questions), the state (§16 — **Phase 0 complete 2026-10-04**: the schema proven by 151 checks, the kit by 15; ten decisions taken while building recorded there).
+   the build order, what the kernel owes (K13 built as db/167; K14–K16, H1 owed), the owner's decisions (§13, **all fourteen answered 2026-10-04, recorded as D1–D14 in §15** — rules, not questions), the state (§16 — **Phase 0 complete 2026-10-04**, the schema proven by 151 checks, the kit by 15; **Phase 1 written 2026-10-05**: the tool surface, the manifest (92 screens, 124 actions, 69 approvals), the registry, ten specs — awaiting the owner's approval and nine answers).
 2. The plugin `maludb-os-integration` (`~/maludb-os-integration`, skill `os-integration` and its references) — how it fits.
 3. `/srv/apps/helpdesk` — the nearest exemplar (its design, kit, specs, proof suites); the kernel's retired
    `docs/build-specs/bookkeeping-ledger.md`, `sales-invoicing.md`, `expenses.md` — the prior art.
@@ -17,6 +17,8 @@ kernel owns identity, the directory, the agents and approvals; this application 
   schema + tool surface + action manifest + slice specs together (Phase 1).
 - Catalog key `gl`; ports pinned before `apply`: 8184 / 8829 / 8830 (design §13.14). Never install with
   `--grant-standing-departments`.
+- `docs/gl-action-manifest.md` is the one source of actions, screens and approval categories: `php bin/build_action_registry.php --check`
+  and `php bin/sync_approvals.php --check` must both pass before a commit (the second rewrites `maludb-os.json` `approvals[]` without `--check`).
 - The database enforces the accounting: balance, period open, immutable once posted, reversal never un-post, one entry per
   source document, gapless invoice numbers on issue; a document POSTS when it becomes true (issue, approve, record) through the
   `gl_*` writer functions (db/008–013) — PHP calls them and presents their refusals; it never re-implements them.

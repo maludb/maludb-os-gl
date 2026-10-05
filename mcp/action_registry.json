@@ -1,0 +1,5403 @@
+{
+    "generated_from": "docs/business-os-action-manifest.md",
+    "generated_at": "2026-10-05T00:20:28+00:00",
+    "screens": {
+        "dashboard": {
+            "screen": "dashboard",
+            "url": "/",
+            "section": "Home, me and the ledger's settings",
+            "when": "their home: the cash position, receivables and payables with their aging, what waits (drafts, bills awaiting approval, unmatched bank lines, claims), the AI bill's state, posted-through, the Bookkeeper's last morning note",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "settings": {
+            "screen": "settings",
+            "url": "/settings/",
+            "section": "Home, me and the ledger's settings",
+            "when": "how they are told (email, text, which events)",
+            "params": [
+                "tab"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "tokens": {
+            "screen": "tokens",
+            "url": "/settings/tokens/",
+            "section": "Home, me and the ledger's settings",
+            "when": "their own access tokens for the two MCP servers",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "notifications": {
+            "screen": "notifications",
+            "url": "/notifications",
+            "section": "Home, me and the ledger's settings",
+            "when": "their in-app notifications, unread first",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "activity": {
+            "screen": "activity",
+            "url": "/activity",
+            "section": "Home, me and the ledger's settings",
+            "when": "their own recent activity, or one record's history",
+            "params": [
+                "entity_type",
+                "entity_id",
+                "period"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "general-settings": {
+            "screen": "general-settings",
+            "url": "/settings/general",
+            "section": "Home, me and the ledger's settings",
+            "when": "the business's ledger settings: name and address on the invoice, base currency, fiscal year start, the control accounts, terms, the link's life, reminder days, the AI statement poll, who gets the morning note",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "numbering": {
+            "screen": "numbering",
+            "url": "/settings/numbering",
+            "section": "Home, me and the ledger's settings",
+            "when": "the document prefixes and next numbers",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "agents": {
+            "screen": "agents",
+            "url": "/settings/agents",
+            "section": "Home, me and the ledger's settings",
+            "when": "which agents keep books here, their last dispatch and run (read-only; hiring and grants link to the kernel)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "audit": {
+            "screen": "audit",
+            "url": "/audit",
+            "section": "Home, me and the ledger's settings",
+            "when": "the audit page: reopened periods, posts into reopened periods, reversals and voids, the AI statement check, the control-account tie-out",
+            "params": [
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "exports": {
+            "screen": "exports",
+            "url": "/exports",
+            "section": "Home, me and the ledger's settings",
+            "when": "every statement and ledger as a file: the general ledger detail, the journal, the chart, the trial balance, the aging, for a period",
+            "params": [
+                "period",
+                "format"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "accounts-list": {
+            "screen": "accounts-list",
+            "url": "/accounts/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "the chart of accounts as cards grouped by type, with balances as of today",
+            "params": [
+                "type",
+                "include_archived",
+                "as_of"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "account-add": {
+            "screen": "account-add",
+            "url": "/accounts/new",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to add an account",
+            "params": [
+                "type",
+                "parent"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "account-view": {
+            "screen": "account-view",
+            "url": "/accounts/{id}",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "one account: its balance and activity for a period with a running balance, its children",
+            "params": [
+                "from",
+                "to",
+                "department",
+                "site"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "account-edit": {
+            "screen": "account-edit",
+            "url": "/accounts/{id}/edit",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to rename, re-parent or describe an account",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "periods-list": {
+            "screen": "periods-list",
+            "url": "/periods/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "the fiscal years and their periods as cards: open, closed, reopened, with posted and draft counts",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "fiscal-year-add": {
+            "screen": "fiscal-year-add",
+            "url": "/periods/new",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to open a fiscal year with its twelve periods",
+            "params": [
+                "start"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "period-view": {
+            "screen": "period-view",
+            "url": "/periods/{id}",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "one period: its state and history, what posted in it, what is still a draft in it, the close checklist",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "tax-rates": {
+            "screen": "tax-rates",
+            "url": "/settings/tax-rates/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "the tax rates and the default",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "tax-rate-add": {
+            "screen": "tax-rate-add",
+            "url": "/settings/tax-rates/new",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to add a rate",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "tax-rate-edit": {
+            "screen": "tax-rate-edit",
+            "url": "/settings/tax-rates/{id}/edit",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to rename a rate or make it the default",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "items-list": {
+            "screen": "items-list",
+            "url": "/settings/items/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "the products and services with their accounts and prices",
+            "params": [
+                "q",
+                "kind"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "item-add": {
+            "screen": "item-add",
+            "url": "/settings/items/new",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to add an item",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "item-edit": {
+            "screen": "item-edit",
+            "url": "/settings/items/{id}/edit",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to change an item",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "posting-rules": {
+            "screen": "posting-rules",
+            "url": "/settings/posting-rules/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "which source posts to which accounts",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "posting-rule-edit": {
+            "screen": "posting-rule-edit",
+            "url": "/settings/posting-rules/{id}/edit",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to change a rule's accounts",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "sites-list": {
+            "screen": "sites-list",
+            "url": "/settings/sites/",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "the sites (the second dimension)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "site-add": {
+            "screen": "site-add",
+            "url": "/settings/sites/new",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to add a site",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "site-edit": {
+            "screen": "site-edit",
+            "url": "/settings/sites/{id}/edit",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "when": "to rename a site or pin it to the kernel's location",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "journal-list": {
+            "screen": "journal-list",
+            "url": "/journal/",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "when": "the entries as a ledger: drafts first, then by date, with period, source, totals, status",
+            "params": [
+                "period",
+                "status",
+                "source",
+                "account",
+                "q",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "journal-entry-add": {
+            "screen": "journal-entry-add",
+            "url": "/journal/new",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "when": "to write a manual entry: date, memo, the lines editor with the balance strip",
+            "params": [
+                "date",
+                "reverse_of",
+                "template"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "journal-entry-view": {
+            "screen": "journal-entry-view",
+            "url": "/journal/{id}",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "when": "one entry: its lines, its source document, its reversal or what it reverses, attachments, notes, the timeline",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "journal-entry-edit": {
+            "screen": "journal-entry-edit",
+            "url": "/journal/{id}/edit",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "when": "to correct a draft's date, memo, dimensions or lines",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "statements": {
+            "screen": "statements",
+            "url": "/statements/",
+            "section": "Statements and reports (slice 3)",
+            "when": "the four statements as cards with the current period's headline figures and posted-through",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "statement": {
+            "screen": "statement",
+            "url": "/statements/{statement}",
+            "section": "Statements and reports (slice 3)",
+            "when": "one statement — pl, balance-sheet, trial-balance, cash-flow — for a period, compare-to, by department or site, per currency, as a table, a CSV or a print page",
+            "params": [
+                "from",
+                "to",
+                "as_of",
+                "compare",
+                "department",
+                "site",
+                "format"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "reports": {
+            "screen": "reports",
+            "url": "/reports/{report}",
+            "section": "Statements and reports (slice 3)",
+            "when": "one report as a table and a CSV: ar-aging, ap-aging, sales-tax, spend, revenue, customer-statement, control-check",
+            "params": [
+                "as_of",
+                "from",
+                "to",
+                "group_by",
+                "customer",
+                "vendor",
+                "format"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "customers-list": {
+            "screen": "customers-list",
+            "url": "/customers/",
+            "section": "Receivables (slice 4)",
+            "when": "the customers as cards with balance due and open invoices",
+            "params": [
+                "q",
+                "include_archived"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "customer-add": {
+            "screen": "customer-add",
+            "url": "/customers/new",
+            "section": "Receivables (slice 4)",
+            "when": "to add a customer",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "customer-view": {
+            "screen": "customer-view",
+            "url": "/customers/{id}",
+            "section": "Receivables (slice 4)",
+            "when": "one customer: contacts, open invoices, receipts, credits, claims, notes, attachments",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "customer-edit": {
+            "screen": "customer-edit",
+            "url": "/customers/{id}/edit",
+            "section": "Receivables (slice 4)",
+            "when": "to change a customer",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "customer-statement": {
+            "screen": "customer-statement",
+            "url": "/customers/{id}/statement",
+            "section": "Receivables (slice 4)",
+            "when": "the customer's statement for a period: opening balance, invoices, receipts, credits, running balance",
+            "params": [
+                "from",
+                "to",
+                "format"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "invoices-list": {
+            "screen": "invoices-list",
+            "url": "/invoices/",
+            "section": "Receivables (slice 4)",
+            "when": "the invoices with status and overdue filters and a totals footer per currency",
+            "params": [
+                "status",
+                "overdue",
+                "customer",
+                "from",
+                "to",
+                "q"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "invoice-add": {
+            "screen": "invoice-add",
+            "url": "/invoices/new",
+            "section": "Receivables (slice 4)",
+            "when": "to write an invoice",
+            "params": [
+                "customer",
+                "copy_of"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "invoice-view": {
+            "screen": "invoice-view",
+            "url": "/invoices/{id}",
+            "section": "Receivables (slice 4)",
+            "when": "one invoice: lines, receipts and credits applied, claims, the secure link's state, attachments, notes, the timeline, the actions by status",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "invoice-edit": {
+            "screen": "invoice-edit",
+            "url": "/invoices/{id}/edit",
+            "section": "Receivables (slice 4)",
+            "when": "to change a draft invoice and its lines",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "invoice-print": {
+            "screen": "invoice-print",
+            "url": "/invoices/{id}/print",
+            "section": "Receivables (slice 4)",
+            "when": "the print-ready invoice page (the same page the customer sees on the link)",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "credit-notes-list": {
+            "screen": "credit-notes-list",
+            "url": "/credit-notes/",
+            "section": "Receivables (slice 4)",
+            "when": "the credit notes",
+            "params": [
+                "status",
+                "customer"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-add": {
+            "screen": "credit-note-add",
+            "url": "/credit-notes/new",
+            "section": "Receivables (slice 4)",
+            "when": "to write a credit note",
+            "params": [
+                "customer",
+                "invoice"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-view": {
+            "screen": "credit-note-view",
+            "url": "/credit-notes/{id}",
+            "section": "Receivables (slice 4)",
+            "when": "one credit note: lines, where it is applied",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "credit-note-edit": {
+            "screen": "credit-note-edit",
+            "url": "/credit-notes/{id}/edit",
+            "section": "Receivables (slice 4)",
+            "when": "to change a draft credit note",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "receipts-list": {
+            "screen": "receipts-list",
+            "url": "/receipts/",
+            "section": "Receivables (slice 4)",
+            "when": "money received: with an unapplied filter and the undeposited ones",
+            "params": [
+                "customer",
+                "from",
+                "to",
+                "unapplied",
+                "undeposited"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "receipt-add": {
+            "screen": "receipt-add",
+            "url": "/receipts/new",
+            "section": "Receivables (slice 4)",
+            "when": "to record money received and apply it to open invoices oldest first",
+            "params": [
+                "customer",
+                "invoice",
+                "amount",
+                "claim"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "receipt-view": {
+            "screen": "receipt-view",
+            "url": "/receipts/{id}",
+            "section": "Receivables (slice 4)",
+            "when": "one receipt: its applications, its entry, its deposit",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "claims": {
+            "screen": "claims",
+            "url": "/receipts/claims",
+            "section": "Receivables (slice 4)",
+            "when": "what customers said on the link that is not yet confirmed",
+            "params": [
+                "status"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "deposits-list": {
+            "screen": "deposits-list",
+            "url": "/deposits/",
+            "section": "Receivables (slice 4)",
+            "when": "the deposits",
+            "params": [
+                "bank_account",
+                "status"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "deposit-add": {
+            "screen": "deposit-add",
+            "url": "/deposits/new",
+            "section": "Receivables (slice 4)",
+            "when": "to group undeposited receipts into one bank deposit",
+            "params": [
+                "bank_account"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "deposit-view": {
+            "screen": "deposit-view",
+            "url": "/deposits/{id}",
+            "section": "Receivables (slice 4)",
+            "when": "one deposit: its receipts, its entry, the bank line it matched",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "vendors-list": {
+            "screen": "vendors-list",
+            "url": "/vendors/",
+            "section": "Payables (slice 5)",
+            "when": "the vendors as cards with balance due and open bills; AI providers marked",
+            "params": [
+                "q",
+                "kind",
+                "include_archived"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "vendor-add": {
+            "screen": "vendor-add",
+            "url": "/vendors/new",
+            "section": "Payables (slice 5)",
+            "when": "to add a vendor",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "vendor-view": {
+            "screen": "vendor-view",
+            "url": "/vendors/{id}",
+            "section": "Payables (slice 5)",
+            "when": "one vendor: contacts, open bills, payments, credits, documents, notes",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "vendor-edit": {
+            "screen": "vendor-edit",
+            "url": "/vendors/{id}/edit",
+            "section": "Payables (slice 5)",
+            "when": "to change a vendor",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bills-list": {
+            "screen": "bills-list",
+            "url": "/bills/",
+            "section": "Payables (slice 5)",
+            "when": "the bills: awaiting approval, approved, unpaid, due this week, without a document",
+            "params": [
+                "status",
+                "vendor",
+                "due_within",
+                "no_document",
+                "source",
+                "q"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "bill-add": {
+            "screen": "bill-add",
+            "url": "/bills/new",
+            "section": "Payables (slice 5)",
+            "when": "to enter a bill with its lines and attach its document",
+            "params": [
+                "vendor",
+                "copy_of"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "bill-view": {
+            "screen": "bill-view",
+            "url": "/bills/{id}",
+            "section": "Payables (slice 5)",
+            "when": "one bill: lines, document, payments and credits applied, its entry, notes, the timeline, the actions by status",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bill-edit": {
+            "screen": "bill-edit",
+            "url": "/bills/{id}/edit",
+            "section": "Payables (slice 5)",
+            "when": "to change a draft bill and its lines",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "vendor-credits-list": {
+            "screen": "vendor-credits-list",
+            "url": "/vendor-credits/",
+            "section": "Payables (slice 5)",
+            "when": "the vendor credits",
+            "params": [
+                "status",
+                "vendor"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "vendor-credit-add": {
+            "screen": "vendor-credit-add",
+            "url": "/vendor-credits/new",
+            "section": "Payables (slice 5)",
+            "when": "to enter a vendor credit",
+            "params": [
+                "vendor",
+                "bill"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "vendor-credit-view": {
+            "screen": "vendor-credit-view",
+            "url": "/vendor-credits/{id}",
+            "section": "Payables (slice 5)",
+            "when": "one vendor credit",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "vendor-credit-edit": {
+            "screen": "vendor-credit-edit",
+            "url": "/vendor-credits/{id}/edit",
+            "section": "Payables (slice 5)",
+            "when": "to change a draft vendor credit",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "payments-list": {
+            "screen": "payments-list",
+            "url": "/payments/",
+            "section": "Payables (slice 5)",
+            "when": "money out: draft, approved, recorded, with the bank account and cheque number",
+            "params": [
+                "status",
+                "vendor",
+                "bank_account",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "payment-add": {
+            "screen": "payment-add",
+            "url": "/payments/new",
+            "section": "Payables (slice 5)",
+            "when": "to prepare a payment for one or several of a vendor's bills",
+            "params": [
+                "vendor",
+                "bill",
+                "bank_account"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "payment-view": {
+            "screen": "payment-view",
+            "url": "/payments/{id}",
+            "section": "Payables (slice 5)",
+            "when": "one payment: its applications, its entry, the bank line it matched",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "payment-runs-list": {
+            "screen": "payment-runs-list",
+            "url": "/payment-runs/",
+            "section": "Payables (slice 5)",
+            "when": "the payment runs",
+            "params": [
+                "status"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "payment-run-add": {
+            "screen": "payment-run-add",
+            "url": "/payment-runs/new",
+            "section": "Payables (slice 5)",
+            "when": "to select due bills and make a run of payments from one bank account",
+            "params": [
+                "bank_account",
+                "due_by"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "payment-run-view": {
+            "screen": "payment-run-view",
+            "url": "/payment-runs/{id}",
+            "section": "Payables (slice 5)",
+            "when": "one run: its payments, approve, record, the CSV for the bank or the cheque printer",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "banks": {
+            "screen": "banks",
+            "url": "/cash/",
+            "section": "Cash (slice 6)",
+            "when": "the bank accounts as cards: ledger balance, cleared balance, difference, unmatched lines, last reconciled",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bank-account-view": {
+            "screen": "bank-account-view",
+            "url": "/cash/banks/{id}",
+            "section": "Cash (slice 6)",
+            "when": "one bank account: its lines by status and date, its reconciliations, the ledger activity",
+            "params": [
+                "status",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "bank-import": {
+            "screen": "bank-import",
+            "url": "/cash/import",
+            "section": "Cash (slice 6)",
+            "when": "to import a statement file (CSV) into a bank account: column mapping, date format, a five-row preview, duplicates counted",
+            "params": [
+                "bank_account"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "bank-match": {
+            "screen": "bank-match",
+            "url": "/cash/match",
+            "section": "Cash (slice 6)",
+            "when": "the unmatched lines of a bank account, each with its candidates, one click to match, an entry for a fee, ignore",
+            "params": [
+                "bank_account",
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "bank-reconcile": {
+            "screen": "bank-reconcile",
+            "url": "/cash/reconcile",
+            "section": "Cash (slice 6)",
+            "when": "to reconcile a bank account against a statement balance: start, the lines through the date, the difference live, complete",
+            "params": [
+                "bank_account",
+                "reconciliation"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "reconciliation-view": {
+            "screen": "reconciliation-view",
+            "url": "/cash/reconciliations/{id}",
+            "section": "Cash (slice 6)",
+            "when": "one reconciliation: its figures, its lines, who completed it, reopen",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "transfers-list": {
+            "screen": "transfers-list",
+            "url": "/cash/transfers/",
+            "section": "Cash (slice 6)",
+            "when": "the transfers between bank accounts",
+            "params": [
+                "bank_account"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "transfer-add": {
+            "screen": "transfer-add",
+            "url": "/cash/transfers/new",
+            "section": "Cash (slice 6)",
+            "when": "to record a transfer",
+            "params": [
+                "from",
+                "to"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "transfer-view": {
+            "screen": "transfer-view",
+            "url": "/cash/transfers/{id}",
+            "section": "Cash (slice 6)",
+            "when": "one transfer: its entry, the bank lines it matched",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bank-settings": {
+            "screen": "bank-settings",
+            "url": "/settings/banks/",
+            "section": "Cash (slice 6)",
+            "when": "the bank accounts' settings",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bank-account-add": {
+            "screen": "bank-account-add",
+            "url": "/settings/banks/new",
+            "section": "Cash (slice 6)",
+            "when": "to add a bank account over a ledger account",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "bank-account-edit": {
+            "screen": "bank-account-edit",
+            "url": "/settings/banks/{id}/edit",
+            "section": "Cash (slice 6)",
+            "when": "to change a bank account",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "ai-statements": {
+            "screen": "ai-statements",
+            "url": "/ap/ai/",
+            "section": "The kernel's AI statement (slice 7)",
+            "when": "the months as the kernel reports them: open, closed, pulled, imported, agrees, differs; pull now",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "ai-statement-view": {
+            "screen": "ai-statement-view",
+            "url": "/ap/ai/{id}",
+            "section": "The kernel's AI statement (slice 7)",
+            "when": "one month: its lines by provider and department, its bills, the agree/differ check, import",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "recurring-list": {
+            "screen": "recurring-list",
+            "url": "/settings/recurring/",
+            "section": "Recurring (slice 8)",
+            "when": "the templates as cards: kind, cadence, next date, last run, on or off",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "recurring-add": {
+            "screen": "recurring-add",
+            "url": "/settings/recurring/new",
+            "section": "Recurring (slice 8)",
+            "when": "to make a template from an entry, a bill or an invoice",
+            "params": [
+                "kind",
+                "from"
+            ],
+            "built": false,
+            "stub": false
+        },
+        "recurring-edit": {
+            "screen": "recurring-edit",
+            "url": "/settings/recurring/{id}/edit",
+            "section": "Recurring (slice 8)",
+            "when": "to change a template",
+            "params": [],
+            "built": false,
+            "stub": false
+        },
+        "recurring-view": {
+            "screen": "recurring-view",
+            "url": "/settings/recurring/{id}",
+            "section": "Recurring (slice 8)",
+            "when": "one template: what it drafts, its runs",
+            "params": [],
+            "built": false,
+            "stub": false
+        }
+    },
+    "actions": {
+        "prefs_save": {
+            "action": "prefs_save",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/prefs.php",
+            "params": [
+                {
+                    "name": "email_enabled",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "text_enabled",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "kinds",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "the events to be told about"
+                },
+                {
+                    "name": "text_kinds",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "the events to be texted about"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "prefs.save",
+            "who": "own",
+            "built": false
+        },
+        "token_mint": {
+            "action": "token_mint",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/tokens/mint.php",
+            "params": [
+                {
+                    "name": "label",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "scope",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "mcp or api"
+                }
+            ],
+            "undo": "revoke it",
+            "confirm": false,
+            "approval": null,
+            "log_event": "token.mint",
+            "who": "own",
+            "built": false
+        },
+        "token_revoke": {
+            "action": "token_revoke",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/tokens/revoke.php",
+            "params": [
+                {
+                    "name": "token",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "token.revoke",
+            "who": "own",
+            "built": false
+        },
+        "notification_read": {
+            "action": "notification_read",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/notifications/read.php",
+            "params": [
+                {
+                    "name": "notification",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty marks all read"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "notification.read",
+            "who": "own",
+            "built": false
+        },
+        "settings_save": {
+            "action": "settings_save",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/general.php",
+            "params": [
+                {
+                    "name": "business_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "business_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "business_tax_id",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "base_currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "three letters"
+                },
+                {
+                    "name": "fiscal_year_start_month",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1 to 12"
+                },
+                {
+                    "name": "timezone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "ar_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "ap_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "undeposited_funds_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "sales_tax_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "ai_usage_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "retained_earnings_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bad_debt_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "default_bank_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice_terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "0 to 365"
+                },
+                {
+                    "name": "bill_terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "0 to 365"
+                },
+                {
+                    "name": "link_lifetime_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1 to 3650"
+                },
+                {
+                    "name": "reminder_days",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "days past due"
+                },
+                {
+                    "name": "ai_statement_poll",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "morning_note_member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "who receives the Bookkeeper's note"
+                },
+                {
+                    "name": "invoice_footer",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "settings.save",
+            "who": "admin",
+            "built": false
+        },
+        "numbering_save": {
+            "action": "numbering_save",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/numbering.php",
+            "params": [
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "invoice or credit_note or journal_entry or bill or vendor_credit or receipt or payment or deposit or payment_run or transfer"
+                },
+                {
+                    "name": "prefix",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "capital letters and digits and a dash up to 8"
+                },
+                {
+                    "name": "next_value",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "never lower than the current"
+                },
+                {
+                    "name": "padding",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1 to 12"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "numbering.save",
+            "who": "admin",
+            "built": false
+        },
+        "morning_note_send": {
+            "action": "morning_note_send",
+            "section": "Home, me and the ledger's settings",
+            "endpoint": "/settings/agents/morning-note.php",
+            "params": [
+                {
+                    "name": "body",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "what was done and what needs a person"
+                },
+                {
+                    "name": "to_member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty sends it to the member the settings name"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "morning_note.send",
+            "who": "journal",
+            "built": false
+        },
+        "account_save": {
+            "action": "account_save",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/accounts/save.php",
+            "params": [
+                {
+                    "name": "account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "code",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "digits with an optional dot part"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "account_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "asset or liability or equity or income or expense"
+                },
+                {
+                    "name": "subtype",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "parent",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "an account of the same type"
+                },
+                {
+                    "name": "is_bank",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "account.save",
+            "who": "admin",
+            "built": false
+        },
+        "account_archive": {
+            "action": "account_archive",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/accounts/archive.php",
+            "params": [
+                {
+                    "name": "account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "with a zero balance"
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes archives and no restores"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "account.archive",
+            "who": "admin",
+            "built": false
+        },
+        "fiscal_year_create": {
+            "action": "fiscal_year_create",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/periods/save.php",
+            "params": [
+                {
+                    "name": "start",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the first day of a month"
+                },
+                {
+                    "name": "name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "fiscal_year.create",
+            "who": "admin",
+            "built": false
+        },
+        "period_close": {
+            "action": "period_close",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/periods/close.php",
+            "params": [
+                {
+                    "name": "period",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "period_reopen",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "period.close",
+            "who": "periods",
+            "built": false
+        },
+        "period_reopen": {
+            "action": "period_reopen",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/periods/reopen.php",
+            "params": [
+                {
+                    "name": "period",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "period_close",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "period.reopen",
+            "who": "periods",
+            "built": false
+        },
+        "year_end_close": {
+            "action": "year_end_close",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/periods/year-close.php",
+            "params": [
+                {
+                    "name": "fiscal_year",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "every period closed and no draft dated in it"
+                }
+            ],
+            "undo": "year_reopen",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "fiscal_year.close",
+            "who": "periods",
+            "built": false
+        },
+        "year_reopen": {
+            "action": "year_reopen",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/periods/year-reopen.php",
+            "params": [
+                {
+                    "name": "fiscal_year",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "fiscal_year.reopen",
+            "who": "periods",
+            "built": false
+        },
+        "tax_rate_save": {
+            "action": "tax_rate_save",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/tax-rates/save.php",
+            "params": [
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a percentage below 100"
+                },
+                {
+                    "name": "is_default",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "tax_rate.save",
+            "who": "admin",
+            "built": false
+        },
+        "tax_rate_archive": {
+            "action": "tax_rate_archive",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/tax-rates/archive.php",
+            "params": [
+                {
+                    "name": "tax_rate",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "never the default"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "tax_rate.archive",
+            "who": "admin",
+            "built": false
+        },
+        "item_save": {
+            "action": "item_save",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/items/save.php",
+            "params": [
+                {
+                    "name": "item",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "code",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "product or service"
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "income_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "expense_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "item.save",
+            "who": "admin",
+            "built": false
+        },
+        "item_archive": {
+            "action": "item_archive",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/items/archive.php",
+            "params": [
+                {
+                    "name": "item",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "item.archive",
+            "who": "admin",
+            "built": false
+        },
+        "posting_rule_save": {
+            "action": "posting_rule_save",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/posting-rules/save.php",
+            "params": [
+                {
+                    "name": "rule",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the source or an existing rule"
+                },
+                {
+                    "name": "match_key",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "an item or vendor key or empty for the default"
+                },
+                {
+                    "name": "debit_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "credit_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "active",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "posting_rule.save",
+            "who": "admin",
+            "built": false
+        },
+        "site_save": {
+            "action": "site_save",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/sites/save.php",
+            "params": [
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kernel_location",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the kernel's location id"
+                },
+                {
+                    "name": "address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "site.save",
+            "who": "admin",
+            "built": false
+        },
+        "site_archive": {
+            "action": "site_archive",
+            "section": "The chart, fiscal time, tax, items, sites (slice 1)",
+            "endpoint": "/settings/sites/archive.php",
+            "params": [
+                {
+                    "name": "site",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "site.archive",
+            "who": "admin",
+            "built": false
+        },
+        "journal_entry_draft": {
+            "action": "journal_entry_draft",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/save.php",
+            "params": [
+                {
+                    "name": "entry_date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "three letters or empty for the base"
+                },
+                {
+                    "name": "lines",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "account and debit or credit and description and department and site and customer and vendor as JSON rows"
+                }
+            ],
+            "undo": "journal_entry_void",
+            "confirm": false,
+            "approval": null,
+            "log_event": "journal_entry.draft",
+            "who": "journal",
+            "built": false
+        },
+        "journal_entry_update": {
+            "action": "journal_entry_update",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/save.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "entry_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "journal_entry.update",
+            "who": "journal",
+            "built": false
+        },
+        "journal_line_save": {
+            "action": "journal_line_save",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/line-save.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "debit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "credit",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "one of the two"
+                },
+                {
+                    "name": "description",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "customer",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "on the receivable account"
+                },
+                {
+                    "name": "vendor",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "on the payable account"
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "journal_entry.line_save",
+            "who": "journal",
+            "built": false
+        },
+        "journal_line_remove": {
+            "action": "journal_line_remove",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/line-remove.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": false,
+            "approval": null,
+            "log_event": "journal_entry.line_remove",
+            "who": "journal",
+            "built": false
+        },
+        "journal_entry_post": {
+            "action": "journal_entry_post",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/post.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a balanced draft dated in an open period"
+                }
+            ],
+            "undo": "— (reverse it)",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "journal_entry.post",
+            "who": "journal",
+            "built": false
+        },
+        "journal_entry_reverse": {
+            "action": "journal_entry_reverse",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/reverse.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a posted one"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reverse_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty uses the original's date or today when its period is closed"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "journal_entry.reverse",
+            "who": "journal for one's own posted entries, override for any",
+            "built": false
+        },
+        "journal_entry_void": {
+            "action": "journal_entry_void",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/void.php",
+            "params": [
+                {
+                    "name": "entry",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "journal_entry.void",
+            "who": "journal",
+            "built": false
+        },
+        "journal_entries_post_batch": {
+            "action": "journal_entries_post_batch",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/journal/post-batch.php",
+            "params": [
+                {
+                    "name": "entries",
+                    "required": true,
+                    "repeated": true,
+                    "hint": "balanced drafts"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "journal_entry.post_batch",
+            "who": "journal",
+            "built": false
+        },
+        "attachment_add": {
+            "action": "attachment_add",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/attachments/save.php",
+            "params": [
+                {
+                    "name": "record_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "journal_entry or invoice or credit_note or receipt or deposit or bill or vendor_credit or payment or payment_run or transfer or reconciliation or customer or vendor or ai_statement"
+                },
+                {
+                    "name": "record_id",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "file",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "multipart"
+                }
+            ],
+            "undo": "attachment_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "attachment.add",
+            "who": "attach",
+            "built": false
+        },
+        "attachment_delete": {
+            "action": "attachment_delete",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/attachments/delete.php",
+            "params": [
+                {
+                    "name": "attachment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "attachment.delete",
+            "who": "override",
+            "built": false
+        },
+        "note_add": {
+            "action": "note_add",
+            "section": "The journal (slice 2 — THE EXEMPLAR)",
+            "endpoint": "/notes/save.php",
+            "params": [
+                {
+                    "name": "record_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "record_id",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "body",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "note.add",
+            "who": "docs",
+            "built": false
+        },
+        "customer_save": {
+            "action": "customer_save",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/save.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "legal_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "phone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "billing_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "shipping_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_id",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "0 to 365"
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "three letters"
+                },
+                {
+                    "name": "income_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "an employee or an invited external who is this customer"
+                },
+                {
+                    "name": "notes",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "customer.save",
+            "who": "ar",
+            "built": false
+        },
+        "customer_archive": {
+            "action": "customer_archive",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/archive.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "no open invoice"
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": null,
+            "log_event": "customer.archive",
+            "who": "ar",
+            "built": false
+        },
+        "customer_delete": {
+            "action": "customer_delete",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/delete.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "with no document at all"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "customer.delete",
+            "who": "override",
+            "built": false
+        },
+        "contact_save": {
+            "action": "contact_save",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/contact.php",
+            "params": [
+                {
+                    "name": "party_kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "customer or vendor"
+                },
+                {
+                    "name": "party",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the customer or vendor"
+                },
+                {
+                    "name": "contact",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "phone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "role",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "is_primary",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "contact.save",
+            "who": "ar for a customer and ap for a vendor",
+            "built": false
+        },
+        "contact_remove": {
+            "action": "contact_remove",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/contact-remove.php",
+            "params": [
+                {
+                    "name": "contact",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": null,
+            "log_event": "contact.remove",
+            "who": "ar or ap",
+            "built": false
+        },
+        "invoice_draft": {
+            "action": "invoice_draft",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/save.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "issue_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "due_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty uses the customer's terms"
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the customer's PO"
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "terms_text",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "lines",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "item or description and quantity and unit_price and tax_rate and income_account as JSON rows"
+                }
+            ],
+            "undo": "invoice_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.draft",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_update": {
+            "action": "invoice_update",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/save.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "customer",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "issue_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "due_date",
+                    "repeated": false,
+                    "hint": "empty uses the customer's terms"
+                },
+                {
+                    "required": false,
+                    "name": "reference",
+                    "repeated": false,
+                    "hint": "the customer's PO"
+                },
+                {
+                    "required": false,
+                    "name": "memo",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "terms_text",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "department",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "site",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "lines",
+                    "repeated": false,
+                    "hint": "item or description and quantity and unit_price and tax_rate and income_account as JSON rows"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.update",
+            "who": "ar",
+            "built": false,
+            "partial": true
+        },
+        "invoice_line_save": {
+            "action": "invoice_line_save",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/line-save.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "item",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "fills description and price and account"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "income_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.line_save",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_line_remove": {
+            "action": "invoice_line_remove",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/line-remove.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": false,
+            "approval": null,
+            "log_event": "invoice.line_remove",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_issue": {
+            "action": "invoice_issue",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/issue.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft with lines; numbered and posted"
+                }
+            ],
+            "undo": "— (void it)",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.issue",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_send": {
+            "action": "invoice_send",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/send.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued; mailed with its secure link"
+                },
+                {
+                    "name": "to_email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty uses the customer's"
+                },
+                {
+                    "name": "message",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "words before the invoice"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "invoice.send",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_remind": {
+            "action": "invoice_remind",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/remind.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "past due"
+                },
+                {
+                    "name": "message",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "invoice.remind",
+            "who": "ar",
+            "built": false
+        },
+        "invoice_void": {
+            "action": "invoice_void",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/void.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued with nothing applied"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.void",
+            "who": "override",
+            "built": false
+        },
+        "invoice_write_off": {
+            "action": "invoice_write_off",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/write-off.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "owed"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "write_off_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "invoice.write_off",
+            "who": "override",
+            "built": false
+        },
+        "invoice_delete": {
+            "action": "invoice_delete",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/delete.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "invoice.delete",
+            "who": "ar",
+            "built": false
+        },
+        "secure_link_rotate": {
+            "action": "secure_link_rotate",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/invoices/secure-link.php",
+            "params": [
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a new link mailed and the old one dead"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "invoice.secure_link_rotate",
+            "who": "ar",
+            "built": false
+        },
+        "statement_send": {
+            "action": "statement_send",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/customers/statement-send.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "from",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to_email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty uses the customer's"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "external_send",
+            "log_event": "statement.send",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_draft": {
+            "action": "credit_note_draft",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/save.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the invoice it is raised against"
+                },
+                {
+                    "name": "issue_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "lines",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "as an invoice's"
+                }
+            ],
+            "undo": "credit_note_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.draft",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_update": {
+            "action": "credit_note_update",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/save.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "customer",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "invoice",
+                    "repeated": false,
+                    "hint": "the invoice it is raised against"
+                },
+                {
+                    "required": false,
+                    "name": "issue_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "reason",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "department",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "site",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "lines",
+                    "repeated": false,
+                    "hint": "as an invoice's"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.update",
+            "who": "ar",
+            "built": false,
+            "partial": true
+        },
+        "credit_note_line_save": {
+            "action": "credit_note_line_save",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/line-save.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "item",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "income_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.line_save",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_line_remove": {
+            "action": "credit_note_line_remove",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/line-remove.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": false,
+            "approval": null,
+            "log_event": "credit_note.line_remove",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_issue": {
+            "action": "credit_note_issue",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/issue.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft; numbered and posted"
+                },
+                {
+                    "name": "apply_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "an invoice to apply it to at once"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.issue",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_apply": {
+            "action": "credit_note_apply",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/apply.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued"
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty applies what fits"
+                }
+            ],
+            "undo": "credit_note_unapply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.apply",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_unapply": {
+            "action": "credit_note_unapply",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/unapply.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "credit_note_apply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.unapply",
+            "who": "ar",
+            "built": false
+        },
+        "credit_note_void": {
+            "action": "credit_note_void",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/void.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued and unapplied"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "credit_note.void",
+            "who": "override",
+            "built": false
+        },
+        "credit_note_delete": {
+            "action": "credit_note_delete",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/credit-notes/delete.php",
+            "params": [
+                {
+                    "name": "credit_note",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "credit_note.delete",
+            "who": "ar",
+            "built": false
+        },
+        "receipt_record": {
+            "action": "receipt_record",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/save.php",
+            "params": [
+                {
+                    "name": "customer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "received_on",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "method",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "cash or cheque or transfer or card or other"
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "deposit_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a bank account or empty for undeposited funds"
+                },
+                {
+                    "name": "invoice",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "apply it to this invoice first"
+                },
+                {
+                    "name": "apply_oldest",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes applies the rest to the oldest open invoices"
+                },
+                {
+                    "name": "claim",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the claim this confirms"
+                }
+            ],
+            "undo": "receipt_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "receipt.record",
+            "who": "ar",
+            "built": false
+        },
+        "receipt_apply": {
+            "action": "receipt_apply",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/apply.php",
+            "params": [
+                {
+                    "name": "receipt",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty applies what fits"
+                }
+            ],
+            "undo": "receipt_unapply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "receipt.apply",
+            "who": "ar",
+            "built": false
+        },
+        "receipt_unapply": {
+            "action": "receipt_unapply",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/unapply.php",
+            "params": [
+                {
+                    "name": "receipt",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "invoice",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "receipt_apply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "receipt.unapply",
+            "who": "ar",
+            "built": false
+        },
+        "receipt_void": {
+            "action": "receipt_void",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/void.php",
+            "params": [
+                {
+                    "name": "receipt",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "unapplied and undeposited"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "receipt.void",
+            "who": "override",
+            "built": false
+        },
+        "claim_confirm": {
+            "action": "claim_confirm",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/claim-confirm.php",
+            "params": [
+                {
+                    "name": "claim",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "recorded as a receipt and applied to its invoice"
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty takes the claim's"
+                },
+                {
+                    "name": "deposit_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "receipt_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "claim.confirm",
+            "who": "ar",
+            "built": false
+        },
+        "claim_dismiss": {
+            "action": "claim_dismiss",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/receipts/claim-dismiss.php",
+            "params": [
+                {
+                    "name": "claim",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "claim.dismiss",
+            "who": "ar",
+            "built": false
+        },
+        "deposit_draft": {
+            "action": "deposit_draft",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/save.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "deposit_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "receipts",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "undeposited receipts to put in"
+                }
+            ],
+            "undo": "deposit_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "deposit.draft",
+            "who": "ar",
+            "built": false
+        },
+        "deposit_add_receipt": {
+            "action": "deposit_add_receipt",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/add.php",
+            "params": [
+                {
+                    "name": "deposit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "receipt",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "undeposited"
+                }
+            ],
+            "undo": "deposit_remove_receipt",
+            "confirm": false,
+            "approval": null,
+            "log_event": "deposit.add_receipt",
+            "who": "ar",
+            "built": false
+        },
+        "deposit_remove_receipt": {
+            "action": "deposit_remove_receipt",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/remove.php",
+            "params": [
+                {
+                    "name": "deposit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "receipt",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "deposit_add_receipt",
+            "confirm": false,
+            "approval": null,
+            "log_event": "deposit.remove_receipt",
+            "who": "ar",
+            "built": false
+        },
+        "deposit_record": {
+            "action": "deposit_record",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/record.php",
+            "params": [
+                {
+                    "name": "deposit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft with receipts; posted"
+                }
+            ],
+            "undo": "deposit_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "deposit.record",
+            "who": "ar",
+            "built": false
+        },
+        "deposit_void": {
+            "action": "deposit_void",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/void.php",
+            "params": [
+                {
+                    "name": "deposit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "recorded and unmatched"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "deposit.void",
+            "who": "override",
+            "built": false
+        },
+        "deposit_delete": {
+            "action": "deposit_delete",
+            "section": "Receivables (slice 4)",
+            "endpoint": "/deposits/delete.php",
+            "params": [
+                {
+                    "name": "deposit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "deposit.delete",
+            "who": "ar",
+            "built": false
+        },
+        "vendor_save": {
+            "action": "vendor_save",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendors/save.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "legal_name",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "vendor or employee or tax_authority"
+                },
+                {
+                    "name": "email",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "phone",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "remit_address",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_id",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "terms_days",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "0 to 365"
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "three letters"
+                },
+                {
+                    "name": "expense_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "pay_method",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "cheque or ach or card or cash or other"
+                },
+                {
+                    "name": "member",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the employee this vendor is"
+                },
+                {
+                    "name": "notes",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "vendor.save",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_archive": {
+            "action": "vendor_archive",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendors/archive.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "no open bill"
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": null,
+            "log_event": "vendor.archive",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_delete": {
+            "action": "vendor_delete",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendors/delete.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "with no document at all"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "vendor.delete",
+            "who": "override",
+            "built": false
+        },
+        "bill_draft": {
+            "action": "bill_draft",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/save.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "vendor_ref",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the vendor's own invoice number"
+                },
+                {
+                    "name": "bill_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "due_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty uses the vendor's terms"
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "lines",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "expense_account or item and description and quantity and unit_price and tax_rate and department and site as JSON rows"
+                }
+            ],
+            "undo": "bill_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bill.draft",
+            "who": "ap",
+            "built": false
+        },
+        "bill_update": {
+            "action": "bill_update",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/save.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "vendor",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "vendor_ref",
+                    "repeated": false,
+                    "hint": "the vendor's own invoice number"
+                },
+                {
+                    "required": false,
+                    "name": "bill_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "due_date",
+                    "repeated": false,
+                    "hint": "empty uses the vendor's terms"
+                },
+                {
+                    "required": false,
+                    "name": "memo",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "department",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "site",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "lines",
+                    "repeated": false,
+                    "hint": "expense_account or item and description and quantity and unit_price and tax_rate and department and site as JSON rows"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bill.update",
+            "who": "ap",
+            "built": false,
+            "partial": true
+        },
+        "bill_line_save": {
+            "action": "bill_line_save",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/line-save.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "item",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "expense_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bill.line_save",
+            "who": "ap",
+            "built": false
+        },
+        "bill_line_remove": {
+            "action": "bill_line_remove",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/line-remove.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bill.line_remove",
+            "who": "ap",
+            "built": false
+        },
+        "bill_approve": {
+            "action": "bill_approve",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/approve.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft with lines; posted"
+                }
+            ],
+            "undo": "— (void it)",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "bill.approve",
+            "who": "approve",
+            "built": false
+        },
+        "bill_void": {
+            "action": "bill_void",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/void.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "nothing applied"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "bill.void",
+            "who": "override",
+            "built": false
+        },
+        "bill_delete": {
+            "action": "bill_delete",
+            "section": "Payables (slice 5)",
+            "endpoint": "/bills/delete.php",
+            "params": [
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "bill.delete",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_draft": {
+            "action": "vendor_credit_draft",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/save.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bill",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the bill it is against"
+                },
+                {
+                    "name": "vendor_ref",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "credit_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "lines",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "as a bill's"
+                }
+            ],
+            "undo": "vendor_credit_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "vendor_credit.draft",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_update": {
+            "action": "vendor_credit_update",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/save.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "vendor",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "bill",
+                    "repeated": false,
+                    "hint": "the bill it is against"
+                },
+                {
+                    "required": false,
+                    "name": "vendor_ref",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "credit_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "reason",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "department",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "site",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "lines",
+                    "repeated": false,
+                    "hint": "as a bill's"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "vendor_credit.update",
+            "who": "ap",
+            "built": false,
+            "partial": true
+        },
+        "vendor_credit_line_save": {
+            "action": "vendor_credit_line_save",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/line-save.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "quantity",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "unit_price",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "tax_rate",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "expense_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "vendor_credit.line_save",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_line_remove": {
+            "action": "vendor_credit_line_remove",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/line-remove.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore",
+            "confirm": false,
+            "approval": null,
+            "log_event": "vendor_credit.line_remove",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_issue": {
+            "action": "vendor_credit_issue",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/issue.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft; posted"
+                },
+                {
+                    "name": "apply_to",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a bill to apply it to at once"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "vendor_credit.issue",
+            "who": "approve",
+            "built": false
+        },
+        "vendor_credit_apply": {
+            "action": "vendor_credit_apply",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/apply.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued"
+                },
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty applies what fits"
+                }
+            ],
+            "undo": "vendor_credit_unapply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "vendor_credit.apply",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_unapply": {
+            "action": "vendor_credit_unapply",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/unapply.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "vendor_credit_apply",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "vendor_credit.unapply",
+            "who": "ap",
+            "built": false
+        },
+        "vendor_credit_void": {
+            "action": "vendor_credit_void",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/void.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "issued and unapplied"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "vendor_credit.void",
+            "who": "override",
+            "built": false
+        },
+        "vendor_credit_delete": {
+            "action": "vendor_credit_delete",
+            "section": "Payables (slice 5)",
+            "endpoint": "/vendor-credits/delete.php",
+            "params": [
+                {
+                    "name": "vendor_credit",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "vendor_credit.delete",
+            "who": "ap",
+            "built": false
+        },
+        "payment_draft": {
+            "action": "payment_draft",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/save.php",
+            "params": [
+                {
+                    "name": "vendor",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "payment_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "method",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "cheque or ach or card or cash or other"
+                },
+                {
+                    "name": "cheque_number",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bills",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "apply it to these bills oldest first"
+                },
+                {
+                    "name": "payment_run",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a draft run to join"
+                }
+            ],
+            "undo": "payment_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment.draft",
+            "who": "ap",
+            "built": false
+        },
+        "payment_update": {
+            "action": "payment_update",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/save.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "required": false,
+                    "name": "vendor",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "amount",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "payment_date",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "method",
+                    "repeated": false,
+                    "hint": "cheque or ach or card or cash or other"
+                },
+                {
+                    "required": false,
+                    "name": "cheque_number",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "bank_account",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "reference",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "memo",
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "required": false,
+                    "name": "bills",
+                    "repeated": true,
+                    "hint": "apply it to these bills oldest first"
+                },
+                {
+                    "required": false,
+                    "name": "payment_run",
+                    "repeated": false,
+                    "hint": "a draft run to join"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment.update",
+            "who": "ap",
+            "built": false,
+            "partial": true
+        },
+        "payment_apply": {
+            "action": "payment_apply",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/apply.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft or approved"
+                },
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "empty applies what fits"
+                }
+            ],
+            "undo": "payment_unapply",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment.apply",
+            "who": "ap",
+            "built": false
+        },
+        "payment_unapply": {
+            "action": "payment_unapply",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/unapply.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft or approved"
+                },
+                {
+                    "name": "bill",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "payment_apply",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment.unapply",
+            "who": "ap",
+            "built": false
+        },
+        "payment_approve": {
+            "action": "payment_approve",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/approve.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft applied to a bill"
+                }
+            ],
+            "undo": "payment_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment.approve",
+            "who": "approve",
+            "built": false
+        },
+        "payment_record": {
+            "action": "payment_record",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/record.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "approved; the money was moved by a person; posted"
+                },
+                {
+                    "name": "payment_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the day it moved"
+                },
+                {
+                    "name": "cheque_number",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "— (void it)",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment.record",
+            "who": "ap",
+            "built": false
+        },
+        "payment_void": {
+            "action": "payment_void",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/void.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "unmatched"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment.void",
+            "who": "override",
+            "built": false
+        },
+        "payment_delete": {
+            "action": "payment_delete",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payments/delete.php",
+            "params": [
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "payment.delete",
+            "who": "ap",
+            "built": false
+        },
+        "payment_run_create": {
+            "action": "payment_run_create",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/save.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "pay_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "bills",
+                    "required": false,
+                    "repeated": true,
+                    "hint": "one payment per vendor for these bills"
+                },
+                {
+                    "name": "due_by",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "or every approved bill due by this date"
+                }
+            ],
+            "undo": "payment_run_void",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment_run.create",
+            "who": "ap",
+            "built": false
+        },
+        "payment_run_add": {
+            "action": "payment_run_add",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/add.php",
+            "params": [
+                {
+                    "name": "payment_run",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft of the same bank account and currency"
+                }
+            ],
+            "undo": "payment_run_remove",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment_run.add",
+            "who": "ap",
+            "built": false
+        },
+        "payment_run_remove": {
+            "action": "payment_run_remove",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/remove.php",
+            "params": [
+                {
+                    "name": "payment_run",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft"
+                },
+                {
+                    "name": "payment",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "payment_run_add",
+            "confirm": false,
+            "approval": null,
+            "log_event": "payment_run.remove",
+            "who": "ap",
+            "built": false
+        },
+        "payment_run_approve": {
+            "action": "payment_run_approve",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/approve.php",
+            "params": [
+                {
+                    "name": "payment_run",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a draft with payments; every one approved"
+                }
+            ],
+            "undo": "payment_run_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment_run.approve",
+            "who": "approve",
+            "built": false
+        },
+        "payment_run_record": {
+            "action": "payment_run_record",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/record.php",
+            "params": [
+                {
+                    "name": "payment_run",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "approved; every payment recorded as moved and posted"
+                },
+                {
+                    "name": "pay_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment_run.record",
+            "who": "ap",
+            "built": false
+        },
+        "payment_run_void": {
+            "action": "payment_run_void",
+            "section": "Payables (slice 5)",
+            "endpoint": "/payment-runs/void.php",
+            "params": [
+                {
+                    "name": "payment_run",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "its unrecorded payments voided"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "payment_run.void",
+            "who": "override",
+            "built": false
+        },
+        "bank_account_save": {
+            "action": "bank_account_save",
+            "section": "Cash (slice 6)",
+            "endpoint": "/settings/banks/save.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "checking or savings or credit_card or cash or other"
+                },
+                {
+                    "name": "account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a ledger account flagged bank"
+                },
+                {
+                    "name": "institution",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "account_last4",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "currency",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "three letters"
+                },
+                {
+                    "name": "opening_balance",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "opening_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "bank_account.save",
+            "who": "admin",
+            "built": false
+        },
+        "bank_account_archive": {
+            "action": "bank_account_archive",
+            "section": "Cash (slice 6)",
+            "endpoint": "/settings/banks/archive.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "no unmatched line and no reconciliation in progress"
+                },
+                {
+                    "name": "archived",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "bank_account.archive",
+            "who": "admin",
+            "built": false
+        },
+        "bank_import": {
+            "action": "bank_import",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/import.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "file",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "multipart CSV"
+                },
+                {
+                    "name": "date_format",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "ymd or dmy or mdy"
+                },
+                {
+                    "name": "columns",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "date and amount and description and reference as JSON or empty to detect"
+                },
+                {
+                    "name": "amount_sign",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "signed or debit_credit"
+                }
+            ],
+            "undo": "bank_import_delete",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bank.import",
+            "who": "bank",
+            "built": false
+        },
+        "bank_import_delete": {
+            "action": "bank_import_delete",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/import-delete.php",
+            "params": [
+                {
+                    "name": "import",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "its unmatched lines removed"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "bank.import_delete",
+            "who": "bank",
+            "built": false
+        },
+        "bank_line_add": {
+            "action": "bank_line_add",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/line.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "txn_date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "signed"
+                },
+                {
+                    "name": "description",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reference",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "bank.line_add",
+            "who": "bank",
+            "built": false
+        },
+        "bank_transaction_match": {
+            "action": "bank_transaction_match",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/match.php",
+            "params": [
+                {
+                    "name": "bank_line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "item_type",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "receipt or deposit or payment or transfer or journal_entry"
+                },
+                {
+                    "name": "item",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the item's id"
+                }
+            ],
+            "undo": "bank_transaction_unmatch",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bank.match",
+            "who": "bank",
+            "built": false
+        },
+        "bank_transaction_unmatch": {
+            "action": "bank_transaction_unmatch",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/unmatch.php",
+            "params": [
+                {
+                    "name": "bank_line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "not reconciled"
+                }
+            ],
+            "undo": "bank_transaction_match",
+            "confirm": false,
+            "approval": null,
+            "log_event": "bank.unmatch",
+            "who": "bank",
+            "built": false
+        },
+        "bank_transaction_ignore": {
+            "action": "bank_transaction_ignore",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/ignore.php",
+            "params": [
+                {
+                    "name": "bank_line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "bank_transaction_unmatch",
+            "confirm": true,
+            "approval": null,
+            "log_event": "bank.ignore",
+            "who": "bank",
+            "built": false
+        },
+        "bank_entry_from_line": {
+            "action": "bank_entry_from_line",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/entry.php",
+            "params": [
+                {
+                    "name": "bank_line",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the fee or income account"
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "department",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "site",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "bank.entry_from_line",
+            "who": "journal",
+            "built": false
+        },
+        "reconciliation_start": {
+            "action": "reconciliation_start",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/reconcile-start.php",
+            "params": [
+                {
+                    "name": "bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "statement_date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "statement_balance",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "reconciliation.start",
+            "who": "bank",
+            "built": false
+        },
+        "reconciliation_complete": {
+            "action": "reconciliation_complete",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/reconcile-complete.php",
+            "params": [
+                {
+                    "name": "reconciliation",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "at zero difference"
+                },
+                {
+                    "name": "note",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "reconciliation_reopen",
+            "confirm": true,
+            "approval": "other",
+            "log_event": "reconciliation.complete",
+            "who": "reconcile",
+            "built": false
+        },
+        "reconciliation_reopen": {
+            "action": "reconciliation_reopen",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/reconcile-reopen.php",
+            "params": [
+                {
+                    "name": "reconciliation",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "the latest completed"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "other",
+            "log_event": "reconciliation.reopen",
+            "who": "reconcile",
+            "built": false
+        },
+        "transfer_record": {
+            "action": "transfer_record",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/transfers/save.php",
+            "params": [
+                {
+                    "name": "from_bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "to_bank_account",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "amount",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "transfer_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "memo",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": "transfer_void",
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "transfer.record",
+            "who": "bank",
+            "built": false
+        },
+        "transfer_void": {
+            "action": "transfer_void",
+            "section": "Cash (slice 6)",
+            "endpoint": "/cash/transfers/void.php",
+            "params": [
+                {
+                    "name": "transfer",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "unmatched"
+                },
+                {
+                    "name": "reason",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "money_out",
+            "log_event": "transfer.void",
+            "who": "override",
+            "built": false
+        },
+        "ai_statement_pull": {
+            "action": "ai_statement_pull",
+            "section": "The kernel's AI statement (slice 7)",
+            "endpoint": "/ap/ai/pull.php",
+            "params": [
+                {
+                    "name": "period",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "a month like 2026-09 or empty for every month the kernel lists"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "ai_statement.pull",
+            "who": "ap",
+            "built": false
+        },
+        "ai_statement_import": {
+            "action": "ai_statement_import",
+            "section": "The kernel's AI statement (slice 7)",
+            "endpoint": "/ap/ai/import.php",
+            "params": [
+                {
+                    "name": "statement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "a closed month not yet imported; one draft bill per provider"
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": null,
+            "log_event": "ai_statement.import",
+            "who": "ap",
+            "built": false
+        },
+        "ai_statement_check": {
+            "action": "ai_statement_check",
+            "section": "The kernel's AI statement (slice 7)",
+            "endpoint": "/ap/ai/check.php",
+            "params": [
+                {
+                    "name": "statement",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "imported; the bills against the lines"
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "ai_statement.check",
+            "who": "view",
+            "built": false
+        },
+        "recurring_save": {
+            "action": "recurring_save",
+            "section": "Recurring (slice 8)",
+            "endpoint": "/settings/recurring/save.php",
+            "params": [
+                {
+                    "name": "template",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "to change an existing one"
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "kind",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "journal or bill or invoice"
+                },
+                {
+                    "name": "cadence",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "weekly or monthly or quarterly or yearly"
+                },
+                {
+                    "name": "every_n",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "1 to 24"
+                },
+                {
+                    "name": "next_date",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "end_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "template",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "the document to draft as JSON"
+                },
+                {
+                    "name": "active",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "recurring.save",
+            "who": "admin",
+            "built": false
+        },
+        "recurring_toggle": {
+            "action": "recurring_toggle",
+            "section": "Recurring (slice 8)",
+            "endpoint": "/settings/recurring/toggle.php",
+            "params": [
+                {
+                    "name": "template",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                },
+                {
+                    "name": "active",
+                    "required": false,
+                    "repeated": false,
+                    "hint": "yes or no"
+                }
+            ],
+            "undo": "restore prior",
+            "confirm": false,
+            "approval": "other",
+            "log_event": "recurring.toggle",
+            "who": "admin",
+            "built": false
+        },
+        "recurring_run": {
+            "action": "recurring_run",
+            "section": "Recurring (slice 8)",
+            "endpoint": "/settings/recurring/run.php",
+            "params": [
+                {
+                    "name": "template",
+                    "required": true,
+                    "repeated": false,
+                    "hint": "drafted now for its next date"
+                },
+                {
+                    "name": "run_date",
+                    "required": false,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": false,
+            "approval": null,
+            "log_event": "recurring.run",
+            "who": "journal",
+            "built": false
+        },
+        "recurring_delete": {
+            "action": "recurring_delete",
+            "section": "Recurring (slice 8)",
+            "endpoint": "/settings/recurring/delete.php",
+            "params": [
+                {
+                    "name": "template",
+                    "required": true,
+                    "repeated": false,
+                    "hint": ""
+                }
+            ],
+            "undo": null,
+            "confirm": true,
+            "approval": "deletion",
+            "log_event": "recurring.delete",
+            "who": "admin",
+            "built": false
+        }
+    }
+}

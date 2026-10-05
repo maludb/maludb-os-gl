@@ -16,8 +16,8 @@ the kernel's retired bookkeeping, sales and expenses specs — `docs/build-specs
 > system is an optional application that receives the export.* This is that application.
 >
 > **Checkpoint.** This document and the owner's answers (§13, answered §15) are Phase 0's first half; the schema in `db/`,
-> `maludb-os.json`, `os/`, `skills/` and `deploy/` complete it. Phase 1 adds `docs/gl-mcp-tool-surface.md`,
-> `docs/gl-action-manifest.md` and the slice specs in `docs/build-specs/`. **No feature PHP is written until the
+> `maludb-os.json`, `os/`, `skills/` and `deploy/` complete it. Phase 1 (written 2026-10-05) adds `docs/gl-mcp-tool-surface.md`,
+> `docs/gl-action-manifest.md` and the ten slice specs in `docs/build-specs/`. **No feature PHP is written until the
 > owner approves them together.** The decisions this document needed from the owner are §13, answered in §15 (2026-10-04).
 
 ## 1. What General Ledger is, and is not
@@ -508,6 +508,30 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 | D14 | **Ports pinned before `apply`**: `APP_INTERNAL_PORT=8184`, `MCP_RECORDS_PORT=8829`, `MCP_ACTIVITY_PORT=8830`, all three in `env.required` | §14; `config/.env`; `deploy/ROOT_STEPS.sh` |
 
 ## 16. State
+
+**PHASE 1 — written 2026-10-05, for the checkpoint.** The tool surface (`docs/gl-mcp-tool-surface.md`: 52 records tools — `app_roles`,
+`records_search` and the three K7 shares included — and 7 activity tools; every question of §7 named to a tool; the resolve table of 24
+entities; the log-payload rules), the action manifest (`docs/gl-action-manifest.md`: **92 screens, 124 actions in 9 sections; 69 actions carry
+an approval category** — 33 `money_out` (every posting and every record of money moved or a claim on it changed), 3 `external_send`
+(invoice, reminder, statement), 12 `deletion`, 21 `other` (configuration and the period/reconciliation controls the default policy refuses to
+agents)), the registry built from it clean (`mcp/action_registry.json`, no unresolved endpoint, no prose parameter), `maludb-os.json`'s
+`approvals[]` regenerated from the manifest by `bin/sync_approvals.php` (one source; `--check` in every proof), and ten specs in
+`docs/build-specs/`: `sso-shell` (Phase 2), `chart-fiscal` (1, the CRUD exemplar for workers), **`journal-core` (2, THE EXEMPLAR)**, `statements`
+(3), `receivables` (4), `payables` (5), `cash` (6), `ai-statement` (7), `recurring-worker` (8), `reports-settings` (9). Every action and screen
+name in the specs matches the manifest. The installer's `plan` reads the repository clean with the registry present.
+
+**Questions for the owner at the checkpoint** (each has a proposed answer in its spec; silence = the proposal):
+1. **Reversing a document-born entry from the journal page** — refused; the document's void does it (journal-core). Proposed: keep the refusal.
+2. **Manual lines on a bank account's ledger account** — allowed, and they become match candidates (journal-core). Proposed: yes.
+3. **Charts** — tables and count cards only in v1 (statements). Proposed: tables only.
+4. **The customer's claim amount** — editable on the link, the bookkeeper confirms the real amount (receivables). Proposed: editable.
+5. **Reminder wording** — three fixed steps in code, editable templates Extended (receivables). Proposed: fixed in v1.
+6. **Cheque numbers** — assigned sequentially at a run's approval from a "first cheque number" (payables). Proposed: yes.
+7. **Hashed references** for a bank without one — date + amount + description + a per-file index (cash). Proposed: yes, stated on the result.
+8. **Reminders sent by the worker on its own** once `reminder_days` is set, or only drafted for a person to release (recurring-worker). Proposed: the worker sends — the setting is the consent.
+9. **The logo** — `feather-book-open` stands in until your artwork (sso-shell).
+
+Next, on approval: **Phase 2** (`docs/build-specs/sso-shell.md`), then slice 1 and slice 2 (the exemplar), then the handoff.
 
 **PHASE 0 COMPLETE — 2026-10-04.** The schema `db/001`–`016` (2,900 lines: the mirror with sites as the ledger's own dimension;
 the activity log with the audit keys on every row; tokens; five roles and fourteen rights with `gl_has_right()`; the chart with the
