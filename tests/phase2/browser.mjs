@@ -132,10 +132,10 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   ok(bar.x >= nav.width - 1 && bar.y + bar.height >= 780, `the command bar sits at the bottom, right of the sidebar (x ${Math.round(bar.x)}, sidebar ${Math.round(nav.width)})`);
   ok((await page.locator('#header-role-badge').innerText()).includes('Super-admin'), 'the badge reads Super-admin');
   await page.screenshot({ path: `${SHOTS}/desktop-dashboard.png` });
-  await page.click('#nav-banks .nxl-link');
-  await page.waitForURL(BASE + '/cash/');
-  await page.waitForSelector('#banks-coming');
-  ok((await page.title()).startsWith('Bank accounts'), 'HTMX navigation: /cash/ (a placeholder) pushed, title "' + (await page.title()) + '"');
+  await page.click('#nav-ai .nxl-link');
+  await page.waitForURL(BASE + '/ap/ai/');
+  await page.waitForSelector('#ai-coming');
+  ok((await page.title()).startsWith('AI statements'), 'HTMX navigation: /ap/ai/ (a placeholder) pushed, title "' + (await page.title()) + '"');
   await page.screenshot({ path: `${SHOTS}/desktop-placeholder.png` });
   await page.goBack();
   await page.waitForURL(BASE + '/');

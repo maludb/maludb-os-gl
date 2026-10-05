@@ -42,7 +42,13 @@ $count = static fn (string $id, int|null $n, string $label, string $url, string 
                     <?php else: ?>
                         <div class="table-responsive"><table class="table table-sm mb-0 fs-12" id="home-cash-table"><thead class="thead-light"><tr><th>Account</th><th class="text-end">Ledger</th><th class="text-end">Cleared</th><th class="d-none d-md-table-cell">Reconciled through</th></tr></thead><tbody>
                         <?php foreach ($h['cash'] as $c): ?><tr id="home-cash-<?= (int) $c['bank_account_id'] ?>"><td><?= hx_link('/cash/banks/' . (int) $c['bank_account_id'], e($c['name']), 'text-dark fw-semibold') ?><?= (int) $c['unmatched_lines'] > 0 ? ' <span class="badge bg-soft-warning text-warning">' . (int) $c['unmatched_lines'] . ' to match</span>' : '' ?></td><?= fmt_money_cell($c['ledger_balance'], $c['currency']) ?><?= fmt_money_cell($c['cleared_balance'], $c['currency']) ?><td class="d-none d-md-table-cell text-muted"><?= $c['last_reconciled_through'] ? e(date('j M Y', strtotime($c['last_reconciled_through']))) : 'never' ?></td></tr><?php endforeach; ?>
-                        </tbody></table></div>
+                        </tbody><?php if (count($h['cash_totals'] ?? []) > 0): ?><tfoot id="home-cash-totals"><?php foreach ($h['cash_totals'] as $t): ?><tr><td class="text-muted">Total in <?= e($t['currency']) ?></td><?= fmt_money_cell($t['ledger_balance'], $t['currency'], 'home-cash-total-' . $t['currency']) ?><td></td><td class="d-none d-md-table-cell"></td></tr><?php endforeach; ?></tfoot><?php endif; ?></table></div>
+                        <?php if (!empty($h['cash_trend'])): $tr = $h['cash_trend']; ?>
+                        <details class="mt-3" id="home-cash-trend"><summary class="fs-12 fw-semibold" style="min-height:44px;display:flex;align-items:center">Twelve months of ledger balances</summary>
+                            <div class="table-responsive"><table class="table table-sm mb-0 fs-12" id="home-cash-trend-table"><thead class="thead-light"><tr><th>Month end</th><?php foreach ($tr['accounts'] as $a): ?><th class="text-end"><?= e($a['name']) ?></th><?php endforeach; ?></tr></thead><tbody>
+                            <?php foreach (array_reverse($tr['months']) as $m): ?><tr id="home-cash-trend-<?= e($m) ?>"><td class="text-nowrap"><?= e(date('M Y', strtotime($m))) ?></td><?php foreach ($tr['accounts'] as $a): ?><?= fmt_money_cell($tr['rows'][$m][$a['bank_account_id']], $a['currency']) ?><?php endforeach; ?></tr><?php endforeach; ?>
+                            </tbody></table></div></details>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>

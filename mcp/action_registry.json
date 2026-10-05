@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T10:03:23+00:00",
+    "generated_at": "2026-10-05T10:41:45+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -807,8 +807,8 @@
             "section": "Cash (slice 6)",
             "when": "the bank accounts as cards: ledger balance, cleared balance, difference, unmatched lines, last reconciled",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "bank-account-view": {
             "screen": "bank-account-view",
@@ -820,7 +820,7 @@
                 "from",
                 "to"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bank-import": {
@@ -831,7 +831,7 @@
             "params": [
                 "bank_account"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bank-match": {
@@ -844,8 +844,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "bank-reconcile": {
             "screen": "bank-reconcile",
@@ -856,8 +856,8 @@
                 "bank_account",
                 "reconciliation"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "reconciliation-view": {
             "screen": "reconciliation-view",
@@ -865,7 +865,7 @@
             "section": "Cash (slice 6)",
             "when": "one reconciliation: its figures, its lines, who completed it, reopen",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "transfers-list": {
@@ -876,8 +876,8 @@
             "params": [
                 "bank_account"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "transfer-add": {
             "screen": "transfer-add",
@@ -888,7 +888,7 @@
                 "from",
                 "to"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "transfer-view": {
@@ -897,7 +897,7 @@
             "section": "Cash (slice 6)",
             "when": "one transfer: its entry, the bank lines it matched",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bank-settings": {
@@ -906,8 +906,8 @@
             "section": "Cash (slice 6)",
             "when": "the bank accounts' settings",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "bank-account-add": {
             "screen": "bank-account-add",
@@ -915,7 +915,7 @@
             "section": "Cash (slice 6)",
             "when": "to add a bank account over a ledger account",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bank-account-edit": {
@@ -924,7 +924,7 @@
             "section": "Cash (slice 6)",
             "when": "to change a bank account",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "ai-statements": {
@@ -4807,7 +4807,7 @@
             "approval": "other",
             "log_event": "bank_account.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "bank_account_archive": {
             "action": "bank_account_archive",
@@ -4832,7 +4832,7 @@
             "approval": "other",
             "log_event": "bank_account.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "bank_import": {
             "action": "bank_import",
@@ -4875,7 +4875,7 @@
             "approval": null,
             "log_event": "bank.import",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_import_delete": {
             "action": "bank_import_delete",
@@ -4894,7 +4894,7 @@
             "approval": "deletion",
             "log_event": "bank.import_delete",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_line_add": {
             "action": "bank_line_add",
@@ -4937,7 +4937,7 @@
             "approval": null,
             "log_event": "bank.line_add",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_transaction_match": {
             "action": "bank_transaction_match",
@@ -4968,7 +4968,7 @@
             "approval": null,
             "log_event": "bank.match",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_transaction_unmatch": {
             "action": "bank_transaction_unmatch",
@@ -4987,7 +4987,7 @@
             "approval": null,
             "log_event": "bank.unmatch",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_transaction_ignore": {
             "action": "bank_transaction_ignore",
@@ -5012,7 +5012,7 @@
             "approval": null,
             "log_event": "bank.ignore",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "bank_entry_from_line": {
             "action": "bank_entry_from_line",
@@ -5055,7 +5055,7 @@
             "approval": "money_out",
             "log_event": "bank.entry_from_line",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "reconciliation_start": {
             "action": "reconciliation_start",
@@ -5086,7 +5086,7 @@
             "approval": null,
             "log_event": "reconciliation.start",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "reconciliation_complete": {
             "action": "reconciliation_complete",
@@ -5111,7 +5111,7 @@
             "approval": "other",
             "log_event": "reconciliation.complete",
             "who": "reconcile",
-            "built": false
+            "built": true
         },
         "reconciliation_reopen": {
             "action": "reconciliation_reopen",
@@ -5136,7 +5136,7 @@
             "approval": "other",
             "log_event": "reconciliation.reopen",
             "who": "reconcile",
-            "built": false
+            "built": true
         },
         "transfer_record": {
             "action": "transfer_record",
@@ -5179,7 +5179,7 @@
             "approval": "money_out",
             "log_event": "transfer.record",
             "who": "bank",
-            "built": false
+            "built": true
         },
         "transfer_void": {
             "action": "transfer_void",
@@ -5204,7 +5204,7 @@
             "approval": "money_out",
             "log_event": "transfer.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "ai_statement_pull": {
             "action": "ai_statement_pull",

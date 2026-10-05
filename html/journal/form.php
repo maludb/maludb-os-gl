@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-/** /journal/new and /journal/{id}/edit — a manual entry's head and first lines, or a draft's head (screens `journal-entry-add`, `journal-entry-edit`; journal.write). Params on add: date, reverse_of. */
+/** /journal/new and /journal/{id}/edit — a manual entry's head and first lines, or a draft's head (screens `journal-entry-add`, `journal-entry-edit`; journal.write). Params on add: date, reverse_of, template=opening with bank_account (slice 6's opening-balance link: the two lines prefilled). */
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 2) . '/app/features/journal/handler.php';
 require_once dirname(__DIR__, 2) . '/app/features/journal/present.php';
@@ -21,6 +21,10 @@ if ($cur === null && $reverseOf !== null) {
     } catch (DomainException $e) {
         refuse(422, $e->getMessage());
     }
+}
+if ($cur === null && $prefill === null && request_string('template') === 'opening' && ($bankForOpening = request_integer('bank_account')) !== null) {
+    require_once dirname(__DIR__, 2) . '/app/features/cash/queries.php';
+    $prefill = opening_entry_prefill($pdo, $bankForOpening);      // slice 6's link: DR the bank account / CR 3000 Owner equity
 }
 $date = $cur['entry_date'] ?? $prefill['entry_date'] ?? (request_date('date') ?: date('Y-m-d'));
 $screen = $cur === null ? 'journal-entry-add' : 'journal-entry-edit';

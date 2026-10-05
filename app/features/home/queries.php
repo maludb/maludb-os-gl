@@ -6,7 +6,8 @@ declare(strict_types=1);
 function home_summary(PDO $pdo): array
 {
     $waiting = $pdo->query('SELECT * FROM gl_unposted_summary()')->fetch() ?: [];
-    $cash = $pdo->query('SELECT * FROM gl_cash_position()')->fetchAll();
+    require_once __DIR__ . '/../cash/queries.php';
+    $cash = cash_position($pdo);
     $postedThrough = $pdo->query('SELECT gl_posted_through()')->fetchColumn();
     $year = $pdo->query("SELECT fiscal_year_id, name, start_date, end_date, status FROM mcp_fiscal_years WHERE status = 'open' ORDER BY start_date DESC LIMIT 1")->fetch() ?: null;
     $anyYear = (int) $pdo->query('SELECT count(*) FROM mcp_fiscal_years')->fetchColumn() > 0;
@@ -23,7 +24,7 @@ function home_summary(PDO $pdo): array
     $ap = $pdo->query('SELECT currency, sum(total) AS total, sum(days_over_90) AS over_90, sum(open_bills) AS open_count FROM gl_ap_aging() GROUP BY currency ORDER BY currency')->fetchAll();
     $ai = $pdo->query('SELECT ai_statement_id, period, kernel_status, status, totals, bill_count FROM mcp_ai_statements ORDER BY period DESC LIMIT 1')->fetch() ?: null;
     $note = $pdo->query("SELECT title, body, created_at FROM mcp_notifications WHERE kind = 'morning_note' ORDER BY created_at DESC LIMIT 1")->fetch() ?: null;
-    return ['waiting' => array_map(static fn ($v) => $v === null ? null : (is_numeric($v) ? (int) $v : $v), $waiting), 'cash' => $cash, 'posted_through' => $postedThrough ?: null,
+    return ['waiting' => array_map(static fn ($v) => $v === null ? null : (is_numeric($v) ? (int) $v : $v), $waiting), 'cash' => $cash, 'cash_totals' => cash_totals($cash), 'cash_trend' => $cash === [] ? null : cash_trend($pdo, 12), 'posted_through' => $postedThrough ?: null,
             'fiscal_year' => $year, 'has_fiscal_year' => $anyYear, 'base_currency' => $settings['base_currency'], 'business_name' => $settings['business_name'],
             'this_month' => $thisMonth, 'ar' => $ar, 'ap' => $ap, 'ai' => $ai, 'morning_note' => $note];
 }
@@ -36,6 +37,8 @@ function present_home(array $h): array
         'fiscal_year' => $h['fiscal_year'] === null ? null : ['fiscal_year_id' => (int) $h['fiscal_year']['fiscal_year_id'], 'name' => $h['fiscal_year']['name'], 'start' => $h['fiscal_year']['start_date'], 'end' => $h['fiscal_year']['end_date']],
         'posted_through' => $h['posted_through'],
         'waiting' => array_intersect_key($h['waiting'], array_flip(['draft_entries', 'unbalanced_entries', 'oldest_draft', 'draft_invoices', 'draft_bills', 'bills_awaiting_approval', 'payments_awaiting_approval', 'unmatched_bank_lines', 'open_claims', 'undeposited_receipts'])),
+        'cash_totals' => $h['cash_totals'] ?? [],
+        'cash_trend' => $h['cash_trend'] === null ? null : ['months' => $h['cash_trend']['months'], 'accounts' => $h['cash_trend']['accounts'], 'rows' => $h['cash_trend']['rows']],
         'cash' => array_map(static fn (array $c): array => ['bank_account_id' => (int) $c['bank_account_id'], 'name' => $c['name'], 'kind' => $c['kind'], 'currency' => $c['currency'], 'ledger_balance' => $c['ledger_balance'], 'cleared_balance' => $c['cleared_balance'],
             'last_reconciled_through' => $c['last_reconciled_through'], 'unmatched_lines' => (int) $c['unmatched_lines']], $h['cash']),
         'receivables' => array_map(static fn (array $r): array => ['currency' => $r['currency'], 'total' => $r['total'], 'over_90' => $r['over_90'], 'open_invoices' => (int) $r['open_count']], $h['ar']),

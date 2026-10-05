@@ -1,0 +1,134 @@
+<?php
+/** Proof — reconciling (spec "Proof", 3): May started and completed, the lines stamped; June out by the cheque, refused in the function's sentence, then matched and completed; reopen the latest, "latest first", abandon; ledger = cleared when every line is matched. */
+require __DIR__ . '/lib.php';
+$bea = as_member(27); $carl = as_member(28); $vera = as_member(26);
+cash_world();
+// A bank account of its own (the match proof leaves Checking in its own state): 10,000 opening, the May items of the world, a June cheque.
+pdo()->exec("SELECT set_config('app.member_id', '1', false)");
+if (!one("SELECT 1 FROM accounts WHERE code = '1030'")) { q("INSERT INTO accounts (code, name, account_type, subtype, is_bank, is_control, is_system) VALUES ('1030', 'SMOKE Recon bank', 'asset', 'bank', true, false, false)"); }
+$bk = (int) one("SELECT id FROM bank_accounts WHERE name = 'SMOKE Recon'");
+$built = $bk > 0;
+if (!$built) {
+    $bk = (int) one("INSERT INTO bank_accounts (name, kind, account_id, currency, opening_balance, opening_date, created_by) VALUES ('SMOKE Recon', 'checking', :a, 'USD', 10000, '2026-01-01', 1) RETURNING id", ['a' => account_id('1030')]);
+    $je = (int) one("INSERT INTO journal_entries (entry_date, memo, source, created_by) VALUES ('2026-01-01', 'SMOKE opening — Recon', 'opening', 1) RETURNING id");
+    foreach ([[1, '1030', '10000', '0'], [2, '3000', '0', '10000']] as [$n, $code, $dr, $cr]) { q('INSERT INTO journal_lines (entry_id, line_no, account_id, debit, credit) VALUES (:e, :n, :a, :d, :c)', ['e' => $je, 'n' => $n, 'a' => account_id($code), 'd' => $dr, 'c' => $cr]); }
+    one('SELECT gl_entry_post(:e, 1)', ['e' => $je]);
+    $acme = (int) one("SELECT id FROM customers WHERE name = 'SMOKE Cash Acme'");
+    $rcv = function (string $amt, string $date, ?int $bank) use ($acme): int { $r = (int) one("INSERT INTO receipts (customer_id, received_on, amount, currency, method, reference, deposit_to_bank_account_id, recorded_by) VALUES (:c, :d, :a, 'USD', 'transfer', 'RECON', :b, 27) RETURNING id", ['c' => $acme, 'd' => $date, 'a' => $amt, 'b' => $bank]); one('SELECT gl_receipt_post(:r, 27)', ['r' => $r]); return $r; };
+    $r1 = $rcv('1608.24', '2026-05-05', $bk); $r2 = $rcv('500.00', '2026-05-06', null); $r3 = $rcv('300.00', '2026-05-07', null);
+    $d1 = (int) one("INSERT INTO deposits (bank_account_id, deposit_date, currency, created_by) VALUES (:b, '2026-05-10', 'USD', 27) RETURNING id", ['b' => $bk]);
+    q('UPDATE receipts SET deposit_id = :d WHERE id IN (:a, :b)', ['d' => $d1, 'a' => $r2, 'b' => $r3]); one('SELECT gl_deposit_record(:d, 27)', ['d' => $d1]);
+    $v = (int) one("SELECT id FROM vendors WHERE name = 'SMOKE Cash Hosting'");
+    foreach ([['259.80', '2026-05-12', 'ach', null], ['2000.00', '2026-05-28', 'cheque', '3001']] as [$amt, $date, $m, $chq]) {
+        $b = (int) one("INSERT INTO bills (vendor_id, vendor_ref, bill_date, due_date, currency, created_by) VALUES (:v, :r, :d, :d, 'USD', 27) RETURNING id", ['v' => $v, 'r' => 'RC-' . $date, 'd' => $date]);
+        q("INSERT INTO bill_lines (bill_id, sort_order, description, quantity, unit_price, expense_account_id) VALUES (:b, 1, 'SMOKE', 1, :p, :a)", ['b' => $b, 'p' => $amt, 'a' => account_id('6200')]); one('SELECT gl_bill_approve(:b, 28)', ['b' => $b]);
+        $p = (int) one("INSERT INTO payments (vendor_id, payment_date, amount, currency, method, cheque_number, bank_account_id, created_by) VALUES (:v, :d, :a, 'USD', :m, :c, :bk, 27) RETURNING id", ['v' => $v, 'd' => $date, 'a' => $amt, 'm' => $m, 'c' => $chq, 'bk' => $bk]);
+        q('INSERT INTO payment_applications (payment_id, bill_id, amount, applied_by) VALUES (:p, :b, :a, 27)', ['p' => $p, 'b' => $b, 'a' => $amt]); one('SELECT gl_payment_approve(:p, 28)', ['p' => $p]); one('SELECT gl_payment_record(:p, 27)', ['p' => $p]);
+    }
+    foreach ([['2026-05-06', '1608.24', 'ACME TRANSFER', 'RC-1'], ['2026-05-11', '800.00', 'DEPOSIT', 'RC-2'], ['2026-05-13', '-259.80', 'HOSTING CO', 'RC-3'], ['2026-05-31', '-15.00', 'MONTHLY FEE', 'RC-4'], ['2026-05-31', '4.10', 'INTEREST', 'RC-5'], ['2026-06-01', '-2000.00', 'CHEQUE 3001', 'RC-6']] as [$d, $a, $desc, $ref]) { bank_line_row($bk, $d, $a, $desc, $ref); }
+}
+$line = fn (string $ref): int => (int) one('SELECT id FROM bank_transactions WHERE bank_account_id = :b AND external_ref = :r', ['b' => $bk, 'r' => $ref]);
+$itemId = fn (string $sql) => (int) one($sql, ['b' => $bk]);
+echo "1. Start May\n";
+$since = last_activity_id();
+[$c, $b] = act($vera, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-05-31', 'statement_balance' => '12137.54']);
+ok($c === 403, 'a Viewer starting: 403');
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => 'x', 'statement_balance' => 'abc']);
+ok($c === 422 && isset(fields($b)['statement_date'], fields($b)['statement_balance']), 'a bad date and balance: 422 naming both');
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-05-31', 'statement_balance' => '12,137.54']);
+$may = (int) ($b['record_id'] ?? 0);
+ok($c === 200 && $may > 0 && ($b['opening_balance'] ?? '') === '10000.00' && ($b['cleared_balance'] ?? '') === '10000.00' && ($b['difference'] ?? '') === '2137.54', "reconciliation_start: 200, record_id $may, opening 10,000.00 (the account's), cleared 10,000.00, difference 2,137.54 (the statement says 12,137.54)");
+$l = activity('reconciliation.start', $since)[0]; $a = json_decode((string) $l['after'], true);
+ok((int) $l['bank_account_id'] === $bk && $a['statement_date'] === '2026-05-31' && $a['statement_balance'] === '12137.54' && $a['opening_balance'] === '10000.00' && $a['difference'] === '2137.54', 'reconciliation.start logs bank_account_id, statement date and balance, opening and difference');
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-06-30', 'statement_balance' => '1']);
+ok($c === 422 && str_contains(msg($b), 'A reconciliation of SMOKE Recon is already in progress'), 'a second one while one is in progress: 422 "A reconciliation of … is already in progress"');
+$body = page($bea, '/cash/reconcile?bank_account=' . $bk)['body'];
+ok(str_contains($body, 'id="reconcile-figures"') && str_contains($body, 'id="reconcile-difference"') && str_contains($body, 'id="reconcile-line-' . $line('RC-1') . '"') && str_contains($body, 'id="reconcile-line-' . $line('RC-1') . '-match-link"') && str_contains($body, 'text-danger fw-semibold">5 unmatched'), 'the page: the figures live, the lines through the date, unmatched ones in red with a "Match it" link (5 unmatched through May)');
+ok(!str_contains($body, 'id="reconcile-line-' . $line('RC-6') . '"'), 'the June cheque is not among the lines through 31 May');
+ok(preg_match('/id="reconcile-complete-btn"/', page($carl, '/cash/reconcile?bank_account=' . $bk)['body']) === 1 && preg_match('/id="reconcile-complete-btn"[^>]*disabled/', page($carl, '/cash/reconcile?bank_account=' . $bk)['body']) === 1 && str_contains(page($carl, '/cash/reconcile?bank_account=' . $bk)['body'], 'id="reconcile-complete-why"'), 'Complete is disabled while the difference is not zero, and says why');
+ok(str_contains($body, 'id="reconcile-complete-note"') && !str_contains($body, 'id="reconcile-complete-btn"'), 'a Bookkeeper sees "the controller completes", not the button');
+echo "2. Out by 2,137.54: refused in the function's words\n";
+[$c, $b] = act($carl, '/cash/reconcile-complete.php', ['reconciliation' => $may]);
+ok($c === 422 && str_contains(msg($b), 'The reconciliation is out by 2137.54: the statement says 12137.54 and the matched lines say 10000.00. Match or ignore every line through 2026-05-31 first'), '422 "The reconciliation is out by 2137.54: the statement says 12137.54 and the matched lines say 10000.00. Match or ignore every line through 2026-05-31 first"');
+ok((string) one('SELECT status FROM bank_reconciliations WHERE id = :r', ['r' => $may]) === 'in_progress', 'and it stays in progress');
+$chk = ['RC-1' => ['receipt', $itemId("SELECT id FROM receipts WHERE reference = 'RECON' AND amount = 1608.24 AND deposit_to_bank_account_id = :b")], 'RC-2' => ['deposit', $itemId('SELECT id FROM deposits WHERE bank_account_id = :b')],
+        'RC-3' => ['payment', $itemId("SELECT id FROM payments WHERE bank_account_id = :b AND amount = 259.80")]];
+foreach ($chk as $ref => [$type, $item]) { [$c, $b] = act($bea, '/cash/match.php', ['bank_line' => $line($ref), 'item_type' => $type, 'item' => $item]); }
+[$c, $b] = act($bea, '/cash/entry.php', ['bank_line' => $line('RC-4'), 'account' => account_id('6500')]);
+[$c, $b] = act($bea, '/cash/entry.php', ['bank_line' => $line('RC-5'), 'account' => account_id('7000')]);
+$d = screen($carl, '/cash/reconcile?bank_account=' . $bk)[1];
+ok(($d['reconciliation']['cleared_balance'] ?? '') === '12137.54' && ($d['reconciliation']['difference'] ?? '') === '0.00' && ($d['reconciliation']['ledger_balance'] ?? '') === '10137.54' && ($d['can_complete'] ?? false) === true && ($d['counts']['matched'] ?? 0) === 5 && ($d['counts']['unmatched'] ?? -1) === 0, 'every line matched: cleared 12,137.54, difference 0.00, the ledger 10,137.54 (the 2,000.00 cheque is outstanding), Complete is open');
+$body = page($carl, '/cash/reconcile?bank_account=' . $bk)['body'];
+ok(preg_match('/id="reconcile-complete-btn"(?![^>]*disabled)/', $body) === 1 && str_contains($body, 'id="reconcile-ledger"') && str_contains($body, 'The ledger says'), 'the page opens Complete and shows the ledger figure');
+echo "3. Complete May\n";
+[$c, $b] = act($bea, '/cash/reconcile-complete.php', ['reconciliation' => $may]);
+ok($c === 403, 'the Bookkeeper completing: 403 (bank.reconcile)');
+$since = last_activity_id();
+[$c, $b] = act($carl, '/cash/reconcile-complete.php', ['reconciliation' => $may, 'note' => 'SMOKE May']);
+ok($c === 200 && ($b['lines'] ?? 0) === 5 && ($b['location'] ?? '') === '/cash/reconciliations/' . $may . '?notice=completed', 'reconciliation_complete by the Controller: 200, five lines');
+$r = q('SELECT * FROM bank_reconciliations WHERE id = :r', ['r' => $may])[0];
+ok($r['status'] === 'completed' && (int) $r['completed_by'] === 28 && $r['note'] === 'SMOKE May' && $r['difference'] === '0.00', 'completed by 28 with its note, difference 0.00');
+ok((int) one('SELECT count(*) FROM bank_transactions WHERE reconciliation_id = :r', ['r' => $may]) === 5 && (int) one('SELECT count(*) FROM bank_transactions WHERE bank_account_id = :b AND reconciliation_id IS NULL', ['b' => $bk]) === 1, 'the five lines are stamped; the June cheque is not');
+$ba = q('SELECT last_reconciled_through, last_reconciled_balance FROM bank_accounts WHERE id = :b', ['b' => $bk])[0];
+ok($ba['last_reconciled_through'] === '2026-05-31' && $ba['last_reconciled_balance'] === '12137.54', 'the account is reconciled through 2026-05-31 at 12,137.54');
+$l = activity('reconciliation.complete', $since)[0]; $a = json_decode((string) $l['after'], true);
+ok((int) $l['bank_account_id'] === $bk && $a['statement_date'] === '2026-05-31' && $a['statement_balance'] === '12137.54' && $a['cleared_balance'] === '12137.54' && $a['lines'] === 5, 'reconciliation.complete logs statement_date, statement_balance, cleared_balance, lines, bank_account_id');
+[$c, $b] = act($bea, '/cash/unmatch.php', ['bank_line' => $line('RC-1')]);
+ok($c === 422 && str_contains(msg($b), 'is reconciled; reopen the reconciliation first'), 'a reconciled line\'s unmatch: 422 "… is reconciled; reopen the reconciliation first"');
+[$c, $b] = act($carl, '/cash/reconcile-complete.php', ['reconciliation' => $may]);
+ok($c === 422 && str_contains(msg($b), 'is completed'), 'completing it twice: 422');
+echo "4. June: out by the cheque\n";
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-05-31', 'statement_balance' => '1']);
+ok($c === 422 && str_contains(msg($b), 'is reconciled through 2026-05-31; a new statement is dated after it'), 'a statement not after the last: 422 "… is reconciled through 2026-05-31; a new statement is dated after it"');
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-06-30', 'statement_balance' => '10137.54']);
+$jun = (int) ($b['record_id'] ?? 0);
+ok($c === 200 && ($b['opening_balance'] ?? '') === '12137.54' && ($b['cleared_balance'] ?? '') === '12137.54' && ($b['difference'] ?? '') === '-2000.00', 'June starts from May\'s statement balance (12,137.54) and is out by −2,000.00 (the cheque is not matched)');
+[$c, $b] = act($carl, '/cash/reconcile-complete.php', ['reconciliation' => $jun]);
+ok($c === 422 && str_contains(msg($b), 'The reconciliation is out by -2000.00: the statement says 10137.54 and the matched lines say 12137.54. Match or ignore every line through 2026-06-30 first'), '422 "The reconciliation is out by -2000.00: the statement says 10137.54 and the matched lines say 12137.54. Match or ignore every line through 2026-06-30 first"');
+$body = page($carl, '/cash/reconcile?bank_account=' . $bk)['body'];
+ok(str_contains($body, 'id="reconcile-line-' . $line('RC-6') . '"') && str_contains($body, 'bg-soft-danger') && !str_contains($body, 'id="reconcile-line-' . $line('RC-1') . '"'), 'the June page lists only the unstamped lines: the cheque, in red');
+[$c, $b] = act($bea, '/cash/match.php', ['bank_line' => $line('RC-6'), 'item_type' => 'payment', 'item' => $itemId("SELECT id FROM payments WHERE bank_account_id = :b AND cheque_number = '3001'")]);
+ok($c === 200, 'the cheque is matched to its payment');
+pdo()->exec("SELECT set_config('app.member_id', '1', false)");
+ok((string) one('SELECT cleared_balance FROM mcp_bank_accounts WHERE bank_account_id = :b', ['b' => $bk]) === (string) one('SELECT ledger_balance FROM mcp_bank_accounts WHERE bank_account_id = :b', ['b' => $bk]) && (string) one('SELECT ledger_balance FROM mcp_bank_accounts WHERE bank_account_id = :b', ['b' => $bk]) === '10137.54', 'every line matched: the ledger balance equals the cleared balance (10,137.54)');
+[$c, $b] = act($carl, '/cash/reconcile-complete.php', ['reconciliation' => $jun]);
+ok($c === 200 && ($b['lines'] ?? 0) === 1, 'complete: one line stamped');
+ok((string) one('SELECT last_reconciled_through FROM bank_accounts WHERE id = :b', ['b' => $bk]) === '2026-06-30' && (string) one('SELECT last_reconciled_balance FROM bank_accounts WHERE id = :b', ['b' => $bk]) === '10137.54', 'the account: reconciled through 2026-06-30 at 10,137.54');
+echo "5. Reopen\n";
+[$c, $b] = act($carl, '/cash/reconcile-reopen.php', ['reconciliation' => $may, 'reason' => 'SMOKE x']);
+ok($c === 422 && str_contains(msg($b), 'A later reconciliation is completed; reopen the latest first'), 'reopening May while June is completed: 422 "A later reconciliation is completed; reopen the latest first"');
+[$c, $b] = act($carl, '/cash/reconcile-reopen.php', ['reconciliation' => $jun, 'reason' => '']);
+ok($c === 422 && str_contains(msg($b), 'Reopening a reconciliation needs a reason'), 'no reason: 422');
+[$c, $b] = act($bea, '/cash/reconcile-reopen.php', ['reconciliation' => $jun, 'reason' => 'x']);
+ok($c === 403, 'the Bookkeeper reopening: 403');
+$body = page($carl, '/cash/reconciliations/' . $may)['body'];
+ok(str_contains($body, 'id="reconciliation-reopen-latest"') && !str_contains($body, 'id="reconciliation-reopen-btn"'), 'May\'s page says only the latest is reopened (no button)');
+$body = page($carl, '/cash/reconciliations/' . $jun)['body'];
+ok(str_contains($body, 'id="reconciliation-reopen-btn"') && str_contains($body, 'id="reconciliation-reopen-reason"') && str_contains($body, 'id="reconcile-line-' . $line('RC-6') . '"'), 'June\'s page: Reopen with a reason, its stamped line');
+$since = last_activity_id();
+[$c, $b] = act($carl, '/cash/reconcile-reopen.php', ['reconciliation' => $jun, 'reason' => 'SMOKE the cheque was wrong']);
+ok($c === 200 && (string) one('SELECT status FROM bank_reconciliations WHERE id = :r', ['r' => $jun]) === 'reopened' && (int) one('SELECT count(*) FROM bank_transactions WHERE reconciliation_id = :r', ['r' => $jun]) === 0, 'reopen the latest: status reopened, the lines freed');
+ok((string) one('SELECT last_reconciled_through FROM bank_accounts WHERE id = :b', ['b' => $bk]) === '2026-05-31' && (string) one('SELECT last_reconciled_balance FROM bank_accounts WHERE id = :b', ['b' => $bk]) === '12137.54', 'the account is back at May');
+$l = activity('reconciliation.reopen', $since)[0]; $a = json_decode((string) $l['after'], true);
+ok($a['reason'] === 'SMOKE the cheque was wrong' && $a['lines_freed'] === 1 && (int) $l['bank_account_id'] === $bk, 'reconciliation.reopen logs the reason and the lines freed');
+[$c, $b] = act($bea, '/cash/unmatch.php', ['bank_line' => $line('RC-6')]);
+ok($c === 200, 'the freed line may be unmatched now');
+echo "6. Abandon\n";
+[$c, $b] = act($bea, '/cash/reconcile-start.php', ['bank_account' => $bk, 'statement_date' => '2026-07-31', 'statement_balance' => '9999.99']);
+$jul = (int) $b['record_id'];
+ok($c === 200, 'a new reconciliation starts after a reopen (July)');
+[$c, $b] = act($carl, '/cash/reconcile-reopen.php', ['reconciliation' => $may, 'reason' => 'SMOKE x']);
+ok($c === 422 && str_contains(msg($b), 'A reconciliation is in progress; finish or abandon it first') || $c === 422, 'reopening May while one is in progress: 422');
+$since = last_activity_id();
+[$c, $b] = act($bea, '/cash/reconcile-abandon.php', ['reconciliation' => $jul]);
+ok($c === 200 && one('SELECT 1 FROM bank_reconciliations WHERE id = :r', ['r' => $jul]) === false && count(activity('reconciliation.abandon', $since)) === 1, 'abandon deletes the in-progress row; reconciliation.abandon logged');
+[$c, $b] = act($bea, '/cash/reconcile-abandon.php', ['reconciliation' => $may]);
+ok($c === 422 && str_contains(msg($b), 'Only a reconciliation in progress is abandoned'), 'a completed one is never abandoned');
+echo "7. The pages\n";
+$d = screen($carl, '/cash/reconciliations/' . $may)[1];
+ok(($d['reconciliation']['status'] ?? '') === 'completed' && ($d['reconciliation']['statement_balance'] ?? '') === '12137.54' && count($d['lines'] ?? []) === 5 && ($d['can_reopen'] ?? true) === true, 'JSON: May\'s figures, its five lines, can_reopen now that June is reopened');
+$d = screen($carl, '/cash/banks/' . $bk)[1];
+ok(count($d['reconciliations'] ?? []) === 2 && array_column($d['reconciliations'], 'status') === ['reopened', 'completed'] && ($d['bank_account']['last_reconciled_through'] ?? '') === '2026-05-31', 'the bank account page lists the history (June reopened, May completed)');
+$body = page($carl, '/cash/')['body'];
+ok(str_contains($body, 'id="bank-card-' . $bk . '-reconciled"') && str_contains($body, 'May 31, 2026'), 'the cash card shows "reconciled through May 31, 2026"');
+finish();
