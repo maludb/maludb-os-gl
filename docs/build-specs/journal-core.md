@@ -138,26 +138,50 @@ it asks the database to post and shows what it said; the balance strip is a cour
 The statements (3); every document that posts (4–7 — their entries appear here as rows with a source link once they exist); recurring templates and "Make a template" (8); the home's counts are Phase 2's.
 
 ## Proof (`tests/phase3/slice2/run.sh`: the scratch database, members through dev hand-offs, curl with signed action and run tokens, headless Chromium at 375 × 740 and 1280 × 800; the registry `--check`)
-- [ ] **Draft, lines, the strip.** Bea drafts an entry with two lines out by 1,000: the strip says "out by 1,000.00" and Post is disabled; the endpoint called anyway → 422 in the trigger's words; a line with both
+**Built and proven 2026-10-05: 161 checks green** (draft 28, post 23, reverse 20, records 23, list 20, agents 10, json 10, browser 27, the registry); slice 1 (219), Phase 2 (251) and
+Phase 0 (15 + 151) still green; the registry reads the 11 actions and 4 screens as built (`92 screens (30 built), 124 actions (31 built)`).
+- [x] **Draft, lines, the strip.** Bea drafts an entry with two lines out by 1,000: the strip says "out by 1,000.00" and Post is disabled; the endpoint called anyway → 422 in the trigger's words; a line with both
   sides → 422 *"A line is a debit or a credit."*; `(100.00)` in debit becomes a credit; a third and fourth line balance it; the strip says "balances"; the period chip follows the date; a date with no fiscal
   year → the period chip says "no period" and posting → *"No fiscal period covers …"*.
-- [ ] **Post.** Posted: numbered `JE-000001`, totals, posted by Bea, `journal_entry.post` with amount, currency, period, `reopened_period false`; a second draft dated in a period the Controller then closes →
+- [x] **Post.** Posted: numbered `JE-000001`, totals, posted by Bea, `journal_entry.post` with amount, currency, period, `reopened_period false`; a second draft dated in a period the Controller then closes →
   *"Period 2026-02 is closed; …"*; reopened with a reason → posts with `reopened_period true`, and `period_activity` would show it; a line on 1200 without a customer → 422 naming the account; with a customer → posts;
   the entry page read-only afterwards; `line-save.php` on it → 422 *"… cannot be changed: it is posted"*; `save.php` on it → 422; delete → refused.
-- [ ] **Batch.** Five drafts, two unbalanced: "Posted 3 of 5; 2 refused: …" with each sentence; the three numbered in order; the two still drafts.
-- [ ] **Reverse and void.** Bea reverses her own posted entry: the reversal's lines are swapped, dated the original's date, posted, linked both ways, `journal_entry.reverse` on the original; a reversal of a
+- [x] **Batch.** Five drafts, two unbalanced: "Posted 3 of 5; 2 refused: …" with each sentence; the three numbered in order; the two still drafts.
+- [x] **Reverse and void.** Bea reverses her own posted entry: the reversal's lines are swapped, dated the original's date, posted, linked both ways, `journal_entry.reverse` on the original; a reversal of a
   reversed entry → 422; Bea on Carl's entry → 403 (`journal.override`); Carl may; the original's period closed → the form offers today and the reversal lands in the open period; a document-born entry
   (fixture by SQL: an issued invoice) → 422 *"Reverse it from the invoice …"*; a draft voided with a reason; voiding a posted one → 422 *"… reverse it instead"*.
-- [ ] **Attachments and notes.** A PDF on the entry stored under `storage/attachments/journal_entry/<id>/`, served inline with `nosniff`; the limit + 1 byte → 422; an `.exe` → 422; delete as Carl (`override`)
+- [x] **Attachments and notes.** A PDF on the entry stored under `storage/attachments/journal_entry/<id>/`, served inline with `nosniff`; the limit + 1 byte → 422; an `.exe` → 422; delete as Carl (`override`)
   removes the file; Bea → 403; a note by the agent shows the chip; the timeline in words with amounts; an unknown record type → 422; a record id the member cannot see (slice 4's customer with a wrong id) → 404.
-- [ ] **The list.** Drafts first with their balance state; filters by period, status, source, account (an entry with a line on 6200 found), `q` by number and memo; the totals footer per currency; 50 a page; the
+- [x] **The list.** Drafts first with their balance state; filters by period, status, source, account (an entry with a line on 6200 found), `q` by number and memo; the totals footer per currency; 50 a page; the
   CSV of the list logged `export.download`.
-- [ ] **Agents.** Under the Bookkeeper's run token: `journal_entry_draft` with `lines` as JSON (accounts by code) → a draft, source `agent` with the run's request id; `journal_entry_post` → the handler runs
+- [x] **Agents.** Under the Bookkeeper's run token: `journal_entry_draft` with `lines` as JSON (accounts by code) → a draft, source `agent` with the run's request id; `journal_entry_post` → the handler runs
   (the pause is the kernel's; proven in Phase 4 against the stubbed hook); an unknown account code in a row → 422 naming the row; `is_eval` → nothing written (the kit refuses).
-- [ ] **JSON mode.** Every handler under a signed action token: `{ok, did, record_id, location}`; 422 `{error: {code: invalid, fields}}`; 404 in one sentence; `_partial=1` keeps the head's fields; the relay
+- [x] **JSON mode.** Every handler under a signed action token: `{ok, did, record_id, location}`; 422 `{error: {code: invalid, fields}}`; 404 in one sentence; `_partial=1` keeps the head's fields; the relay
   missing → 401; the entry and the list answer JSON.
-- [ ] **375 × 740 and 1280 × 800**: cards on the phone, a table on the desktop, the lines editor scrolls in `.table-responsive`, the strip stays readable, the detail's panels stacked, `scrollWidth` = viewport,
+- [x] **375 × 740 and 1280 × 800**: cards on the phone, a table on the desktop, the lines editor scrolls in `.table-responsive`, the strip stays readable, the detail's panels stacked, `scrollWidth` = viewport,
   every button ≥ 44 px, no console errors, the flows through the real screens (draft, add lines, post, reverse), JavaScript off; the registry reads the 11 actions and 4 screens as built.
+
+## Decisions taken while building (2026-10-05) — what every document slice copies
+- **The lines editor is a table whose inputs belong to forms rendered after it** (`form="line-form-{id}"` on every input; one form per line for the save, one for the remove, one for the
+  blank add row) — never a `<form>` in a `<tr>`; with JavaScript off each row still posts and lands (the proof presses Enter in a row). Under HTMX a line write (`HX-Target: entry-lines`)
+  answers the lines region re-rendered plus the strip out of band (`answer_lines_region()`); a browser without HTMX is redirected to the entry with `#entry-lines`; JSON gets
+  `{ok, did, record_id, location, balance}`.
+- **Post lives on the balance strip** (`#entry-post-btn` inside `#entry-balance`), so it follows every line write; `#entry-actions` keeps Void (a draft) or Reverse (a posted one).
+- **A new entry's form carries four optional first lines** (`line_account[]`, `line_description[]`, `line_debit[]`, `line_credit[]`; a blank row is skipped) and lands on the entry page
+  where the full editor lives; an agent sends `lines` as JSON rows (`account` = an id, a code or an exact name; `debit`/`credit`; `description`, `department`, `site`, `customer`, `vendor`,
+  `tax_rate`). A row's refusal is "Row N: …" (422 with `fields.lines` and `fields.row`).
+- **`normalize_line()` is the one place a line is read** (both doors): a negative amount swaps sides, `(100.00)` is a credit, a zero or two-sided line is "A line is a debit or a credit.".
+- **`entry_refused()`** maps a `P0001` to the 422 in the database's words and, when the sentence starts "Account X …", to `fields.account`; `DomainException` "Not found." is a 404.
+- **A document-born entry** (`source_type` set and the source not in `manual|recurring|import|opening|reversal|closing`) is reversed only from its document: the page says so, the handler
+  refuses "Reverse it from the invoice (void it) so the document and the books agree."; the original's closed period makes the reversal land today (the form offers today).
+- **Attachments**: `storage/attachments/<record_type>/<record_id>/<id>-<sha256 prefix>` under the repository (the installer makes `storage/` for www-data; `ATTACHMENTS_DIR` overrides),
+  the mime from `finfo` against the allow-list, `ATTACHMENT_MAX_BYTES` (5 MB), served by `get.php` after `record_visible()` with `nosniff`; `attachment_delete` is `journal.override`'s.
+  The record map `RECORD_VIEWS` (`app/features/records/views.php`) names every record type's view, id column, label SQL and page — a later slice adds nothing but its own rows.
+- **The eval guard** is the kit's: `gl_handler_begin()` refuses "An evaluation run writes nothing." when the run's facts say `is_eval` (the bootstrap now asks the kernel's run-facts on every
+  run token, not only on an agent's first admission).
+- **The activity sentence** carries a line's account and side, the posting period, a filename, a note's excerpt (`activity_sentence()` extended).
+- **Proof helpers that later slices reuse** (`tests/phase3/slice2/lib.php`): `act_upload()` (multipart), `draft()` (through the handler), `entry_json()`, `ensure_year()`, `tmp_pdf()`; a
+  proof that checks a file after a delete calls `clearstatcache()` first.
 
 ## Open questions
 **Decided 2026-10-05:** a document-born entry is reversed only by the document's void (refused here); manual lines on a bank account's ledger account are allowed and become match candidates.

@@ -10,6 +10,7 @@ declare(strict_types=1);
 /** endpoint → [table, the form's id field, read view, the view's id column] */
 const PARTIAL_UPDATE_TARGETS = [
     // Each slice adds its own save endpoints here (the manifest's `any field of`): the table, the form's id field, the read view, its id column.
+    '/journal/save.php'         => ['journal_entries', 'entry', 'mcp_journal_entries', 'journal_entry_id'],
     '/customers/save.php'       => ['customers', 'customer', 'mcp_customers', 'customer_id'],
     '/vendors/save.php'         => ['vendors', 'vendor', 'mcp_vendors', 'vendor_id'],
     '/accounts/save.php'        => ['accounts', 'account', 'mcp_accounts', 'account_id'],

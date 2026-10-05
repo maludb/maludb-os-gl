@@ -1,0 +1,57 @@
+<?php
+/** Proof — the list (spec "Proof", 6): drafts first with their balance state, filters by period, status, source, account, q; the totals footer per currency; 50 a page; the CSV logged. */
+require __DIR__ . '/lib.php';
+$owner = as_member(1); $bea = as_member(27);
+ensure_year($owner);
+$ids = [];
+for ($i = 0; $i < 55; $i++) {
+    [$c, $b, $ids[]] = draft($bea, '2026-07-' . str_pad((string) (1 + $i % 28), 2, '0', STR_PAD_LEFT), [['account' => '6200', 'debit' => (string) (10 + $i)], ['account' => '1010', 'credit' => (string) (10 + $i)]], 'SMOKE list ' . $i);
+}
+act($bea, '/journal/post-batch.php', ['entries' => implode(',', array_slice($ids, 0, 50))]);
+[$c, $b, $unb] = draft($bea, '2026-07-30', [['account' => '6200', 'debit' => '5'], ['account' => '1010', 'credit' => '4']], 'SMOKE unbalanced');
+echo "1. Order and the page\n";
+[$c, $d] = screen($bea, '/journal/');
+ok($c === 200 && count($d['entries']) === 50 && $d['total'] >= 56 && $d['per_page'] === 50, '50 a page of ' . $d['total']);
+$statuses = array_column($d['entries'], 'status');
+$firstPosted = array_search('posted', $statuses, true);
+ok($firstPosted !== false && !in_array('draft', array_slice($statuses, $firstPosted), true), 'drafts first, then the rest');
+$dr = array_values(array_filter($d['entries'], fn ($e) => $e['journal_entry_id'] === $unb))[0] ?? null;
+ok($dr !== null && $dr['balance']['balances'] === false && $dr['balance']['difference'] === '1.00', 'a draft carries its balance state (out by 1.00)');
+$body = page($bea, '/journal/')['body'];
+ok(preg_match('/id="entry-row-' . $unb . '-balance">out by 1\.00</', $body) === 1 && str_contains($body, 'id="entry-card-' . $unb . '"') && str_contains($body, 'id="entry-list-next"'), 'the screen: the row\'s "out by 1.00", a card for the phone, the Older link');
+[$c, $d2] = screen($bea, '/journal/?page=2');
+ok($c === 200 && count($d2['entries']) >= 1 && $d2['page'] === 2 && !in_array($d2['entries'][0]['journal_entry_id'], array_column($d['entries'], 'journal_entry_id'), true), 'page 2 continues');
+echo "2. Filters\n";
+[$c, $d] = screen($bea, '/journal/?status=draft');
+ok(count($d['entries']) >= 5 && count(array_unique(array_column($d['entries'], 'status'))) === 1, 'status=draft lists only drafts');
+[$c, $d] = screen($bea, '/journal/?period=' . period_id('2026-07') . '&status=posted');
+ok(count($d['entries']) === 50 && $d['totals'][0]['currency'] === 'USD' && $d['totals'][0]['entries'] === 50 && (float) $d['totals'][0]['total'] === array_sum(range(10, 59)) + 0.0, 'period 2026-07 + posted: 50, the totals footer per currency (' . $d['totals'][0]['total'] . ' USD)');
+[$c, $d] = screen($bea, '/journal/?source=reversal');
+ok(count(array_unique(array_column($d['entries'], 'source'))) <= 1, 'source=reversal lists only reversals');
+[$c, $d, $raw] = screen($bea, '/journal/?account=' . account_id('6200'));
+ok($c === 200 && count($d['entries'] ?? []) === 50 && ($d['total'] ?? 0) === 56, 'account 6200: the entries with a line on it (56; the first 50)' . ($c === 200 ? '' : " ($c " . substr($raw['body'], 0, 200) . ')'));
+[$c, $d] = screen($bea, '/journal/?q=' . rawurlencode('SMOKE unbalanced'));
+ok(count($d['entries']) === 1 && $d['entries'][0]['journal_entry_id'] === $unb, 'q by memo');
+$num = (string) one('SELECT number FROM journal_entries WHERE id = :i', ['i' => $ids[3]]);
+[$c, $d] = screen($bea, '/journal/?q=' . $num);
+ok(count($d['entries']) === 1 && $d['entries'][0]['number'] === $num, 'q by number');
+[$c, $d] = screen($bea, '/journal/?from=2026-07-28&to=2026-07-31');
+ok($d['entries'] !== [] && min(array_column($d['entries'], 'entry_date')) >= '2026-07-28', 'from/to');
+[$c, $d] = screen($bea, '/journal/?sort=total_debit&dir=desc&status=posted&period=' . period_id('2026-07'));
+ok($d['entries'][0]['total'] === '59.00', 'sort by total');
+$r = req('GET', '/journal/?from=bad', ['jar' => $bea]);
+ok($r['code'] === 422, 'a bad date: 422');
+$body = page($bea, '/journal/?status=draft')['body'];
+ok(str_contains($body, 'id="entry-list"') && str_contains($body, 'hx-trigger="journalEntryChanged from:body"'), 'the region listens to journalEntryChanged');
+$r = page($bea, '/journal/?status=draft', ['headers' => ['HX-Request: true', 'HX-Target: entry-list']]);
+ok($r['code'] === 200 && str_starts_with(trim($r['body']), '<div id="entry-list"') && !str_contains($r['body'], '<html'), 'the filter swaps only #entry-list');
+echo "3. The CSV\n";
+$since = last_activity_id();
+$r = req('GET', '/journal/?period=' . period_id('2026-07') . '&format=csv', ['jar' => as_member(28)]);
+$lines = array_values(array_filter(explode("\n", trim($r['body']))));
+ok($r['code'] === 200 && str_contains($r['headers'], 'text/csv') && count($lines) === 57 && str_starts_with($lines[0], 'number,date,period'), 'the CSV of the period: 57 lines (header + 56)');
+ok(count(activity('export.download', $since)) === 1 && str_contains((string) activity('export.download', $since)[0]['after'], '"rows": 56'), 'export.download logged with the row count');
+ok(req('GET', '/journal/?format=csv', ['jar' => $bea])['code'] === 403, 'a Bookkeeper (no exports.download): 403');
+echo "4. Empty\n";
+ok(str_contains(page($bea, '/journal/?q=nothing-matches-this')['body'], 'id="entry-list-empty"'), 'nothing matches: the empty state');
+finish();

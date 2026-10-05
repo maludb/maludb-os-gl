@@ -14,6 +14,10 @@ function gl_handler_begin(): void
     require_post();
     require_login();
     verify_csrf();
+    if (!empty($GLOBALS['__run_facts']['is_eval'])) {          // an evaluation run writes nothing here either (the kernel records and never sends; this is the second control)
+        emit_action_status(false, ['error' => 'An evaluation run writes nothing.']);
+        refuse(403, 'An evaluation run writes nothing.');
+    }
 }
 
 function req_has(string $name): bool

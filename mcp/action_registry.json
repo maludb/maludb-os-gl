@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T01:00:34+00:00",
+    "generated_at": "2026-10-05T01:31:41+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -297,8 +297,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "journal-entry-add": {
             "screen": "journal-entry-add",
@@ -310,7 +310,7 @@
                 "reverse_of",
                 "template"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "journal-entry-view": {
@@ -319,7 +319,7 @@
             "section": "The journal (slice 2 — THE EXEMPLAR)",
             "when": "one entry: its lines, its source document, its reversal or what it reverses, attachments, notes, the timeline",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "journal-entry-edit": {
@@ -328,7 +328,7 @@
             "section": "The journal (slice 2 — THE EXEMPLAR)",
             "when": "to correct a draft's date, memo, dimensions or lines",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "statements": {
@@ -1804,7 +1804,7 @@
             "approval": null,
             "log_event": "journal_entry.draft",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_entry_update": {
             "action": "journal_entry_update",
@@ -1847,7 +1847,7 @@
             "approval": null,
             "log_event": "journal_entry.update",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_line_save": {
             "action": "journal_line_save",
@@ -1926,7 +1926,7 @@
             "approval": null,
             "log_event": "journal_entry.line_save",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_line_remove": {
             "action": "journal_line_remove",
@@ -1951,7 +1951,7 @@
             "approval": null,
             "log_event": "journal_entry.line_remove",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_entry_post": {
             "action": "journal_entry_post",
@@ -1970,7 +1970,7 @@
             "approval": "money_out",
             "log_event": "journal_entry.post",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_entry_reverse": {
             "action": "journal_entry_reverse",
@@ -2001,7 +2001,7 @@
             "approval": "money_out",
             "log_event": "journal_entry.reverse",
             "who": "journal for one's own posted entries, override for any",
-            "built": false
+            "built": true
         },
         "journal_entry_void": {
             "action": "journal_entry_void",
@@ -2026,7 +2026,7 @@
             "approval": "deletion",
             "log_event": "journal_entry.void",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "journal_entries_post_batch": {
             "action": "journal_entries_post_batch",
@@ -2045,7 +2045,7 @@
             "approval": "money_out",
             "log_event": "journal_entry.post_batch",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "attachment_add": {
             "action": "attachment_add",
@@ -2076,7 +2076,7 @@
             "approval": null,
             "log_event": "attachment.add",
             "who": "attach",
-            "built": false
+            "built": true
         },
         "attachment_delete": {
             "action": "attachment_delete",
@@ -2095,7 +2095,7 @@
             "approval": "deletion",
             "log_event": "attachment.delete",
             "who": "override",
-            "built": false
+            "built": true
         },
         "note_add": {
             "action": "note_add",
@@ -2126,7 +2126,7 @@
             "approval": null,
             "log_event": "note.add",
             "who": "docs",
-            "built": false
+            "built": true
         },
         "customer_save": {
             "action": "customer_save",

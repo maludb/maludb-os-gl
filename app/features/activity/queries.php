@@ -89,6 +89,19 @@ function activity_sentence(array $r): string
     if (isset($after['amount'], $after['currency'])) {
         $tail .= ' (' . number_format(abs((float) $after['amount']), 2) . ' ' . $after['currency'] . ')';
     }
+    if (isset($after['account_code'])) {                                          // a line event: "line 2 on 6200 Software: 259.80 debit"
+        $side = isset($after['debit']) && (float) $after['debit'] > 0 ? number_format((float) $after['debit'], 2) . ' debit' : (isset($after['credit']) ? number_format((float) $after['credit'], 2) . ' credit' : '');
+        $tail .= (isset($after['line_no']) ? ' (line ' . $after['line_no'] . ')' : '') . ' on ' . $after['account_code'] . (isset($after['account_name']) ? ' ' . $after['account_name'] : '') . ($side !== '' ? ': ' . $side : '');
+    }
+    if (isset($after['period']) && is_string($after['period'])) {
+        $tail .= ' into ' . $after['period'];
+    }
+    if (isset($after['filename'])) {
+        $tail .= ' ' . $after['filename'];
+    }
+    if (isset($after['excerpt'])) {
+        $tail .= ': “' . mb_substr((string) $after['excerpt'], 0, 60) . '”';
+    }
     if (isset($after['reason']) && is_string($after['reason']) && $after['reason'] !== '') {
         $tail .= ': ' . mb_substr($after['reason'], 0, 80);
     }

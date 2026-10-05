@@ -28,7 +28,7 @@ if ($fixedBefore) {
     ok($c === 200 && (string) one('SELECT base_currency FROM gl_settings') === 'EUR', 'the base currency before any document: changed (upper-cased)');
     act($owner, '/settings/general.php', ['base_currency' => 'USD']);
     q("INSERT INTO customers (name) VALUES ('SMOKE Cust')");
-    q("INSERT INTO invoices (customer_id, invoice_date, due_date, currency) VALUES ((SELECT id FROM customers WHERE name = 'SMOKE Cust'), '2026-02-01', '2026-03-01', 'USD')");
+    q("INSERT INTO invoices (customer_id, issue_date, due_date, currency) VALUES ((SELECT id FROM customers WHERE name = 'SMOKE Cust'), '2026-02-01', '2026-03-01', 'USD')");
     [$c, $b] = act($owner, '/settings/general.php', ['base_currency' => 'EUR']);
     ok($c === 422 && (fields($b)['base_currency'] ?? '') === 'The base currency is fixed once the books hold a document.', 'after an invoice exists (SQL): 422 "The base currency is fixed once the books hold a document."');
 }

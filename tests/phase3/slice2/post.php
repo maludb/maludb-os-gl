@@ -1,0 +1,78 @@
+<?php
+/** Proof — post and the batch (spec "Proof", 2–3): numbered on post, the log, a closed period, reopened posts with reopened_period true, the control account, read-only afterwards, the batch report. */
+require __DIR__ . '/lib.php';
+$owner = as_member(1); $bea = as_member(27); $carl = as_member(28);
+ensure_year($owner);
+echo "1. Post\n";
+[$c, $b, $id] = draft($bea, '2026-04-12', [['account' => '6100', 'debit' => '1608.24', 'description' => 'SMOKE hosting'], ['account' => '1010', 'credit' => '1608.24']], 'SMOKE hosting April');
+$since = last_activity_id();
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $id]);
+ok($c === 200 && preg_match('/^JE-\d{6}$/', (string) ($b['number'] ?? '')) === 1 && ($b['did'] ?? '') === 'Posted ' . $b['number'] . ' (1,608.24 USD)' && ($b['location'] ?? '') === '/journal/' . $id . '?notice=posted', 'journal_entry_post: 200, numbered, did "Posted JE-… (1,608.24 USD)"');
+$number = $b['number'];
+$row = q('SELECT status, number, total_debit, total_credit, posted_by, period_id FROM journal_entries WHERE id = :i', ['i' => $id])[0];
+ok($row['status'] === 'posted' && $row['total_debit'] === '1608.24' && $row['total_credit'] === '1608.24' && (int) $row['posted_by'] === 27, 'posted: totals stamped, posted by Bea');
+$log = activity('journal_entry.post', $since);
+$a = json_decode((string) $log[0]['after'], true);
+ok(count($log) === 1 && (int) $log[0]['period_id'] === (int) $row['period_id'] && (int) $log[0]['journal_entry_id'] === $id && $a['amount'] === '1608.24' && $a['currency'] === 'USD' && $a['period'] === '2026-04' && $a['reopened_period'] === false, 'journal_entry.post: amount, currency, period, reopened_period false, period_id and journal_entry_id');
+$body = page($bea, '/journal/' . $id)['body'];
+ok(str_contains($body, 'Posted entries never change') && !str_contains($body, 'id="entry-line-new"') && !str_contains($body, 'id="entry-post-btn"') && str_contains($body, 'id="entry-reverse-btn"'), 'the page is read-only: no editor, no Post; Reverse offered to its author');
+[$c, $b] = act($bea, '/journal/line-save.php', ['entry' => $id, 'account' => '6100', 'debit' => '1']);
+ok($c === 422 && msg($b) === 'Lines of entry ' . $number . ' cannot be changed: it is posted', 'line-save on it: 422 "… cannot be changed: it is posted"');
+[$c, $b] = act($bea, '/journal/save.php', ['entry' => $id, 'memo' => 'SMOKE change']);
+ok($c === 422 && msg($b) === 'Entry ' . $number . ' is posted and cannot be changed', 'save.php on it: 422');
+try { q('DELETE FROM journal_entries WHERE id = :i', ['i' => $id]); $raised = ''; } catch (PDOException $e) { $raised = $e->getMessage(); }
+ok(str_contains($raised, 'is posted and is never deleted'), 'a delete (SQL): refused');
+ok(page($bea, '/journal/' . $id . '/edit')['code'] === 422, 'the edit form of a posted entry: 422');
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $id]);
+ok($c === 422 && msg($b) === 'Entry ' . $number . ' is posted and cannot be changed', 'posting it again: 422');
+echo "2. A closed period, then reopened\n";
+[$c, $b, $feb] = draft($bea, '2026-02-14', [['account' => '6100', 'debit' => '50'], ['account' => '1010', 'credit' => '50']], 'SMOKE February');
+act($carl, '/periods/close.php', ['period' => period_id('2026-02')]);
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $feb]);
+ok($c === 422 && msg($b) === 'Period 2026-02 is closed; nothing posts into it until it is reopened', 'into a closed period: 422 in the trigger\'s words');
+act($carl, '/periods/reopen.php', ['period' => period_id('2026-02'), 'reason' => 'SMOKE a late bill']);
+$since = last_activity_id();
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $feb]);
+$a = json_decode((string) (activity('journal_entry.post', $since)[0]['after'] ?? '{}'), true);
+ok($c === 200 && ($a['reopened_period'] ?? null) === true, 'reopened with a reason: posts with reopened_period true');
+act($carl, '/periods/close.php', ['period' => period_id('2026-02')]);
+echo "3. The control account\n";
+q("INSERT INTO customers (name) VALUES ('SMOKE Acme') ON CONFLICT DO NOTHING");
+$cust = (int) one("SELECT id FROM customers WHERE name = 'SMOKE Acme'");
+[$c, $b, $ar] = draft($bea, '2026-04-15', [['account' => '1200', 'debit' => '300', 'description' => 'SMOKE on account'], ['account' => '4000', 'credit' => '300']], 'SMOKE control');
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $ar]);
+ok($c === 422 && msg($b) === 'Account 1200 is a control account: every line on it names its customer or vendor' && isset(fields($b)['account']), 'a line on 1200 without a customer: 422 naming the account (field account)');
+$line = (int) one('SELECT id FROM journal_lines WHERE entry_id = :e AND line_no = 1', ['e' => $ar]);
+[$c, $b] = act($bea, '/journal/line-save.php', ['entry' => $ar, 'line' => $line, 'customer' => $cust]);
+ok($c === 200 && (int) one('SELECT customer_id FROM journal_lines WHERE id = :l', ['l' => $line]) === $cust, 'the customer named on the line');
+[$c, $b] = act($bea, '/journal/post.php', ['entry' => $ar]);
+ok($c === 200, 'with the customer: posts');
+[$c, $b, $arch] = draft($bea, '2026-04-16', [['account' => '6100', 'debit' => '1'], ['account' => '6160', 'credit' => '1']], 'SMOKE archived account');
+ok($c === 200 || $c === 422, 'a draft on 6160 (' . ($c === 200 ? 'exists' : msg($b)) . ')');
+if ($arch > 0) { act($bea, '/journal/void.php', ['entry' => $arch, 'reason' => 'SMOKE tidy']); }
+echo "4. The batch\n";
+$ids = [];
+foreach ([['6100', '10', '1010', '10'], ['6100', '20', '1010', '20'], ['6100', '30', '1010', '30'], ['6100', '40', '1010', '41'], ['6100', '50', '1010', '52']] as $i => [$da, $dr, $ca, $cr]) {
+    [$c, $b, $ids[]] = draft($bea, '2026-04-2' . $i, [['account' => $da, 'debit' => $dr], ['account' => $ca, 'credit' => $cr]], 'SMOKE batch ' . $i);
+}
+$since = last_activity_id();
+[$c, $b] = act($bea, '/journal/post-batch.php', ['entries' => implode(',', $ids)]);
+ok($c === 200 && count($b['posted'] ?? []) === 3 && count($b['refused'] ?? []) === 2 && str_starts_with((string) $b['did'], 'Posted 3 of 5; 2 refused:') && str_contains((string) $b['did'], 'does not balance'), 'journal_entries_post_batch: "Posted 3 of 5; 2 refused: …" with each sentence');
+$numbers = array_column($b['posted'], 'number');
+ok($numbers === array_values($numbers) && $numbers[0] < $numbers[1] && $numbers[1] < $numbers[2], 'the three are numbered in order (' . implode(', ', $numbers) . ')');
+ok(entry_status($ids[3]) === 'draft' && entry_status($ids[4]) === 'draft', 'the two unbalanced are still drafts');
+ok(count(activity('journal_entry.post_batch', $since)) === 1 && count(activity('journal_entry.post', $since)) === 3, 'journal_entry.post_batch logged once, journal_entry.post three times');
+[$c, $d] = screen($bea, '/journal/?status=draft');
+$listed = array_column($d['entries'], 'journal_entry_id');
+ok(in_array($ids[3], $listed, true) && in_array($ids[4], $listed, true) && !in_array($ids[3], $d['balanced_drafts'], true) && !in_array($ids[4], $d['balanced_drafts'], true), 'the list of drafts: the two listed, neither among the balanced drafts');
+[$c, $b, $bal] = draft($bea, '2026-04-27', [['account' => '6100', 'debit' => '7'], ['account' => '1010', 'credit' => '7']], 'SMOKE balanced draft');
+$body = page($bea, '/journal/?status=draft')['body'];
+preg_match('/id="entry-list-post-batch-btn"/', $body, $mm);
+preg_match('/name="entries" value="([^"]*)"/', $body, $vals);
+$batchIds = array_map('intval', explode(',', $vals[1] ?? ''));
+ok($mm !== [] && in_array($bal, $batchIds, true) && !in_array($ids[3], $batchIds, true), 'the "Post all balanced drafts" button names the balanced draft and not the unbalanced ones');
+[$c, $b] = act($bea, '/journal/post-batch.php', ['entries' => (string) $bal]);
+ok($c === 200 && count($b['refused']) === 0 && ($b['location'] ?? '') === '/journal/?notice=posted_batch', 'all posted: location the journal');
+[$c, $b] = act($bea, '/journal/post-batch.php', ['entries' => '']);
+ok($c === 422, 'no ids: 422');
+finish();
