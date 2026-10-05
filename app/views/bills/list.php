@@ -1,0 +1,19 @@
+<?php /** The bills (screen `bills-list`). Data: rows, total, page, totals, counts, filters, may, vendors, notice, here */
+$tabs = [['awaiting', 'Awaiting approval', '?status=draft', $counts['awaiting'], $filters['status'] === 'draft'], ['approved', 'Approved', '?status=unpaid', $counts['approved'], $filters['status'] === 'unpaid' && $filters['due_within'] === null],
+         ['due', 'Due this week', '?due_within=7', $counts['due_week'], $filters['due_within'] === 7], ['all', 'All', '', null, $filters['status'] === '' && $filters['due_within'] === null]]; ?>
+<?= view('shared/header.php', ['id' => 'bills-list', 'title' => 'Bills', 'crumbs' => [['Home', '/'], ['Bills', null]],
+    'action' => $may['write'] ? hx_link('/bills/new', '<i class="feather-plus me-1"></i>New bill', 'btn btn-primary btn-touch', 'id="bills-list-add-btn"') : '']) ?>
+<div class="main-content" id="bills-list-content">
+    <?= view('shared/notice.php', ['notice' => $notice]) ?>
+    <div class="mb-3 d-flex flex-wrap gap-2" id="bills-tabs"><?php foreach ($tabs as [$tk, $tl, $tq, $tn, $on]): ?><?= hx_link('/bills/' . $tq, e($tl) . ($tn !== null ? ' <span class="badge bg-soft-secondary text-secondary">' . (int) $tn . '</span>' : ''), 'btn btn-sm ' . ($on ? 'btn-primary' : 'btn-light'), 'id="bills-tab-' . $tk . '"') ?><?php endforeach; ?></div>
+    <form method="get" action="/bills/" hx-get="/bills/" hx-target="#bill-list" hx-swap="outerHTML" hx-trigger="change, submit, keyup changed delay:400ms from:#bills-filter-q" hx-push-url="true" id="bills-filters" class="card mb-3"><div class="card-body p-3 row g-2 align-items-end">
+        <div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="bills-filter-q">Number, vendor or their reference</label><input type="search" name="q" id="bills-filter-q" class="form-control btn-touch" value="<?= e($filters['q']) ?>"></div>
+        <div class="col-6 col-md-2"><label class="form-label fs-12 text-muted" for="bills-filter-status">Status</label><select name="status" id="bills-filter-status" class="form-select btn-touch"><option value="">Any</option><option value="unpaid" <?= $filters['status'] === 'unpaid' ? 'selected' : '' ?>>Unpaid</option><?php foreach (BILL_STATUSES as $k => $label): ?><option value="<?= e($k) ?>" <?= $filters['status'] === $k ? 'selected' : '' ?>><?= e($label) ?></option><?php endforeach; ?></select></div>
+        <div class="col-6 col-md-2"><label class="form-label fs-12 text-muted" for="bills-filter-overdue">Overdue</label><select name="overdue" id="bills-filter-overdue" class="form-select btn-touch"><option value="">All</option><?php foreach (OVERDUE_BUCKETS as $k => $label): ?><option value="<?= e($k) ?>" <?= $filters['overdue'] === $k ? 'selected' : '' ?>><?= e($label) ?></option><?php endforeach; ?></select></div>
+        <div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="bills-filter-vendor">Vendor</label><?= vendor_select($pdo ?? db(), 'vendor', $filters['vendor'], '', 'Every vendor', 'bills-filter-vendor') ?></div>
+        <div class="col-12 col-md-2"><label class="d-flex align-items-center gap-2 border rounded px-3 btn-touch mb-0" for="bills-filter-nodoc"><input type="checkbox" class="form-check-input mt-0" name="no_document" value="1" id="bills-filter-nodoc" <?= $filters['no_document'] ? 'checked' : '' ?>>No document</label></div>
+        <input type="hidden" name="as_of" value="<?= e($filters['as_of']) ?>"><?php if ($filters['due_within'] !== null): ?><input type="hidden" name="due_within" value="<?= (int) $filters['due_within'] ?>"><?php endif; ?>
+        <noscript><div class="col-12"><button type="submit" class="btn btn-light btn-touch w-100">Apply</button></div></noscript>
+    </div></form>
+    <?= view('bills/partials/list-region.php', ['rows' => $rows, 'total' => $total, 'page' => $page, 'totals' => $totals, 'filters' => $filters, 'may' => $may, 'here' => $here]) ?>
+</div>

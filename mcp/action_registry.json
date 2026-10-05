@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T09:15:21+00:00",
+    "generated_at": "2026-10-05T10:03:23+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -614,8 +614,8 @@
                 "kind",
                 "include_archived"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "vendor-add": {
             "screen": "vendor-add",
@@ -623,7 +623,7 @@
             "section": "Payables (slice 5)",
             "when": "to add a vendor",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendor-view": {
@@ -632,7 +632,7 @@
             "section": "Payables (slice 5)",
             "when": "one vendor: contacts, open bills, payments, credits, documents, notes",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendor-edit": {
@@ -641,7 +641,7 @@
             "section": "Payables (slice 5)",
             "when": "to change a vendor",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bills-list": {
@@ -657,8 +657,8 @@
                 "source",
                 "q"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "bill-add": {
             "screen": "bill-add",
@@ -669,7 +669,7 @@
                 "vendor",
                 "copy_of"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bill-view": {
@@ -678,7 +678,7 @@
             "section": "Payables (slice 5)",
             "when": "one bill: lines, document, payments and credits applied, its entry, notes, the timeline, the actions by status",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "bill-edit": {
@@ -687,7 +687,7 @@
             "section": "Payables (slice 5)",
             "when": "to change a draft bill and its lines",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendor-credits-list": {
@@ -699,8 +699,8 @@
                 "status",
                 "vendor"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "vendor-credit-add": {
             "screen": "vendor-credit-add",
@@ -711,7 +711,7 @@
                 "vendor",
                 "bill"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendor-credit-view": {
@@ -720,7 +720,7 @@
             "section": "Payables (slice 5)",
             "when": "one vendor credit",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendor-credit-edit": {
@@ -729,7 +729,7 @@
             "section": "Payables (slice 5)",
             "when": "to change a draft vendor credit",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "payments-list": {
@@ -744,8 +744,8 @@
                 "from",
                 "to"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "payment-add": {
             "screen": "payment-add",
@@ -757,7 +757,7 @@
                 "bill",
                 "bank_account"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "payment-view": {
@@ -766,7 +766,7 @@
             "section": "Payables (slice 5)",
             "when": "one payment: its applications, its entry, the bank line it matched",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "payment-runs-list": {
@@ -777,8 +777,8 @@
             "params": [
                 "status"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "payment-run-add": {
             "screen": "payment-run-add",
@@ -789,7 +789,7 @@
                 "bank_account",
                 "due_by"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "payment-run-view": {
@@ -798,7 +798,7 @@
             "section": "Payables (slice 5)",
             "when": "one run: its payments, approve, record, the CSV for the bank or the cheque printer",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "banks": {
@@ -3589,7 +3589,7 @@
             "approval": null,
             "log_event": "vendor.save",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_archive": {
             "action": "vendor_archive",
@@ -3614,7 +3614,7 @@
             "approval": null,
             "log_event": "vendor.archive",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_delete": {
             "action": "vendor_delete",
@@ -3633,7 +3633,7 @@
             "approval": "deletion",
             "log_event": "vendor.delete",
             "who": "override",
-            "built": false
+            "built": true
         },
         "bill_draft": {
             "action": "bill_draft",
@@ -3694,7 +3694,7 @@
             "approval": null,
             "log_event": "bill.draft",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "bill_update": {
             "action": "bill_update",
@@ -3761,7 +3761,7 @@
             "approval": null,
             "log_event": "bill.update",
             "who": "ap",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "bill_line_save": {
@@ -3835,7 +3835,7 @@
             "approval": null,
             "log_event": "bill.line_save",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "bill_line_remove": {
             "action": "bill_line_remove",
@@ -3860,7 +3860,7 @@
             "approval": null,
             "log_event": "bill.line_remove",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "bill_approve": {
             "action": "bill_approve",
@@ -3879,7 +3879,7 @@
             "approval": "money_out",
             "log_event": "bill.approve",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "bill_void": {
             "action": "bill_void",
@@ -3904,7 +3904,7 @@
             "approval": "money_out",
             "log_event": "bill.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "bill_delete": {
             "action": "bill_delete",
@@ -3923,7 +3923,7 @@
             "approval": "deletion",
             "log_event": "bill.delete",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_draft": {
             "action": "vendor_credit_draft",
@@ -3984,7 +3984,7 @@
             "approval": null,
             "log_event": "vendor_credit.draft",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_update": {
             "action": "vendor_credit_update",
@@ -4051,7 +4051,7 @@
             "approval": null,
             "log_event": "vendor_credit.update",
             "who": "ap",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "vendor_credit_line_save": {
@@ -4119,7 +4119,7 @@
             "approval": null,
             "log_event": "vendor_credit.line_save",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_line_remove": {
             "action": "vendor_credit_line_remove",
@@ -4144,7 +4144,7 @@
             "approval": null,
             "log_event": "vendor_credit.line_remove",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_issue": {
             "action": "vendor_credit_issue",
@@ -4169,7 +4169,7 @@
             "approval": "money_out",
             "log_event": "vendor_credit.issue",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "vendor_credit_apply": {
             "action": "vendor_credit_apply",
@@ -4200,7 +4200,7 @@
             "approval": "money_out",
             "log_event": "vendor_credit.apply",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_unapply": {
             "action": "vendor_credit_unapply",
@@ -4225,7 +4225,7 @@
             "approval": "money_out",
             "log_event": "vendor_credit.unapply",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "vendor_credit_void": {
             "action": "vendor_credit_void",
@@ -4250,7 +4250,7 @@
             "approval": "money_out",
             "log_event": "vendor_credit.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "vendor_credit_delete": {
             "action": "vendor_credit_delete",
@@ -4269,7 +4269,7 @@
             "approval": "deletion",
             "log_event": "vendor_credit.delete",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_draft": {
             "action": "payment_draft",
@@ -4342,7 +4342,7 @@
             "approval": null,
             "log_event": "payment.draft",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_update": {
             "action": "payment_update",
@@ -4421,7 +4421,7 @@
             "approval": null,
             "log_event": "payment.update",
             "who": "ap",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "payment_apply": {
@@ -4453,7 +4453,7 @@
             "approval": null,
             "log_event": "payment.apply",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_unapply": {
             "action": "payment_unapply",
@@ -4478,7 +4478,7 @@
             "approval": null,
             "log_event": "payment.unapply",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_approve": {
             "action": "payment_approve",
@@ -4497,7 +4497,7 @@
             "approval": "money_out",
             "log_event": "payment.approve",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "payment_record": {
             "action": "payment_record",
@@ -4534,7 +4534,7 @@
             "approval": "money_out",
             "log_event": "payment.record",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_void": {
             "action": "payment_void",
@@ -4559,7 +4559,7 @@
             "approval": "money_out",
             "log_event": "payment.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "payment_delete": {
             "action": "payment_delete",
@@ -4578,7 +4578,7 @@
             "approval": "deletion",
             "log_event": "payment.delete",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_run_create": {
             "action": "payment_run_create",
@@ -4621,7 +4621,7 @@
             "approval": null,
             "log_event": "payment_run.create",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_run_add": {
             "action": "payment_run_add",
@@ -4646,7 +4646,7 @@
             "approval": null,
             "log_event": "payment_run.add",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_run_remove": {
             "action": "payment_run_remove",
@@ -4671,7 +4671,7 @@
             "approval": null,
             "log_event": "payment_run.remove",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_run_approve": {
             "action": "payment_run_approve",
@@ -4690,7 +4690,7 @@
             "approval": "money_out",
             "log_event": "payment_run.approve",
             "who": "approve",
-            "built": false
+            "built": true
         },
         "payment_run_record": {
             "action": "payment_run_record",
@@ -4715,7 +4715,7 @@
             "approval": "money_out",
             "log_event": "payment_run.record",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "payment_run_void": {
             "action": "payment_run_void",
@@ -4740,7 +4740,7 @@
             "approval": "money_out",
             "log_event": "payment_run.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "bank_account_save": {
             "action": "bank_account_save",

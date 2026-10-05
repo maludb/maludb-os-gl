@@ -8,6 +8,13 @@
             <dt class="col-6 text-muted">Received</dt><dd class="col-6 text-end" id="invoice-totals-paid"><?= e(fmt_money($doc['amount_paid'], $currency)) ?></dd>
             <dt class="col-6 text-muted">Credited</dt><dd class="col-6 text-end" id="invoice-totals-credited"><?= e(fmt_money($doc['amount_credited'], $currency)) ?></dd>
             <dt class="col-6 fw-bold">Balance due</dt><dd class="col-6 text-end fw-bold" id="invoice-totals-balance"><?= e(fmt_money($doc['balance_due'], $currency)) ?></dd>
+        <?php elseif ($kind === 'bill' && $doc['status'] !== 'draft'): ?>
+            <dt class="col-6 text-muted">Paid</dt><dd class="col-6 text-end" id="bill-totals-paid"><?= e(fmt_money($doc['amount_paid'], $currency)) ?></dd>
+            <dt class="col-6 text-muted">Credited</dt><dd class="col-6 text-end" id="bill-totals-credited"><?= e(fmt_money($doc['amount_credited'], $currency)) ?></dd>
+            <dt class="col-6 fw-bold">Balance due</dt><dd class="col-6 text-end fw-bold" id="bill-totals-balance"><?= e(fmt_money($doc['balance_due'], $currency)) ?></dd>
+        <?php elseif ($kind === 'vendor_credit' && $doc['status'] !== 'draft'): ?>
+            <dt class="col-6 text-muted">Applied</dt><dd class="col-6 text-end" id="vendor-credit-totals-applied"><?= e(fmt_money($doc['amount_applied'], $currency)) ?></dd>
+            <dt class="col-6 fw-bold">Balance</dt><dd class="col-6 text-end fw-bold" id="vendor-credit-totals-balance"><?= e(fmt_money($doc['balance'], $currency)) ?></dd>
         <?php elseif ($kind === 'credit_note' && $doc['status'] !== 'draft'): ?>
             <dt class="col-6 text-muted">Applied</dt><dd class="col-6 text-end" id="credit-note-totals-applied"><?= e(fmt_money($doc['amount_applied'], $currency)) ?></dd>
             <dt class="col-6 fw-bold">Balance</dt><dd class="col-6 text-end fw-bold" id="credit-note-totals-balance"><?= e(fmt_money($doc['balance'], $currency)) ?></dd>

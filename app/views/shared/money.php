@@ -50,3 +50,17 @@ function parse_money(?string $raw): ?string
     }
     return number_format($v, 2, '.', '');
 }
+
+/** A unit price: like parse_money() but up to four decimals (the AI statement's amounts are fractions of a cent); null when not an amount. Answers a string with two to four decimals, exact (no float). */
+function parse_unit_price(?string $raw): ?string
+{
+    if ($raw === null) {
+        return null;
+    }
+    $s = trim(str_replace([',', ' ', '$', '€', '£'], '', $raw));
+    if (!preg_match('/^(-?)(\d+)(?:\.(\d{1,4}))?$/', $s, $m)) {
+        return null;
+    }
+    $frac = str_pad($m[3] ?? '', 2, '0');
+    return $m[1] . ltrim($m[2], '0') . ($m[2] === '' || ltrim($m[2], '0') === '' ? '0' : '') . '.' . $frac;
+}

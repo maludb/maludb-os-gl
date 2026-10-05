@@ -6,15 +6,15 @@ declare(strict_types=1);
  * (gl_invoice_void / gl_invoice_write_off). A DomainException is our own sentence. Document lines (invoices and credit notes alike) are read by normalize_doc_line().
  */
 
-/** Read one document line's fields (an invoice's or a credit note's): item (fills description, unit price, account, tax rate), description, quantity, unit_price, tax_rate, income_account, department, site. Throws "Row N: …". */
-function normalize_doc_line(PDO $pdo, array $row, int $rowNo, ?array $defaults = null): array
+/** Read one document line's fields (an invoice's or a credit note's; $side 'expense' reads a bill's or a vendor credit's, whose account is an expense or asset account): item (fills description, unit price, account, tax rate), description, quantity, unit_price, tax_rate, income_account, department, site. Throws "Row N: …". */
+function normalize_doc_line(PDO $pdo, array $row, int $rowNo, ?array $defaults = null, string $side = 'income'): array
 {
     $row = array_change_key_case($row, CASE_LOWER);
     $get = static fn (string ...$k): mixed => array_values(array_filter(array_map(static fn (string $n) => $row[$n] ?? null, $k), static fn ($v) => $v !== null))[0] ?? null;
     $itemId = $get('item', 'item_id');
     $item = null;
     if ($itemId !== null && $itemId !== '') {
-        $st = $pdo->prepare('SELECT item_id, description, name, unit_price, income_account_id, tax_rate_id FROM mcp_items WHERE item_id = :i AND archived_at IS NULL');
+        $st = $pdo->prepare('SELECT item_id, description, name, unit_price, income_account_id, expense_account_id, tax_rate_id FROM mcp_items WHERE item_id = :i AND archived_at IS NULL');
         $st->execute(['i' => (int) $itemId]);
         $item = $st->fetch() ?: throw new DomainException('Row ' . $rowNo . ': that item is not here.');
     }
@@ -31,7 +31,7 @@ function normalize_doc_line(PDO $pdo, array $row, int $rowNo, ?array $defaults =
     }
     $qty = number_format((float) str_replace(',', '', $qty), 3, '.', '');
     $priceRaw = $get('unit_price', 'price');
-    $price = $priceRaw === null || $priceRaw === '' ? ($item['unit_price'] ?? null) : parse_money((string) $priceRaw);
+    $price = $priceRaw === null || $priceRaw === '' ? ($item['unit_price'] ?? null) : parse_unit_price((string) $priceRaw);
     if ($price === null || (float) $price < 0) {
         throw new DomainException('Row ' . $rowNo . ': the unit price is an amount of zero or more.');
     }
@@ -51,20 +51,23 @@ function normalize_doc_line(PDO $pdo, array $row, int $rowNo, ?array $defaults =
     };
     $taxGiven = array_key_exists('tax_rate', $row) || array_key_exists('tax_rate_id', $row);
     $tax = $taxGiven ? $resolve('SELECT 1 FROM tax_rates WHERE id = :id AND archived_at IS NULL', $get('tax_rate', 'tax_rate_id'), 'tax rate') : ($item['tax_rate_id'] ?? $defaults['tax_rate_id'] ?? null);
-    $incomeRaw = $get('income_account', 'income_account_id');
-    if ($incomeRaw !== null && $incomeRaw !== '' && !ctype_digit((string) $incomeRaw)) {                 // an agent may name the account by code
-        $a = find_account_by_code($pdo, (string) $incomeRaw);
-        $incomeRaw = $a === null ? $incomeRaw : $a['account_id'];
-    } elseif ($incomeRaw !== null && $incomeRaw !== '' && preg_match('/^[0-9]{3,8}$/', (string) $incomeRaw) && !($pdo->query('SELECT 1 FROM accounts WHERE id = ' . (int) $incomeRaw)->fetchColumn())) {
-        $a = find_account_by_code($pdo, (string) $incomeRaw);
-        $incomeRaw = $a === null ? $incomeRaw : $a['account_id'];
+    $k1 = $side === 'expense' ? 'expense_account' : 'income_account';
+    $accRaw = $get($k1, $k1 . '_id', 'account');
+    if ($accRaw !== null && $accRaw !== '' && !ctype_digit((string) $accRaw)) {                          // an agent may name the account by code
+        $a = find_account_by_code($pdo, (string) $accRaw);
+        $accRaw = $a === null ? $accRaw : $a['account_id'];
+    } elseif ($accRaw !== null && $accRaw !== '' && preg_match('/^[0-9]{3,8}$/', (string) $accRaw) && !($pdo->query('SELECT 1 FROM accounts WHERE id = ' . (int) $accRaw)->fetchColumn())) {
+        $a = find_account_by_code($pdo, (string) $accRaw);
+        $accRaw = $a === null ? $accRaw : $a['account_id'];
     }
-    $income = ($incomeRaw === null || $incomeRaw === '') ? ($item['income_account_id'] ?? $defaults['income_account_id'] ?? null)
-        : $resolve("SELECT 1 FROM accounts WHERE id = :id AND archived_at IS NULL AND account_type = 'income'", $incomeRaw, 'income account');
-    if ($income === null) {
-        throw new DomainException('Row ' . $rowNo . ': choose the income account.');
+    $itemAcc = $side === 'expense' ? ($item['expense_account_id'] ?? null) : ($item['income_account_id'] ?? null);
+    $defAcc = $side === 'expense' ? ($defaults['expense_account_id'] ?? null) : ($defaults['income_account_id'] ?? null);
+    $account = ($accRaw === null || $accRaw === '') ? ($itemAcc ?? $defAcc)
+        : $resolve($side === 'expense' ? "SELECT 1 FROM accounts WHERE id = :id AND archived_at IS NULL AND account_type IN ('expense', 'asset')" : "SELECT 1 FROM accounts WHERE id = :id AND archived_at IS NULL AND account_type = 'income'", $accRaw, $side === 'expense' ? 'expense account' : 'income account');
+    if ($account === null) {
+        throw new DomainException('Row ' . $rowNo . ': choose the ' . ($side === 'expense' ? 'expense' : 'income') . ' account.');
     }
-    return ['item_id' => $item === null ? null : (int) $item['item_id'], 'description' => mb_substr($description, 0, 300), 'quantity' => $qty, 'unit_price' => $price, 'tax_rate_id' => $tax, 'income_account_id' => $income,
+    return ['item_id' => $item === null ? null : (int) $item['item_id'], 'description' => mb_substr($description, 0, 300), 'quantity' => $qty, 'unit_price' => $price, 'tax_rate_id' => $tax, 'income_account_id' => $account, 'account_id' => $account,
             'department_id' => $resolve('SELECT 1 FROM departments WHERE id = :id AND archived_at IS NULL', $get('department', 'department_id'), 'department'),
             'site_id' => $resolve('SELECT 1 FROM sites WHERE id = :id AND archived_at IS NULL', $get('site', 'site_id'), 'site')];
 }
@@ -86,7 +89,7 @@ function request_doc_rows(): ?array
     if (isset($_POST['line_description']) && is_array($_POST['line_description'])) {
         $rows = [];
         foreach ($_POST['line_description'] as $i => $d) {
-            $row = ['description' => $d, 'quantity' => $_POST['line_quantity'][$i] ?? '1', 'unit_price' => $_POST['line_unit_price'][$i] ?? null, 'item' => $_POST['line_item'][$i] ?? null];
+            $row = ['description' => $d, 'quantity' => $_POST['line_quantity'][$i] ?? '1', 'unit_price' => $_POST['line_unit_price'][$i] ?? null, 'item' => $_POST['line_item'][$i] ?? null, 'account' => $_POST['line_account'][$i] ?? null];
             if (trim((string) $d) === '' && trim((string) ($row['unit_price'] ?? '')) === '' && trim((string) ($row['item'] ?? '')) === '') {
                 continue;
             }
@@ -99,8 +102,14 @@ function request_doc_rows(): ?array
 
 function insert_doc_line(PDO $pdo, string $table, string $fk, int $docId, int $sort, array $l): int
 {
-    $st = $pdo->prepare("INSERT INTO {$table} ({$fk}, sort_order, item_id, description, quantity, unit_price, tax_rate_id, income_account_id, department_id, site_id) VALUES (:d, :s, :i, :de, :q, :p, :t, :a, :dept, :site) RETURNING id");
-    $st->execute(['d' => $docId, 's' => $sort, 'i' => $l['item_id'], 'de' => $l['description'], 'q' => $l['quantity'], 'p' => $l['unit_price'], 't' => $l['tax_rate_id'], 'a' => $l['income_account_id'], 'dept' => $l['department_id'], 'site' => $l['site_id']]);
+    $col = str_starts_with($table, 'bill') || str_starts_with($table, 'vendor') ? 'expense_account_id' : 'income_account_id';
+    $hasItem = $table !== 'vendor_credit_lines';                       // a vendor credit's lines carry no item
+    $st = $pdo->prepare("INSERT INTO {$table} ({$fk}, sort_order, " . ($hasItem ? 'item_id, ' : '') . "description, quantity, unit_price, tax_rate_id, {$col}, department_id, site_id) VALUES (:d, :s, " . ($hasItem ? ':i, ' : '') . ':de, :q, :p, :t, :a, :dept, :site) RETURNING id');
+    $args = ['d' => $docId, 's' => $sort, 'de' => $l['description'], 'q' => $l['quantity'], 'p' => $l['unit_price'], 't' => $l['tax_rate_id'], 'a' => $l['account_id'], 'dept' => $l['department_id'], 'site' => $l['site_id']];
+    if ($hasItem) {
+        $args['i'] = $l['item_id'];
+    }
+    $st->execute($args);
     return (int) $st->fetchColumn();
 }
 
@@ -315,14 +324,15 @@ function rotate_invoice_link(PDO $pdo, int $id, int $by): array
 }
 
 /** A line's request fields laid over the existing line (a change keeps what was not sent). Keys as normalize_doc_line() reads them. */
-function doc_line_request(?array $existing): array
+function doc_line_request(?array $existing, string $side = 'income'): array
 {
+    $acc = $side === 'expense' ? 'expense_account' : 'income_account';
     $row = [];
     if ($existing !== null) {
         $row = ['item' => $existing['item_id'], 'description' => $existing['description'], 'quantity' => $existing['quantity'], 'unit_price' => $existing['unit_price'], 'tax_rate' => $existing['tax_rate_id'],
-                'income_account' => $existing['income_account_id'], 'department' => $existing['department_id'], 'site' => $existing['site_id']];
+                $acc => $existing[$acc . '_id'], 'department' => $existing['department_id'], 'site' => $existing['site_id']];
     }
-    foreach (['item', 'description', 'quantity', 'unit_price', 'tax_rate', 'income_account', 'department', 'site'] as $k) {
+    foreach (['item', 'description', 'quantity', 'unit_price', 'tax_rate', $acc, 'department', 'site'] as $k) {
         foreach ([$k, $k . '_id'] as $name) {
             if (array_key_exists($name, $_POST)) {
                 $row[$k] = is_array($_POST[$name]) ? null : trim((string) $_POST[$name]);
@@ -333,22 +343,24 @@ function doc_line_request(?array $existing): array
     return $row;
 }
 
-/** The HTMX answer of a line write on a document: the lines region re-rendered, the totals panel out of band. $doc: kind (invoice|credit_note), the loaded document with lines. */
+/** The HTMX answer of a line write on a document: the lines region re-rendered, the totals panel out of band. $kind: invoice | credit_note | bill | vendor_credit. */
 function answer_doc_region(PDO $pdo, string $kind, array $doc): never
 {
     hx_trigger(change_event($kind));
-    $fresh = $kind === 'invoice' ? find_invoice($pdo, $doc['invoice_id']) : find_credit_note($pdo, $doc['credit_note_id']);
+    $fresh = match ($kind) { 'invoice' => find_invoice($pdo, $doc['invoice_id']), 'credit_note' => find_credit_note($pdo, $doc['credit_note_id']), 'bill' => find_bill($pdo, $doc['bill_id']), default => find_vendor_credit($pdo, $doc['vendor_credit_id']) };
     echo view('invoices/partials/lines.php', doc_lines_data($pdo, $kind, $fresh));
     echo view('invoices/partials/totals.php', doc_lines_data($pdo, $kind, $fresh) + ['oob' => true]);
     exit;
 }
 
-/** The data the lines and totals partials take, for an invoice or a credit note. */
+/** The data the lines and totals partials take, for an invoice, a credit note, a bill or a vendor credit. */
 function doc_lines_data(PDO $pdo, string $kind, array $d): array
 {
-    $isInv = $kind === 'invoice';
-    $id = $isInv ? $d['invoice_id'] : $d['credit_note_id'];
-    return ['kind' => $kind, 'doc' => $d, 'id' => $id, 'lines' => $d['lines'], 'editable' => $d['status'] === 'draft' && has_right('ar.write'), 'pdo' => $pdo, 'items' => items_for_lines($pdo), 'taxRates' => find_tax_rates($pdo),
-            'departments' => find_live_departments($pdo), 'sites' => find_live_sites($pdo), 'currency' => $d['currency'], 'prefix' => $isInv ? 'invoice' : 'credit-note',
-            'saveUrl' => $isInv ? '/invoices/line-save.php' : '/credit-notes/line-save.php', 'removeUrl' => $isInv ? '/invoices/line-remove.php' : '/credit-notes/line-remove.php', 'param' => $isInv ? 'invoice' : 'credit_note'];
+    $cfg = ['invoice' => ['invoice', 'invoice', '/invoices/', 'ar.write', 'income'], 'credit_note' => ['credit-note', 'credit_note', '/credit-notes/', 'ar.write', 'income'],
+            'bill' => ['bill', 'bill', '/bills/', 'ap.write', 'expense'], 'vendor_credit' => ['vendor-credit', 'vendor_credit', '/vendor-credits/', 'ap.write', 'expense']][$kind];
+    [$prefix, $param, $base, $right, $side] = $cfg;
+    $id = $d[$param . '_id'];
+    return ['kind' => $kind, 'doc' => $d, 'id' => $id, 'lines' => $d['lines'], 'editable' => $d['status'] === 'draft' && has_right($right), 'pdo' => $pdo, 'items' => items_for_lines($pdo), 'taxRates' => find_tax_rates($pdo),
+            'departments' => find_live_departments($pdo), 'sites' => find_live_sites($pdo), 'currency' => $d['currency'], 'prefix' => $prefix, 'side' => $side,
+            'saveUrl' => $base . 'line-save.php', 'removeUrl' => $base . 'line-remove.php', 'param' => $param];
 }
