@@ -113,25 +113,35 @@ Every ledger screen (slices 1–9); the public door's handler (4); the bell's co
 no MCP endpoint until then).
 
 ## Proof before Phase 3 (`tests/phase2/run.sh` on a scratch database, against `php -S` with `tests/dev_router.php` and — `GL_APP=apache` — against a private Apache serving `deploy/apache-gl.conf` rendered as the installer renders it)
-- [ ] *(Phase 0, `tests/phase0/run.sh`, 15 checks)* a hand-off minted the kernel's way opens a session once; replay, another audience, an unknown member and a
+**Built and proven 2026-10-05: 251 checks, green under both servers** (sso 43, gates 83 — the 36-screen × 5-role matrix among them —, sync 25, ingest 12, kernel_compat 9, vhost 27, browser 52; the registry check); the Phase 0 suite (15 + 151) still green; the installer's `plan` clean.
+- [x] *(Phase 0, `tests/phase0/run.sh`, 15 checks)* a hand-off minted the kernel's way opens a session once; replay, another audience, an unknown member and a
   tampered signature → 403 with one page and the reason logged; the sign-out notice → 204 and `ended_by = 'kernel'`; a bad notice → 204; health 200.
-- [ ] The kernel-compat mint: a token from the kernel's own `mint_sso_token()`/`sign_sso_claims()` (its `app/auth.php` in a CLI) opens a session;
+- [x] The kernel-compat mint: a token from the kernel's own `mint_sso_token()`/`sign_sso_claims()` (its `app/auth.php` in a CLI) opens a session;
   `claims.roles = ['bookkeeper','user']` lands in `members.roles` and `has_right('journal.write')` is true; `['user']` → false; `{}` with capability
   `admin` → every right; capability `null` → the launcher (`tests/phase2/kernel_compat.php`).
-- [ ] The dashboard at 375 × 740 and 1280 × 800 (headless Chromium): `scrollWidth` = viewport, the tab bar on the phone and the sidebar on the desktop,
+- [x] The dashboard at 375 × 740 and 1280 × 800 (headless Chromium): `scrollWidth` = viewport, the tab bar on the phone and the sidebar on the desktop,
   the command bar thumb-reachable, HTMX navigation pushing URL and title, no console errors; the page whole with JavaScript off; a Viewer sees Books,
   Receivables (customers, invoices, the aging), Payables, Cash and Me and no Settings; a Bookkeeper sees Match the bank; an admin sees Settings — every
   other URL → 403 in the right's sentence (`browser.mjs`; the screens × 5 roles matrix in `gates.php`).
-- [ ] `bin/directory_sync.php --full` applies the fixture; an `access[]` row with `capability: null` ends the member's sessions and their next request
+- [x] `bin/directory_sync.php --full` applies the fixture; an `access[]` row with `capability: null` ends the member's sessions and their next request
   → 302 to the launcher; a role change reaches `members.roles` in one pass; the cursor advances; a second run applies 0 (`sync.php`).
-- [ ] The ingest ships rows tagged `gl` with the audit keys and advances the checkpoint only past what a fake MaluDB accepted; `/api/v1/health`
+- [x] The ingest ships rows tagged `gl` with the audit keys and advances the checkpoint only past what a fake MaluDB accepted; `/api/v1/health`
   answers `ingest_lag` and the sync state (`ingest.php`).
-- [ ] The command bar against a stubbed kernel (`tests/fake_kernel.php` answering `/api/v1/agents/chat.php`): a reply rendered, a paused action shown
+- [x] The command bar against a stubbed kernel (`tests/fake_kernel.php` answering `/api/v1/agents/chat.php`): a reply rendered, a paused action shown
   as "waits for approval" with the request number, a 404 and a 409 shown in the kernel's words; `assistant.ask` logged with the length and run id, never the text.
-- [ ] `token_mint` shows the value once and `my_tokens` never; `mcp_resolve_token()` by SQL resolves the minted token and not the revoked one.
-- [ ] The home page with no fiscal year shows the banner; `fmt_money('-1608.24', 'USD')` renders `(1,608.24) USD`; a figure never renders without a currency (grep of the rendered pages).
-- [ ] `php bin/build_action_registry.php --check` passes; the placeholders read as unbuilt (5 screens built, 4 actions); `php /var/www/bin/app_install.php plan /srv/apps/gl` — no stop.
+- [x] `token_mint` shows the value once and `my_tokens` never; `mcp_resolve_token()` by SQL resolves the minted token and not the revoked one.
+- [x] The home page with no fiscal year shows the banner; `fmt_money('-1608.24', 'USD')` renders `(1,608.24) USD`; a figure never renders without a currency (grep of the rendered pages).
+- [x] `php bin/build_action_registry.php --check` passes; the placeholders read as unbuilt (5 screens built, 4 actions); `php /var/www/bin/app_install.php plan /srv/apps/gl` — no stop.
 - [ ] ▲ (the installed application on the live kernel — the owner's `apply`): a real launch from `app.<domain>`, the return trip with `?app=gl`.
+
+**Decisions taken while building (2026-10-05):** the kit's Phase 2 files are Help Desk's, un-ticketed (the shell, the command bar, the settings, tokens, notifications, activity, the proofs' library and
+fake servers); the **Settings group shows "My settings" to every role** (the item is the person's own; a Viewer therefore sees Books, Receivables, Payables, Cash, Settings and Me, with no ledger setting
+in it); the thirty placeholders are real controllers calling `render_nav_stub()` (200 after the right, 501 to JSON and to a POST), generated from `nav_groups()`; the activity screen's record history is
+`?entity_type=&entity_id=` and matches the audit keys too (an entry's rows by `journal_entry_id`, a customer's by `customer_id`…), readable by every role — the books are business-wide; `activity_sentence()`
+puts the number, the amount with its currency and the reason into the sentence; the money formatter also carries `parse_money()` (commas, parentheses, a leading sign); the home's "What waits" is six
+count cards each a link into the filtered list and the fiscal-year banner links to `/periods/new` only for `settings.manage`; `notification_record_url()` maps a notice's record to its page; the command
+bar's `{entity}Changed` families are the ledger's (`journalEntry`, `invoice`, `bill`, `bank`, `period`, `aiStatement`…); the scratch ports are 8391 (the app), 8392 (the fake kernel), 8393 (the fake
+MaluDB), 8396 (the fake MaluMail), 8397 (the Apache variant's internal port); the fixture's cast is the Phase 0 proof's (Vera, Bea, Carl, Ann, the owner, the Bookkeeper agent).
 
 ## Open questions
 **Decided 2026-10-05:** the stand-in icon until the owner's artwork.

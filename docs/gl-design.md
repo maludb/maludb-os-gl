@@ -509,6 +509,14 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 
 ## 16. State
 
+**PHASE 2 — BUILT and proven 2026-10-05** (`docs/build-specs/sso-shell.md`): the nxl shell phone first (the tab bar Home · Statements · Invoices · Bills · More, the sidebar from 992 px
+with the groups Books / Receivables / Payables / Cash / Settings / Me shown by right, the role badge, the bell, the command bar through the kernel's chat endpoint), the dashboard's regions as
+empty states (the fiscal-year banner, What waits as six count cards, Cash, This month, Who owes us, Whom we owe, The AI bill, The morning note, posted-through), My settings (how I am told:
+`prefs_save`), Tokens (`token_mint`/`token_revoke`), Notifications (`notification_read`, record links), Activity (one's own trail, a record's history by the audit keys), the one money formatter,
+own sign-out, the web manifest and icons, thirty placeholder screens that name their slice. **Proof:** `tests/phase2/run.sh` — **251 checks green** under `php -S` and under a real Apache serving the
+rendered vhost (`GL_APP=apache`): sso 43, gates 83 (the 36 screens × 5 roles matrix), sync 25, ingest 12, kernel_compat 9, vhost 27, browser 52 (375 × 740 and 1280 × 800, JS off, installable), the
+registry check; Phase 0 (15 + 151) still green; the installer's `plan` clean. Owed: ▲ the live launch after the owner's `apply`. Next: slice 1 (`chart-fiscal.md`).
+
 **PHASE 1 — written 2026-10-05, for the checkpoint.** The tool surface (`docs/gl-mcp-tool-surface.md`: 52 records tools — `app_roles`,
 `records_search` and the three K7 shares included — and 7 activity tools; every question of §7 named to a tool; the resolve table of 24
 entities; the log-payload rules), the action manifest (`docs/gl-action-manifest.md`: **92 screens, 124 actions in 9 sections; 69 actions carry

@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T00:20:28+00:00",
+    "generated_at": "2026-10-05T00:36:04+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -8,7 +8,7 @@
             "section": "Home, me and the ledger's settings",
             "when": "their home: the cash position, receivables and payables with their aging, what waits (drafts, bills awaiting approval, unmatched bank lines, claims), the AI bill's state, posted-through, the Bookkeeper's last morning note",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "settings": {
@@ -19,7 +19,7 @@
             "params": [
                 "tab"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "tokens": {
@@ -28,7 +28,7 @@
             "section": "Home, me and the ledger's settings",
             "when": "their own access tokens for the two MCP servers",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "notifications": {
@@ -37,7 +37,7 @@
             "section": "Home, me and the ledger's settings",
             "when": "their in-app notifications, unread first",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "activity": {
@@ -50,7 +50,7 @@
                 "entity_id",
                 "period"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "general-settings": {
@@ -60,7 +60,7 @@
             "when": "the business's ledger settings: name and address on the invoice, base currency, fiscal year start, the control accounts, terms, the link's life, reminder days, the AI statement poll, who gets the morning note",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "numbering": {
             "screen": "numbering",
@@ -78,7 +78,7 @@
             "when": "which agents keep books here, their last dispatch and run (read-only; hiring and grants link to the kernel)",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "audit": {
             "screen": "audit",
@@ -90,7 +90,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "exports": {
             "screen": "exports",
@@ -102,7 +102,7 @@
                 "format"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "accounts-list": {
             "screen": "accounts-list",
@@ -115,7 +115,7 @@
                 "as_of"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "account-add": {
             "screen": "account-add",
@@ -159,7 +159,7 @@
             "when": "the fiscal years and their periods as cards: open, closed, reopened, with posted and draft counts",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "fiscal-year-add": {
             "screen": "fiscal-year-add",
@@ -188,7 +188,7 @@
             "when": "the tax rates and the default",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "tax-rate-add": {
             "screen": "tax-rate-add",
@@ -218,7 +218,7 @@
                 "kind"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "item-add": {
             "screen": "item-add",
@@ -245,7 +245,7 @@
             "when": "which source posts to which accounts",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "posting-rule-edit": {
             "screen": "posting-rule-edit",
@@ -263,7 +263,7 @@
             "when": "the sites (the second dimension)",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "site-add": {
             "screen": "site-add",
@@ -298,7 +298,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "journal-entry-add": {
             "screen": "journal-entry-add",
@@ -338,7 +338,7 @@
             "when": "the four statements as cards with the current period's headline figures and posted-through",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "statement": {
             "screen": "statement",
@@ -372,7 +372,7 @@
                 "format"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "customers-list": {
             "screen": "customers-list",
@@ -384,7 +384,7 @@
                 "include_archived"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "customer-add": {
             "screen": "customer-add",
@@ -440,7 +440,7 @@
                 "q"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "invoice-add": {
             "screen": "invoice-add",
@@ -491,7 +491,7 @@
                 "customer"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "credit-note-add": {
             "screen": "credit-note-add",
@@ -536,7 +536,7 @@
                 "undeposited"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "receipt-add": {
             "screen": "receipt-add",
@@ -582,7 +582,7 @@
                 "status"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "deposit-add": {
             "screen": "deposit-add",
@@ -615,7 +615,7 @@
                 "include_archived"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "vendor-add": {
             "screen": "vendor-add",
@@ -658,7 +658,7 @@
                 "q"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "bill-add": {
             "screen": "bill-add",
@@ -700,7 +700,7 @@
                 "vendor"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "vendor-credit-add": {
             "screen": "vendor-credit-add",
@@ -745,7 +745,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "payment-add": {
             "screen": "payment-add",
@@ -778,7 +778,7 @@
                 "status"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "payment-run-add": {
             "screen": "payment-run-add",
@@ -808,7 +808,7 @@
             "when": "the bank accounts as cards: ledger balance, cleared balance, difference, unmatched lines, last reconciled",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "bank-account-view": {
             "screen": "bank-account-view",
@@ -845,7 +845,7 @@
                 "to"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "bank-reconcile": {
             "screen": "bank-reconcile",
@@ -857,7 +857,7 @@
                 "reconciliation"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "reconciliation-view": {
             "screen": "reconciliation-view",
@@ -877,7 +877,7 @@
                 "bank_account"
             ],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "transfer-add": {
             "screen": "transfer-add",
@@ -907,7 +907,7 @@
             "when": "the bank accounts' settings",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "bank-account-add": {
             "screen": "bank-account-add",
@@ -934,7 +934,7 @@
             "when": "the months as the kernel reports them: open, closed, pulled, imported, agrees, differs; pull now",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "ai-statement-view": {
             "screen": "ai-statement-view",
@@ -952,7 +952,7 @@
             "when": "the templates as cards: kind, cadence, next date, last run, on or off",
             "params": [],
             "built": false,
-            "stub": false
+            "stub": true
         },
         "recurring-add": {
             "screen": "recurring-add",
@@ -1021,7 +1021,7 @@
             "approval": null,
             "log_event": "prefs.save",
             "who": "own",
-            "built": false
+            "built": true
         },
         "token_mint": {
             "action": "token_mint",
@@ -1046,7 +1046,7 @@
             "approval": null,
             "log_event": "token.mint",
             "who": "own",
-            "built": false
+            "built": true
         },
         "token_revoke": {
             "action": "token_revoke",
@@ -1065,7 +1065,7 @@
             "approval": null,
             "log_event": "token.revoke",
             "who": "own",
-            "built": false
+            "built": true
         },
         "notification_read": {
             "action": "notification_read",
@@ -1084,7 +1084,7 @@
             "approval": null,
             "log_event": "notification.read",
             "who": "own",
-            "built": false
+            "built": true
         },
         "settings_save": {
             "action": "settings_save",

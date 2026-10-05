@@ -110,7 +110,7 @@ if (PHP_SAPI !== 'cli') {
     ]);
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
-    session_name('HDSID');
+    session_name('GLSID');
     session_start();
 
     if (empty($_SESSION['csrf_token'])) {

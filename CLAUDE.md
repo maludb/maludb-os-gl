@@ -6,7 +6,7 @@ kernel owns identity, the directory, the agents and approvals; this application 
 
 ## Read first
 1. `docs/gl-design.md` — the plan (Phase 0): actors, roles, the memory model, the question inventory, the agents' door,
-   the build order, what the kernel owes (K13 built as db/167; K14–K16, H1 owed), the owner's decisions (§13, **all fourteen answered 2026-10-04, recorded as D1–D14 in §15** — rules, not questions), the state (§16 — **Phase 0 complete 2026-10-04**, the schema proven by 151 checks, the kit by 15; **Phase 1 written 2026-10-05**: the tool surface, the manifest (92 screens, 124 actions, 69 approvals), the registry, ten specs — **APPROVED 2026-10-05**, the nine answers as recommended; Phase 2 under way).
+   the build order, what the kernel owes (K13 built as db/167; K14–K16, H1 owed), the owner's decisions (§13, **all fourteen answered 2026-10-04, recorded as D1–D14 in §15** — rules, not questions), the state (§16 — **Phase 0 complete 2026-10-04**, the schema proven by 151 checks, the kit by 15; **Phase 1 written 2026-10-05**: the tool surface, the manifest (92 screens, 124 actions, 69 approvals), the registry, ten specs — **APPROVED 2026-10-05**, the nine answers as recommended; **Phase 2 BUILT 2026-10-05**, 251 checks; next slice 1 then slice 2).
 2. The plugin `maludb-os-integration` (`~/maludb-os-integration`, skill `os-integration` and its references) — how it fits.
 3. `/srv/apps/helpdesk` — the nearest exemplar (its design, kit, specs, proof suites); the kernel's retired
    `docs/build-specs/bookkeeping-ledger.md`, `sales-invoicing.md`, `expenses.md` — the prior art.
@@ -22,8 +22,8 @@ kernel owns identity, the directory, the agents and approvals; this application 
 - The database enforces the accounting: balance, period open, immutable once posted, reversal never un-post, one entry per
   source document, gapless invoice numbers on issue; a document POSTS when it becomes true (issue, approve, record) through the
   `gl_*` writer functions (db/008–013) — PHP calls them and presents their refusals; it never re-implements them.
-- Proofs: `tests/setup_dev.sh` (the scratch database `gl_dev`, never the installed one), `tests/phase0/run.sh` (schema + kit);
-  every later phase adds its own `tests/phaseN/run.sh` and keeps the earlier ones green.
+- Proofs: `tests/setup_dev.sh` (the scratch database `gl_dev`, never the installed one), `tests/phase0/run.sh` (schema + kit), `tests/phase2/run.sh`
+  (the shell; `GL_APP=apache` for the real vhost); every slice adds `tests/phase3/sliceN/run.sh` and keeps the earlier ones green. The scratch ports are 8391–8397.
 - Agents draft; a person posts, pays, sends, closes (approval categories in design §5).
 - Commit after every finished step on `main`; never push unless the owner asks.
 
