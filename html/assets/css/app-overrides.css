@@ -59,7 +59,12 @@ html.app-skin-dark ::-webkit-scrollbar-thumb:hover {
    Assistant command bar (chat-actions) — plugin-level layout addition.
    Fixed bottom bar on every screen; body reserves space so it never covers content.
    ========================================================================== */
-.app-has-assistant-bar { padding-bottom: 84px; }
+.app-has-assistant-bar { padding-bottom: 68px; }
+/* A short page: the footer sits at the bottom of the window, above the fixed command bar, instead of floating under the content.
+   The container fills the viewport (the theme's min-height) as a column; the content grows, the footer follows it. */
+.nxl-container.app-has-assistant-bar { display: flex; flex-direction: column; box-sizing: border-box; }
+.nxl-container.app-has-assistant-bar > .nxl-content { flex: 1 0 auto; }
+.nxl-container.app-has-assistant-bar > .footer { flex: 0 0 auto; }
 
 #assistant-bar {
     position: fixed;
@@ -174,7 +179,7 @@ html.app-header-dark .nxl-navigation .m-header .logo-lg,
 html.app-skin-dark .app-tabbar { background: #1b2431; border-top-color: rgba(255,255,255,.1); }
 @media (max-width: 991.98px) {
     #assistant-bar { bottom: 56px; padding: 8px 12px; }
-    .app-has-tabbar { padding-bottom: 140px; }
+    .app-has-tabbar { padding-bottom: 124px; }
     /* The slide-in menu ("More") rises above both bars and keeps room to scroll past them. */
     .nxl-navigation.mob-navigation-active { z-index: 1050; }
     .nxl-navigation .navbar-content { padding-bottom: 160px; }

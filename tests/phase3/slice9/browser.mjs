@@ -89,6 +89,9 @@ const download = async (page, selector) => { const [d] = await Promise.all([page
 {
   const { ctx, page, errors } = await session(29, DESK);
   console.log('1280 x 800 — the Accountant');
+  await go(page, '/notifications');
+  const gap = await page.evaluate(() => { const f = document.querySelector('#page-footer').getBoundingClientRect(), b = document.querySelector('#assistant-bar').getBoundingClientRect(); return { footerBottom: Math.round(f.bottom), barTop: Math.round(b.top), tall: document.documentElement.scrollHeight > window.innerHeight }; });
+  ok(gap.tall || Math.abs(gap.footerBottom - gap.barTop) <= 6, `a page too short to fill the window: the footer sits on the command bar (footer bottom ${gap.footerBottom}, bar top ${gap.barTop})`);
   await go(page, '/audit?from=2026-01-01&to=2026-12-31');
   await widthOK(page, 'the audit page', 1280);
   await page.screenshot({ path: `${SHOTS}/desk-audit.png` });
