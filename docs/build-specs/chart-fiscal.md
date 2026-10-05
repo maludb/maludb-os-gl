@@ -141,21 +141,46 @@ Writing or posting a journal entry (2); the statements (3); bank accounts' setti
 exist; the slices fill the data).
 
 ## Proof (`tests/phase3/slice1/run.sh`, scratch database, `php -S` + headless Chromium at 375 × 740 and 1280 × 800)
-- [ ] Rights: a Viewer → the chart and the periods list (200) and 403 on every form, archive, close and setting with the right's sentence (*"You may not change the ledger's settings."*,
+**Built and proven 2026-10-05: 219 checks green** (rights 13, chart 33, fiscal 30, settings 48, json 17, browser 77, the registry); the Phase 2 suite (251) and Phase 0 (15 + 151) still green;
+the registry reads the 16 actions and 21 screens as built (`92 screens (26 built), 124 actions (20 built)`).
+- [x] Rights: a Viewer → the chart and the periods list (200) and 403 on every form, archive, close and setting with the right's sentence (*"You may not change the ledger's settings."*,
   *"You may not close or reopen a period."*); a Bookkeeper the same; the Controller closes and reopens; the admin everything.
-- [ ] The chart: an account added under a parent of another type → 422 in the trigger's words; a bank+control account → 422; a system account's type change → 422; archiving an account with a
+- [x] The chart: an account added under a parent of another type → 422 in the trigger's words; a bank+control account → 422; a system account's type change → 422; archiving an account with a
   balance → 422 naming the balance; archiving an empty one hides it from the pickers and `include_archived` shows it; the cards' balances equal `gl_account_balance()`; the activity table's running
   balance ends at the balance; the CSV logged `export.download`.
-- [ ] Fiscal time: a year made with twelve periods; a second overlapping → 422; closing a period, posting into it refused by slice 2's function (proven here by SQL: `gl_entry_post` RAISE); reopening
+- [x] Fiscal time: a year made with twelve periods; a second overlapping → 422; closing a period, posting into it refused by slice 2's function (proven here by SQL: `gl_entry_post` RAISE); reopening
   without a reason → 422; with one → `reopen_count` 1 and the chip says so; the year's close refused while a period is open and while a draft exists, then made with its entry shown; the year's reopen
   reverses it (`gl_account_balance(3900)` back to 0).
-- [ ] Settings: the base currency editable before any document and refused after an invoice exists (fixture by SQL); the control accounts narrowed by type; `settings_save` logs before/after of the
+- [x] Settings: the base currency editable before any document and refused after an invoice exists (fixture by SQL); the control accounts narrowed by type; `settings_save` logs before/after of the
   changed keys only; numbering's next value cannot go below the current; the prefix shows in the preview and numbers the next document (SQL).
-- [ ] Tax rates and items: one default at a time; archiving the default refused; an item's accounts narrowed; the posting rule's accounts saved and read back by `gl_posting_rule()`.
-- [ ] JSON mode: every handler answers `{ok, did, record_id, location}` to an action token and 422 `{error: {code: invalid, errors[], fields{}}}` on a bad form; the kernel's `_partial=1` fills the base row for
+- [x] Tax rates and items: one default at a time; archiving the default refused; an item's accounts narrowed; the posting rule's accounts saved and read back by `gl_posting_rule()`.
+- [x] JSON mode: every handler answers `{ok, did, record_id, location}` to an action token and 422 `{error: {code: invalid, errors[], fields{}}}` on a bad form; the kernel's `_partial=1` fills the base row for
   `account_save`, `item_save`, `site_save`; a run token's rows are source `agent` with the run's request id and the rights hold.
-- [ ] `php bin/build_action_registry.php --check` passes and the 16 actions read as built; every screen at 375 and 1280 with `scrollWidth` = viewport; every button 44 px; a refused save lands in `#flash`
+- [x] `php bin/build_action_registry.php --check` passes and the 16 actions read as built; every screen at 375 and 1280 with `scrollWidth` = viewport; every button 44 px; a refused save lands in `#flash`
   and keeps the form; JavaScript off the forms post and land.
+
+## Decisions taken while building (2026-10-05) — the CRUD pattern every later slice copies
+- **The handler validates the shape, the database the rule.** A handler checks types, lengths, references and the field names (`gl_ref()`, `gl_int()`, `gl_yes()`, `request_list()`),
+  then calls the INSERT/UPDATE or the `gl_*` writer inside `gl_guard()`, whose job is to turn a `DomainException` (our sentence) or the database's `P0001` RAISE into the 422 in
+  those words (`23505` → "already taken", `23P01` → "overlaps", `23503` → "still in use"). A system account's type change is left to the trigger ("keeps its type"): the handler
+  resets a subtype only when the type changes and no subtype came.
+- **The one money formatter is loaded by the bootstrap** (`app/views/shared/money.php` after `handler.php`): `fmt_money()`, `fmt_money_cell()` (a `<td>` with the sign class),
+  `parse_money()` (commas, parentheses, a leading sign). The one account picker is `account_select($pdo, $name, $selected, $types, $flags, $attrs, $empty, $id)` over `mcp_accounts`.
+- **Balances are "as of"**: the chart's cards read `gl_account_balance(id, as_of)` (today by default); an activity table starts with an opening row (`gl_account_balance` the day
+  before `from`) and `gl_account_activity()` carries the running balance; a year-end closing entry is dated the year's last day, so its effect shows only as of that day or later.
+- **A closed period keeps its drafts**: `gl_period_close()` refuses nothing but a second close; the draft stays until the period is reopened. The year's close refuses an open
+  period and a draft dated in the year, in the function's words; the reopen reverses the closing entry (`gl_entry_reverse` under the hood) and leaves the periods closed.
+- **The close checklist** (`period_checklist()`) is six read-only lines computed from the schema (drafts, the AI statement by `ai_statements.status` in `imported|agrees`, undeposited
+  receipts older than the month, every live bank reconciled through the month's end, `gl_control_check(end_date)` tied out, recurring templates due); a line that has nothing to
+  judge (no bank account yet, no statement pulled) shows "–".
+- **Settings**: `save_settings()` answers before/after of the changed keys only and "Nothing changed" logs nothing; the control-account selects are narrowed by type AND the handler
+  refuses another type in words ("Accounts receivable is an asset account."); the base currency is refused once any journal entry, invoice, bill, receipt or payment exists
+  (`books_hold_a_document()`); `reminder_days` is a list field (comma-separated or `[]`), de-duplicated and sorted. `numbering_save` is one row per POST (`kind` + the changed fields).
+- **Tax rates**: one default — a new default un-defaults the others in the same transaction; un-defaulting or archiving the default is "Make another rate the default first."
+- **Posting rules**: `rule` is an existing id, or a source name with `match_key` (the default rule when empty): the same source + key updates the one rule; `gl_posting_rule(source, key)`
+  falls to the default when the keyed rule is off.
+- **Proof helpers that later slices reuse** (`tests/phase3/slice1/lib.php`): `as_member()`, `act()`, `act_html()`, `screen()`, `act_token()`, `run_token()`, `post_entry()` (transactional:
+  a refused post leaves no draft), `balance_of()`, `account_id()`, `period_id()`, `fy_id()`.
 
 ## Open questions
 - (none)

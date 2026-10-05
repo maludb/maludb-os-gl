@@ -129,6 +129,12 @@ function gl_guard(PDO $pdo, callable $step): mixed
         if ($e instanceof PDOException && (string) $e->getCode() === '23505') {
             refuse(422, 'That name is already taken.');
         }
+        if ($e instanceof PDOException && (string) $e->getCode() === '23P01') {
+            refuse(422, 'That overlaps what exists already.');
+        }
+        if ($e instanceof PDOException && (string) $e->getCode() === '23503') {
+            refuse(422, 'That is still in use and cannot be removed.');
+        }
         throw $e;
     }
 }

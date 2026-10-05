@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T00:36:04+00:00",
+    "generated_at": "2026-10-05T01:00:34+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -59,8 +59,8 @@
             "section": "Home, me and the ledger's settings",
             "when": "the business's ledger settings: name and address on the invoice, base currency, fiscal year start, the control accounts, terms, the link's life, reminder days, the AI statement poll, who gets the morning note",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "numbering": {
             "screen": "numbering",
@@ -68,7 +68,7 @@
             "section": "Home, me and the ledger's settings",
             "when": "the document prefixes and next numbers",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "agents": {
@@ -77,8 +77,8 @@
             "section": "Home, me and the ledger's settings",
             "when": "which agents keep books here, their last dispatch and run (read-only; hiring and grants link to the kernel)",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "audit": {
             "screen": "audit",
@@ -114,8 +114,8 @@
                 "include_archived",
                 "as_of"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "account-add": {
             "screen": "account-add",
@@ -126,7 +126,7 @@
                 "type",
                 "parent"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "account-view": {
@@ -140,7 +140,7 @@
                 "department",
                 "site"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "account-edit": {
@@ -149,7 +149,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to rename, re-parent or describe an account",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "periods-list": {
@@ -158,8 +158,8 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "the fiscal years and their periods as cards: open, closed, reopened, with posted and draft counts",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "fiscal-year-add": {
             "screen": "fiscal-year-add",
@@ -169,7 +169,7 @@
             "params": [
                 "start"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "period-view": {
@@ -178,7 +178,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "one period: its state and history, what posted in it, what is still a draft in it, the close checklist",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "tax-rates": {
@@ -187,8 +187,8 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "the tax rates and the default",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "tax-rate-add": {
             "screen": "tax-rate-add",
@@ -196,7 +196,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to add a rate",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "tax-rate-edit": {
@@ -205,7 +205,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to rename a rate or make it the default",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "items-list": {
@@ -217,8 +217,8 @@
                 "q",
                 "kind"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "item-add": {
             "screen": "item-add",
@@ -226,7 +226,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to add an item",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "item-edit": {
@@ -235,7 +235,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to change an item",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "posting-rules": {
@@ -244,8 +244,8 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "which source posts to which accounts",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "posting-rule-edit": {
             "screen": "posting-rule-edit",
@@ -253,7 +253,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to change a rule's accounts",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "sites-list": {
@@ -262,8 +262,8 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "the sites (the second dimension)",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "site-add": {
             "screen": "site-add",
@@ -271,7 +271,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to add a site",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "site-edit": {
@@ -280,7 +280,7 @@
             "section": "The chart, fiscal time, tax, items, sites (slice 1)",
             "when": "to rename a site or pin it to the kernel's location",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "journal-list": {
@@ -1223,7 +1223,7 @@
             "approval": "other",
             "log_event": "settings.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "numbering_save": {
             "action": "numbering_save",
@@ -1260,7 +1260,7 @@
             "approval": "other",
             "log_event": "numbering.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "morning_note_send": {
             "action": "morning_note_send",
@@ -1346,7 +1346,7 @@
             "approval": "other",
             "log_event": "account.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "account_archive": {
             "action": "account_archive",
@@ -1371,7 +1371,7 @@
             "approval": "other",
             "log_event": "account.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "fiscal_year_create": {
             "action": "fiscal_year_create",
@@ -1396,7 +1396,7 @@
             "approval": "other",
             "log_event": "fiscal_year.create",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "period_close": {
             "action": "period_close",
@@ -1415,7 +1415,7 @@
             "approval": "other",
             "log_event": "period.close",
             "who": "periods",
-            "built": false
+            "built": true
         },
         "period_reopen": {
             "action": "period_reopen",
@@ -1440,7 +1440,7 @@
             "approval": "other",
             "log_event": "period.reopen",
             "who": "periods",
-            "built": false
+            "built": true
         },
         "year_end_close": {
             "action": "year_end_close",
@@ -1459,7 +1459,7 @@
             "approval": "money_out",
             "log_event": "fiscal_year.close",
             "who": "periods",
-            "built": false
+            "built": true
         },
         "year_reopen": {
             "action": "year_reopen",
@@ -1484,7 +1484,7 @@
             "approval": "other",
             "log_event": "fiscal_year.reopen",
             "who": "periods",
-            "built": false
+            "built": true
         },
         "tax_rate_save": {
             "action": "tax_rate_save",
@@ -1521,7 +1521,7 @@
             "approval": "other",
             "log_event": "tax_rate.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "tax_rate_archive": {
             "action": "tax_rate_archive",
@@ -1540,7 +1540,7 @@
             "approval": "other",
             "log_event": "tax_rate.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "item_save": {
             "action": "item_save",
@@ -1613,7 +1613,7 @@
             "approval": "other",
             "log_event": "item.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "item_archive": {
             "action": "item_archive",
@@ -1638,7 +1638,7 @@
             "approval": "other",
             "log_event": "item.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "posting_rule_save": {
             "action": "posting_rule_save",
@@ -1693,7 +1693,7 @@
             "approval": "other",
             "log_event": "posting_rule.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "site_save": {
             "action": "site_save",
@@ -1730,7 +1730,7 @@
             "approval": "other",
             "log_event": "site.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "site_archive": {
             "action": "site_archive",
@@ -1755,7 +1755,7 @@
             "approval": "other",
             "log_event": "site.archive",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "journal_entry_draft": {
             "action": "journal_entry_draft",

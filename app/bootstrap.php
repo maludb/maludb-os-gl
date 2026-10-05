@@ -78,6 +78,7 @@ ini_set('log_errors', '1');
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/http.php';
 require_once __DIR__ . '/handler.php';
+require_once __DIR__ . '/views/shared/money.php';      // the ONE money formatter (fmt_money, fmt_money_cell, parse_money): every screen and handler
 require_once __DIR__ . '/activity.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/directory.php';

@@ -1,5 +1,17 @@
 <?php
 declare(strict_types=1);
-/** /settings/agents — placeholder (screen `agents`): built by slice 1 (the chart and fiscal time). render_nav_stub() answers 200 after the right, 501 to JSON and to a POST; the registry builder reads it as unbuilt. */
+/** /settings/agents — which OS agents keep books here (screen `agents`, read-only; settings.manage): roles and the last dispatch. Hiring and grants are the kernel's. */
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
-render_nav_stub('agents', 'slice 1 (the chart and fiscal time)', 'settings.manage');
+require_once dirname(__DIR__, 2) . '/app/features/accounts/queries.php';
+require_once dirname(__DIR__, 2) . '/app/features/settings/ledger.php';
+require_once dirname(__DIR__, 2) . '/app/features/settings/present.php';
+require_right('settings.manage');
+require_human();
+$pdo = db();
+$agents = find_agents_here($pdo);
+log_screen_view($pdo, 'agents');
+if (wants_json()) {
+    respond_screen(['agents' => array_map('present_agent_here', $agents)]);
+}
+render_screen('Agents', view('settings/agents.php', ['agents' => $agents, 'osUrl' => rtrim((string) env('OS_LAUNCHER_URL', '/'), '/') . '/launcher', 'tz' => member_timezone()]),
+    ['activeNav' => 'agents', 'screen' => 'agents', 'entity' => 'member']);

@@ -509,6 +509,13 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 
 ## 16. State
 
+**SLICE 1 — the chart and fiscal time, BUILT and proven 2026-10-05** (`docs/build-specs/chart-fiscal.md`, the CRUD exemplar for workers): the chart as cards by type with
+balances as of a date, the account page with its activity, running balance, children and CSV, add/edit/archive (the trigger and the archive guard as the referee), the fiscal
+years with twelve period chips, the period page with what posted, drafts, the close checklist and the close/reopen/year-close/year-reopen buttons, tax rates, items, posting
+rules, sites, the ledger settings, numbering, the agents screen; 16 actions, 21 screens; `account_select()` and the bootstrap-loaded money formatter for every later slice.
+**Proof:** `tests/phase3/slice1/run.sh` — **219 checks green** (rights 13, chart 33, fiscal 30, settings 48, json 17, browser 77); Phase 2 (251) and Phase 0 still green. Next: slice 2
+(`journal-core.md`, THE EXEMPLAR), then the handoff to Sonnet 5.5.
+
 **PHASE 2 — BUILT and proven 2026-10-05** (`docs/build-specs/sso-shell.md`): the nxl shell phone first (the tab bar Home · Statements · Invoices · Bills · More, the sidebar from 992 px
 with the groups Books / Receivables / Payables / Cash / Settings / Me shown by right, the role badge, the bell, the command bar through the kernel's chat endpoint), the dashboard's regions as
 empty states (the fiscal-year banner, What waits as six count cards, Cash, This month, Who owes us, Whom we owe, The AI bill, The morning note, posted-through), My settings (how I am told:
