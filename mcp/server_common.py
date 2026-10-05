@@ -22,11 +22,10 @@ import db
 
 log = logging.getLogger("gl_mcp")
 
-# What the kernel's own token may reach: the roles catalogue (kernel db/145) and the tools shares[] declares (K7). General Ledger
-# shares nothing in version 1 (maludb-os.json has no shares[]), so the kernel's token reaches app_roles alone.
-KERNEL_TOOLS = {"app_roles"}
+# What the kernel's own token may reach: the roles catalogue (kernel db/145) and the three tools maludb-os.json shares[] declares (K7).
+KERNEL_TOOLS = {"app_roles", "account_balances", "ap_due_summary", "ar_aging_summary"}
 # A share that is the KERNEL's alone (a person or an agent never lists or calls it) goes here when one exists.
-KERNEL_ONLY: set[str] = set()
+KERNEL_ONLY = {"account_balances", "ap_due_summary", "ar_aging_summary"}
 
 # run id -> (facts, fetched_at). A run's grants do not change while it runs; a short TTL bounds a mistake.
 _facts_cache: dict[int, tuple[dict, float]] = {}

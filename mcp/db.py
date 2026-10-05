@@ -195,7 +195,7 @@ def _json_default(o):
     if isinstance(o, datetime.timedelta):
         return o.days
     if isinstance(o, decimal.Decimal):
-        return float(o)
+        return format(o, "f")          # money is a string with its own scale ('1000.00'), never a float
     return str(o)
 
 
@@ -217,7 +217,7 @@ async def fetch_scoped(pool: asyncpg.Pool, sql: str, *params, member_id: int | N
             return [dict(r) for r in rows]
 
 
-SEARCH_DENY = ("set_config", "current_setting", "mcp_admit_agent", "mcp_resolve_token", "gl_secure_link_", "gl_entry_", "gl_invoice_", "gl_bill_", "gl_payment_", "gl_receipt_", "gl_deposit_", "gl_year_", "gl_period_close", "gl_period_reopen", "gl_reconciliation_", "gl_bank_match", "gl_bank_unmatch", "gl_bank_ignore", "gl_bank_entry_from_line", "gl_transfer_", "gl_ai_statement_load", "gl_ai_statement_import", "gl_ai_statement_mark", "gl_credit_note_", "gl_vendor_credit_", "gl_fiscal_year_create", "gl_recurring_advance", "next_document_number", "pg_", "dblink", "lo_import", "lo_export")
+SEARCH_DENY = ("set_config", "current_setting", "mcp_admit_agent", "mcp_resolve_token", "gl_secure_link_", "gl_share_", "gl_entry_", "gl_invoice_", "gl_bill_", "gl_payment_", "gl_receipt_", "gl_deposit_", "gl_year_", "gl_period_close", "gl_period_reopen", "gl_reconciliation_", "gl_bank_match", "gl_bank_unmatch", "gl_bank_ignore", "gl_bank_entry_from_line", "gl_transfer_", "gl_ai_statement_load", "gl_ai_statement_import", "gl_ai_statement_mark", "gl_credit_note_", "gl_vendor_credit_", "gl_fiscal_year_create", "gl_recurring_advance", "next_document_number", "pg_", "dblink", "lo_import", "lo_export")
 
 
 async def run_search(pool: asyncpg.Pool, sql: str, row_cap: int = 200) -> str:

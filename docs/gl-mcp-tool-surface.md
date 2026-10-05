@@ -4,6 +4,19 @@
 AP1–AP8, AI1–AI4, CM1–CM5, ACT1–ACT3) is answered by. Writes are never here: they are the action tools the kernel's
 Actions MCP builds from `docs/gl-action-manifest.md`.
 
+**Built and proven 2026-10-05 (Phase 4, by the worker): 565 checks green** (`tests/phase4/run.sh`: gate 59, tools_books 60, tools_documents 51, tools_cash 34, tools_shares 18, tools_activity 31, registry 76, hook 236) — the two servers (`mcp/records_server.py` with `gl_people`, `gl_chart`, `gl_statements`,
+`gl_journal`, `gl_ar`, `gl_ap`, `gl_cash`, `gl_misc`; `mcp/activity_server.py`) on a scratch database, a fake kernel and the kernel's own `application_actions.py` against a stubbed hook. **The count is 61 records tools**
+(58 for a person or an agent, the three shares the kernel's alone) **and 7 activity tools**, not the 52 first written. What the build settled:
+- **The shares** call three `SECURITY DEFINER` functions added as `db/020_shares.sql` (`gl_share_account_balances`, `gl_share_ap_due`, `gl_share_ar_aging`), granted to the read role alone and denied to `records_search`: the kernel's token has no member, and the statement functions
+  (db/015) answer nothing without one. They return totals only. Another application's reader is therefore not a service member row.
+- **Money** reaches an agent as a string with its own scale (`"1082.50"`, an AI amount `"12.3456"`): `mcp/db.py` writes a numeric as its decimal text, never a float.
+- **`control_check` differs by exactly the unapplied receipts and credit notes** (the ledger carries them, the invoices do not yet) — a true statement, not a fault; the tool says `ties` and the difference.
+- **A bad period, date or number is a refusal in words**, never an empty answer; a resolver call (`q` alone, or `q` and `limit`) is a plain list; naming any other filter returns the full shape.
+- **The resolve block lists only params that exist**: `deploy/kernel-registry-gl.json` named six aliases no action uses (`journal_entry`, `run`, `bank_transaction`, `year`, `ai_statement`, `recurring`); they were removed. A 3–8 digit string for `account` passes through untouched and the handler reads it as a code first.
+  `bank_transaction_match`'s `item` is a ledger item's id (digits, from `match_candidates`) — it shares a name with the `item` entity (products), so a NAME there would be looked up as a product; the Bookkeeper skill says "id".
+- **The manifest now lists the two MCP endpoints** (`Records MCP`, `Activity MCP`, agent-reachable) as Help Desk's does; the installer's plan reports them as not answering until `apply`.
+- **Found in the kernel** by the hook proof: `mcp/application_actions.py` called `re.findall` without importing `re` (the 2026-10-04 path-parameter change), so `register()` raised for every application's registry. One line, committed in the kernel (4635a06).
+
 Conventions (mcp-and-api.md): Python 3 + FastMCP, streamable HTTP at `/mcp`, loopback, one systemd unit each; `db.py` and
 `server_common.py` copied from Help Desk (already in `mcp/`); every query runs with `app.member_id` set transaction-locally
 from the verified bearer, so the `mcp_*` views (db/016) decide the rows and the statement functions (db/015) answer only a
@@ -225,22 +238,22 @@ in a payload.**
 | `vendor` | `find_vendors` | `q` (name) | `vendor_id` | `name` |
 | `invoice`, `apply_to` (a credit note's) | `find_invoices` | `q` (a number or words) | `invoice_id` | `label` |
 | `bill`, `apply_to` (a vendor credit's), `bills[]` | `find_bills` | `q` (a number or the vendor's reference) | `bill_id` | `label` |
-| `entry`, `journal_entry`, `reverse_of`, `entries[]` | `find_journal_entries` | `q` (a number or words) | `journal_entry_id` | `label` |
+| `entry`, `reverse_of`, `entries[]` | `find_journal_entries` | `q` (a number or words) | `journal_entry_id` | `label` |
 | `receipt`, `receipts[]` | `find_receipts` | `q` (a number or reference) | `receipt_id` | `label` |
 | `payment` | `find_payments` | `q` (a number or cheque number) | `payment_id` | `label` |
 | `deposit` | `find_deposits` | `q` (a number) | `deposit_id` | `label` |
-| `payment_run`, `run` | `find_payment_runs` | `q` (a number) | `payment_run_id` | `label` |
+| `payment_run` | `find_payment_runs` | `q` (a number) | `payment_run_id` | `label` |
 | `credit_note` | `find_credit_notes` | `q` (a number) | `credit_note_id` | `label` |
 | `vendor_credit` | `find_vendor_credits` | `q` (a number) | `vendor_credit_id` | `label` |
 | `bank_account`, `from_bank_account`, `to_bank_account`, `deposit_to` | `find_bank_accounts` | `q` (name) | `bank_account_id` | `name` |
-| `bank_line`, `bank_transaction` | `unmatched_bank_lines` | `q` (a reference or description) | `bank_transaction_id` | `label` |
+| `bank_line` | `unmatched_bank_lines` | `q` (a reference or description) | `bank_transaction_id` | `label` |
 | `period` | `find_periods` | `q` (`2026-09`) | `fiscal_period_id` | `name` |
-| `fiscal_year`, `year` | `find_periods` | `q` (`FY2026`) | `fiscal_year_id` | `fiscal_year_name` |
+| `fiscal_year` | `find_periods` | `q` (`FY2026`) | `fiscal_year_id` | `fiscal_year_name` |
 | `item` | `find_items` | `q` (name or code) | `item_id` | `name` |
 | `tax_rate` | `find_tax_rates` | `q` (name) | `tax_rate_id` | `name` |
-| `statement`, `ai_statement` | `ai_statement_status` | `q` (`2026-09`) | `ai_statement_id` | `period` |
+| `statement` | `ai_statement_status` | `q` (`2026-09`) | `ai_statement_id` | `period` |
 | `reconciliation` | `find_reconciliations` | `q` (a date) | `bank_reconciliation_id` | `label` |
-| `template`, `recurring` | `find_recurring` | `q` (name) | `recurring_template_id` | `name` |
+| `template` | `find_recurring` | `q` (name) | `recurring_template_id` | `name` |
 | `member`, `to_member`, `morning_note_member` | `find_members` | `q` (name) | `member_id` | `display_name` |
 | `department` | `find_departments` | `q` (name) | `department_id` | `name` |
 | `site` | `find_sites` | `q` (name) | `site_id` | `name` |
@@ -249,4 +262,4 @@ A repeated parameter (`bills[]`, `receipts[]`, `entries[]`) is a list of ids and
 by its number when someone types ("INV-00042"), and by id in every table.
 
 ## Size
-52 records tools (`app_roles`, `records_search` and the three shares included), 7 activity tools, one guarded search each.
+61 records tools (`app_roles`, `records_search` and the three shares included — 58 for a person or an agent, the three shares the kernel's alone), 7 activity tools, one guarded search each.
