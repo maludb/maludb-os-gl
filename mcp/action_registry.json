@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T10:41:45+00:00",
+    "generated_at": "2026-10-05T11:12:46+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -933,8 +933,8 @@
             "section": "The kernel's AI statement (slice 7)",
             "when": "the months as the kernel reports them: open, closed, pulled, imported, agrees, differs; pull now",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "ai-statement-view": {
             "screen": "ai-statement-view",
@@ -942,7 +942,7 @@
             "section": "The kernel's AI statement (slice 7)",
             "when": "one month: its lines by provider and department, its bills, the agree/differ check, import",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "recurring-list": {
@@ -5223,7 +5223,7 @@
             "approval": null,
             "log_event": "ai_statement.pull",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "ai_statement_import": {
             "action": "ai_statement_import",
@@ -5242,7 +5242,7 @@
             "approval": null,
             "log_event": "ai_statement.import",
             "who": "ap",
-            "built": false
+            "built": true
         },
         "ai_statement_check": {
             "action": "ai_statement_check",
@@ -5261,7 +5261,7 @@
             "approval": null,
             "log_event": "ai_statement.check",
             "who": "view",
-            "built": false
+            "built": true
         },
         "recurring_save": {
             "action": "recurring_save",

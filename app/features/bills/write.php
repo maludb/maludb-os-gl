@@ -34,7 +34,29 @@ function draft_bill(PDO $pdo, array $head, array $lines, int $by): int
     foreach ($lines as $n => $l) {
         insert_doc_line($pdo, 'bill_lines', 'bill_id', $id, $n + 1, $l);
     }
+    link_ai_replacement_bill($pdo, $id, (int) $head['vendor_id'], $head['vendor_ref'], (string) $head['currency']);
     return $id;
+}
+
+/**
+ * A bill entered by hand for an AI provider with the reference "<provider> <period>" (slice 7: the page tells the controller to enter it after the imported one was voided) takes the voided bill's place in the
+ * statement's check: ai_statement_bills points at it and it is marked source ai_usage (so its approval posts by the AI usage rule). Nothing happens unless the statement's bill for that provider and currency is void.
+ */
+function link_ai_replacement_bill(PDO $pdo, int $billId, int $vendorId, ?string $vendorRef, string $currency): bool
+{
+    if ($vendorRef === null || !preg_match('/^([A-Za-z0-9_-]+) ([0-9]{4}-[0-9]{2})$/', $vendorRef, $m)) {
+        return false;
+    }
+    $st = $pdo->prepare("SELECT ab.statement_id, ab.provider FROM ai_statement_bills ab JOIN ai_statements s ON s.id = ab.statement_id JOIN bills ob ON ob.id = ab.bill_id JOIN vendors v ON v.id = :v AND v.kind = 'ai_provider' AND v.provider_key = ab.provider
+                          WHERE s.period = :p AND ab.provider = lower(:prov) AND ab.currency = :cur AND ob.status = 'void'");
+    $st->execute(['v' => $vendorId, 'p' => $m[2], 'prov' => $m[1], 'cur' => $currency]);
+    $row = $st->fetch();
+    if ($row === false) {
+        return false;
+    }
+    $pdo->prepare('UPDATE ai_statement_bills SET bill_id = :b WHERE statement_id = :s AND provider = :pr AND currency = :cur')->execute(['b' => $billId, 's' => $row['statement_id'], 'pr' => $row['provider'], 'cur' => $currency]);
+    $pdo->prepare("UPDATE bills SET source = 'ai_usage' WHERE id = :b")->execute(['b' => $billId]);
+    return true;
 }
 
 /** A draft's head (keys present change). Answers ['before' => …, 'after' => …] of the changed fields. An approved bill's head is refused in the guard's words. */
