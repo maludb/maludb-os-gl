@@ -39,6 +39,7 @@ echo "   sudo php $KERNEL/bin/app_install.php apply $APP --by <super-admin email
 
 # ------------------------------------------------------------------------------------------------------------------
 # 3. The owner's keys and decisions (any time after 2):
+echo "   (the whole sequence with the live end-to-end proof: docs/phase5-runbook.md; db is now 001-020, units: two MCP servers, worker, ingest, directory sync)"
 echo "== 3. The owner's"
 echo "   - MaluMail: MALUMAIL_API_KEY, MAIL_FROM, MAIL_FROM_NAME into $APP/config/.env (slice 4 sends invoices, statements and reminders)"
 echo "   - the K6 text sender, if texts are wanted: php $KERNEL/bin/notify_endpoint_set.php (already set when another application uses it)"
