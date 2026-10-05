@@ -16,7 +16,7 @@ if (wants_json()) {
     respond_screen(['bill' => present_bill($bill), 'attachments' => array_map('present_attachment', $attachments), 'notes' => array_map('present_note', $notes),
         'timeline' => array_map(static fn (array $r): array => ['activity_id' => (int) $r['activity_id'], 'at' => json_ts($r['occurred_at']), 'action' => $r['action'], 'sentence' => activity_sentence($r)], $timeline), 'may' => $may]);
 }
-$notices = ['saved' => ['success', 'Saved.'], 'approved' => ['success', 'Approved ' . ($bill['number'] ?? '') . '.'], 'approved_no_document' => ['warning', 'Approved ' . ($bill['number'] ?? '') . ' — but no document is attached to it.'], 'voided' => ['warning', 'This bill is void; its entry was reversed.'],
+$notices = ['saved' => ['success', 'Saved.'], 'asked' => ['success', 'The Bookkeeper has been asked.'], 'approved' => ['success', 'Approved ' . ($bill['number'] ?? '') . '.'], 'approved_no_document' => ['warning', 'Approved ' . ($bill['number'] ?? '') . ' — but no document is attached to it.'], 'voided' => ['warning', 'This bill is void; its entry was reversed.'],
             'line_saved' => ['success', 'Saved the line.'], 'line_removed' => ['success', 'Removed the line.'], 'attached' => ['success', 'Attached.'], 'noted' => ['success', 'Added the note.'], 'attachment_removed' => ['success', 'The attachment was removed.'], 'paid' => ['success', 'Recorded.']];
 $data = ['bill' => $bill, 'attachments' => $attachments, 'notes' => $notes, 'timeline' => $timeline, 'may' => $may, 'here' => here_url(), 'tz' => member_timezone(), 'notice' => gl_notice($_GET['notice'] ?? null, $notices)] + doc_lines_data($pdo, 'bill', $bill);
 if (is_htmx_request() && !is_htmx_boosted() && ($_SERVER['HTTP_HX_TARGET'] ?? '') === 'bill-lines') {

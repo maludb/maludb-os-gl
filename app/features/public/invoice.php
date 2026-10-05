@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once dirname(__DIR__) . '/notify/write.php';
+
 /**
  * The customer's secure invoice page (slice 4, D9): no session, no acting member — the link's token is the whole authority. Everything here reads the BASE tables as the writer
  * (the mcp_* views answer nothing without an acting member); gl_secure_link_invoice() is the one door: the invoice id for a live token, NULL for every other reason.
@@ -68,22 +70,4 @@ function submit_claim(int $invoiceId, array $f, string $ip): int
     $st = db()->prepare('INSERT INTO receipt_claims (invoice_id, claimed_on, method, reference, amount, note, ip_address) VALUES (:i, :d, :m, :r, :a, :n, CAST(:ip AS inet)) RETURNING id');
     $st->execute(['i' => $invoiceId, 'd' => $f['claimed_on'], 'm' => $f['method'], 'r' => $f['reference'], 'a' => $f['amount'], 'n' => $f['note'], 'ip' => $ip]);
     return (int) $st->fetchColumn();
-}
-
-/** The members who are told: active people holding ar.write whose preferences include the kind (or who never chose). In-app rows now; the worker of slice 8 sends the email. */
-function notify_members_with_right(string $right, string $kind, string $recordType, int $recordId, string $title, ?string $body): int
-{
-    $pdo = db();
-    $st = $pdo->prepare("SELECT m.id FROM members m
-        WHERE m.status = 'active' AND m.capability IS NOT NULL AND m.member_kind = 'human'
-          AND EXISTS (SELECT 1 FROM gl_role_rights rr WHERE rr.right_key = :r AND (rr.role_key = ANY (m.roles) OR (cardinality(m.roles) = 0 AND rr.role_key = CASE m.capability WHEN 'admin' THEN 'admin' ELSE 'user' END) OR m.business_role = 'super_admin'))
-          AND (NOT EXISTS (SELECT 1 FROM notification_prefs p WHERE p.member_id = m.id) OR EXISTS (SELECT 1 FROM notification_prefs p WHERE p.member_id = m.id AND :k = ANY (p.kinds)))");
-    $st->execute(['r' => $right, 'k' => $kind]);
-    $n = 0;
-    $ins = $pdo->prepare('INSERT INTO notifications (member_id, kind, record_type, record_id, title, body) VALUES (:m, :k, :t, :i, :ti, :b)');
-    foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $m) {
-        $ins->execute(['m' => (int) $m, 'k' => $kind, 't' => $recordType, 'i' => $recordId, 'ti' => $title, 'b' => $body]);
-        $n++;
-    }
-    return $n;
 }

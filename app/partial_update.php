@@ -16,6 +16,7 @@ const PARTIAL_UPDATE_TARGETS = [
     '/credit-notes/save.php'    => ['credit_notes', 'credit_note', 'mcp_credit_notes', 'credit_note_id'],
     '/deposits/save.php'        => ['deposits', 'deposit', 'mcp_deposits', 'deposit_id'],
     '/vendors/save.php'         => ['vendors', 'vendor', 'mcp_vendors', 'vendor_id'],
+    '/settings/recurring/save.php' => ['recurring_templates', 'template', 'mcp_recurring_templates', 'recurring_template_id'],
     '/bills/save.php'           => ['bills', 'bill', 'mcp_bills', 'bill_id'],
     '/vendor-credits/save.php'  => ['vendor_credits', 'vendor_credit', 'mcp_vendor_credits', 'vendor_credit_id'],
     '/payments/save.php'        => ['payments', 'payment', 'mcp_payments', 'payment_id'],

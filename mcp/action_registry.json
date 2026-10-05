@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T11:12:46+00:00",
+    "generated_at": "2026-10-05T12:02:03+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -951,8 +951,8 @@
             "section": "Recurring (slice 8)",
             "when": "the templates as cards: kind, cadence, next date, last run, on or off",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "recurring-add": {
             "screen": "recurring-add",
@@ -963,7 +963,7 @@
                 "kind",
                 "from"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "recurring-edit": {
@@ -972,7 +972,7 @@
             "section": "Recurring (slice 8)",
             "when": "to change a template",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "recurring-view": {
@@ -981,7 +981,7 @@
             "section": "Recurring (slice 8)",
             "when": "one template: what it drafts, its runs",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         }
     },
@@ -1285,7 +1285,7 @@
             "approval": null,
             "log_event": "morning_note.send",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "account_save": {
             "action": "account_save",
@@ -5328,7 +5328,7 @@
             "approval": "other",
             "log_event": "recurring.save",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "recurring_toggle": {
             "action": "recurring_toggle",
@@ -5353,7 +5353,7 @@
             "approval": "other",
             "log_event": "recurring.toggle",
             "who": "admin",
-            "built": false
+            "built": true
         },
         "recurring_run": {
             "action": "recurring_run",
@@ -5378,7 +5378,7 @@
             "approval": null,
             "log_event": "recurring.run",
             "who": "journal",
-            "built": false
+            "built": true
         },
         "recurring_delete": {
             "action": "recurring_delete",
@@ -5397,7 +5397,7 @@
             "approval": "deletion",
             "log_event": "recurring.delete",
             "who": "admin",
-            "built": false
+            "built": true
         }
     }
 }

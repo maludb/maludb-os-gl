@@ -3,6 +3,7 @@ declare(strict_types=1);
 /** Action `period_close` (log `period.close` with period_id, after.name; confirm): periods.manage. gl_period_close() is the referee. */
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 2) . '/app/features/periods/queries.php';
+require_once dirname(__DIR__, 2) . '/app/features/notify/write.php';
 gl_handler_begin();
 require_right('periods.manage');
 $pdo = db();
@@ -13,6 +14,7 @@ $p = gl_guard($pdo, static function () use ($pdo, $me, $id): array {
     close_period($pdo, $id, $me);
     $p = find_period($pdo, $id) ?? throw new DomainException('Not found.');
     log_activity($pdo, 'period.close', 'period', $id, ['period_id' => $id, 'after' => ['name' => $p['name'], 'status' => 'closed', 'posted_entries' => $p['posted_entries'], 'draft_entries' => $p['draft_entries']]]);
+    notify_members_with_right('periods.manage', 'period_closed', 'period', $id, $p['name'] . ' was closed', 'The period takes no more postings until it is reopened.');
     $pdo->commit();
     return $p;
 });

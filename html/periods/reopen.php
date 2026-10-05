@@ -3,6 +3,7 @@ declare(strict_types=1);
 /** Action `period_reopen` (log `period.reopen` with period_id, after.name, after.reason, after.reopen_count; confirm): periods.manage. gl_period_reopen() refuses a blank reason. */
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 2) . '/app/features/periods/queries.php';
+require_once dirname(__DIR__, 2) . '/app/features/notify/write.php';
 gl_handler_begin();
 require_right('periods.manage');
 $pdo = db();
@@ -14,6 +15,7 @@ $p = gl_guard($pdo, static function () use ($pdo, $me, $id, $reason): array {
     reopen_period($pdo, $id, $me, $reason);
     $p = find_period($pdo, $id) ?? throw new DomainException('Not found.');
     log_activity($pdo, 'period.reopen', 'period', $id, ['period_id' => $id, 'after' => ['name' => $p['name'], 'status' => 'open', 'reason' => $reason, 'reopen_count' => $p['reopen_count']]]);
+    notify_members_with_right('periods.manage', 'period_reopened', 'period', $id, $p['name'] . ' was reopened', 'The period takes postings again.');
     $pdo->commit();
     return $p;
 });
