@@ -513,7 +513,7 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 currency, the CSV), the entry page (head, the lines editor with the balance strip and Post, the source document, the reversal links, attachments, notes, the timeline, the actions
 by status), draft / update / line save / line remove / post / post batch / reverse / void with the database as the referee, attachments and notes generic over the record map
 (`RECORD_VIEWS`), the eval guard in the kit; 11 actions, 4 screens. **Proof:** `tests/phase3/slice2/run.sh` — **161 checks green** (draft 28, post 23, reverse 20, records 23, list 20,
-agents 10, json 10, browser 27); slice 1 (219), Phase 2 (251) and Phase 0 still green. **THE HANDOFF POINT: slices 3–10 are the worker's** (gl CLAUDE.md "Build order and the handoff").
+agents 10, json 10, browser 27); slice 1 (219), Phase 2 (251) and Phase 0 still green. **THE HANDOFF POINT: slices 3–9 are the worker's** (gl CLAUDE.md "Build order and the handoff").
 
 **SLICE 1 — the chart and fiscal time, BUILT and proven 2026-10-05** (`docs/build-specs/chart-fiscal.md`, the CRUD exemplar for workers): the chart as cards by type with
 balances as of a date, the account page with its activity, running balance, children and CSV, add/edit/archive (the trigger and the archive guard as the referee), the fiscal
