@@ -62,6 +62,7 @@ $count = static fn (string $id, int|null $n, string $label, string $url, string 
                             <div><div class="fw-semibold">No books yet</div><div class="fs-12 text-muted">Net income for the month appears here once entries post.</div></div></div>
                     <?php else: ?>
                         <div class="d-flex align-items-baseline gap-2"><span class="fs-3 fw-bold <?= (float) $h['this_month']['net_income'] < 0 ? 'text-danger' : 'text-dark' ?>" id="home-net-income"><?= e(fmt_money($h['this_month']['net_income'], $cur)) ?></span><span class="fs-12 text-muted">net income, <?= e(date('M Y', strtotime($h['this_month']['from']))) ?> to date</span></div>
+                        <div class="row g-2 mt-2 fs-12"><div class="col-6"><div class="text-muted">Revenue</div><div class="fw-semibold" id="home-revenue"><?= e(fmt_money($h['this_month']['revenue'], $cur)) ?></div></div><div class="col-6"><div class="text-muted">Spend</div><div class="fw-semibold" id="home-spend"><?= e(fmt_money($h['this_month']['spend'], $cur)) ?></div></div></div>
                         <div class="fs-12 mt-2"><?= hx_link('/statements/pl?from=' . e($h['this_month']['from']) . '&to=' . e($h['this_month']['to']), 'Profit and loss', 'me-3') ?><?= hx_link('/statements/balance-sheet', 'Balance sheet', 'me-3') ?><?= hx_link('/statements/cash-flow', 'Cash flow') ?></div>
                     <?php endif; ?>
                 </div>

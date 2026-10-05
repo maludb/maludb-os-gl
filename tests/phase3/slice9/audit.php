@@ -1,0 +1,67 @@
+<?php
+/** Proof — the audit page (spec "Proof" 1): February's reopening with its reason and the late entry posted into it, a reversal with its reason, a voided draft, September's AI verdict (differs, the OpenAI sentence), the control tie-out with the opening entry's 1,000 on 1200, a Bookkeeper → 403, the Accountant → 200. */
+require __DIR__ . '/lib.php';
+$owner = as_member(1); $bea = as_member(27); $carl = as_member(28); $ann = as_member(29); $vera = as_member(26);
+ensure_year($owner); ar_fixture();
+echo "1. The world\n";
+$cust = mk_customer('SMOKE Opening Customer');
+$opening = post_as_carl('2026-01-01', [line('1200', '1000.00', '0.00') + ['customer' => $cust], line('3000', '0.00', '1000.00')], 'SMOKE opening receivable');
+$openNum = (string) one('SELECT number FROM journal_entries WHERE id = :i', ['i' => $opening]);
+$jan = post_as_carl('2026-01-20', [line('1010', '500.00', '0.00'), line('4100', '0.00', '500.00')], 'SMOKE January sale');
+$feb = post_as_carl('2026-02-10', [line('6200', '40.00', '0.00'), line('1010', '0.00', '40.00')], 'SMOKE February software');
+$febP = period_id('2026-02');
+[$c, $b] = act($carl, '/periods/close.php', ['period' => $febP]);
+ok($c === 200, 'February closed by the Controller');
+[$c, $b] = act($carl, '/periods/reopen.php', ['period' => $febP, 'reason' => 'SMOKE: a late vendor bill']);
+ok($c === 200, 'and reopened with a reason');
+$late = post_as_carl('2026-02-27', [line('6200', '75.00', '0.00'), line('1010', '0.00', '75.00')], 'SMOKE late February entry');
+$lateNum = (string) one('SELECT number FROM journal_entries WHERE id = :i', ['i' => $late]);
+$rev = post_as_carl('2026-03-05', [line('6200', '12.00', '0.00'), line('1010', '0.00', '12.00')], 'SMOKE entry to reverse');
+$revNum = (string) one('SELECT number FROM journal_entries WHERE id = :i', ['i' => $rev]);
+[$c, $b] = act($carl, '/journal/reverse.php', ['entry' => $rev, 'reason' => 'SMOKE: posted to the wrong account', 'reverse_date' => '2026-03-06']);
+ok($c === 200, 'an entry reversed with its reason');
+[$c, $b, $dr] = draft($bea, '2026-03-07', [line('6200', '9.00', '0.00'), line('1010', '0.00', '9.00')], 'SMOKE draft to void');
+[$c, $b] = act($bea, '/journal/void.php', ['entry' => $dr, 'reason' => 'SMOKE: entered twice']);
+ok($c === 200, 'a draft voided with its reason');
+$sept = ai_doc('2026-09', 'closed', [ai_line('anthropic', 'claude-sonnet-5-5', 'Accounting', 'Sasha', 120, 0, '12.3456'), ai_line('openai', 'gpt-5', 'Front Office', 'Seamus', 30, 0, '3.0000')]);
+ledger_state(['2026-09' => $sept]);
+act($bea, '/ap/ai/pull.php', ['period' => '2026-09']);
+$S = stmt_id('2026-09');
+act($bea, '/ap/ai/import.php', ['ai_statement' => $S]);
+$bills = q("SELECT b.id, b.number, v.name FROM ai_statement_bills ab JOIN bills b ON b.id = ab.bill_id JOIN vendors v ON v.id = b.vendor_id WHERE ab.statement_id = :s ORDER BY b.id", ['s' => $S]);
+foreach ($bills as $bl) { act($carl, '/bills/approve.php', ['bill' => (int) $bl['id']]); }
+$openai = array_values(array_filter($bills, fn ($x) => stripos($x['name'], 'openai') !== false))[0] ?? null;
+[$c, $b] = act($carl, '/bills/void.php', ['bill' => (int) $openai['id'], 'reason' => 'SMOKE: wrong provider']);
+[$c, $b] = act($bea, '/ap/ai/check.php', ['ai_statement' => $S]);
+ok(($b['verdict'] ?? '') === 'differs', 'September\'s check differs after the OpenAI bill was voided');
+echo "2. The page\n";
+foreach ([['Carl (Controller)', $carl], ['Ann (Accountant)', $ann], ['the owner', $owner]] as [$who, $jar]) {
+    [$c, $d] = screen($jar, '/audit?from=2026-01-01&to=2026-12-31');
+    ok($c === 200 && isset($d['reopened_periods'], $d['reversals'], $d['voids'], $d['ai_statements'], $d['control_check'], $d['control_lines']), "$who reads the audit page (200)");
+}
+ok(screen($bea, '/audit')[0] === 403 && screen($vera, '/audit')[0] === 403, 'the Bookkeeper and the Viewer get 403');
+[$c, $d] = screen($ann, '/audit?from=2026-01-01&to=2026-12-31');
+$p = array_values(array_filter($d['reopened_periods'], fn ($x) => $x['name'] === '2026-02'))[0] ?? [];
+ok(($p['reopen_count'] ?? 0) === 1 && ($p['reopenings'][0]['reason'] ?? '') === 'SMOKE: a late vendor bill' && ($p['reopenings'][0]['by'] ?? '') === 'SMOKE Carl' && !empty($p['reopenings'][0]['at']), 'February: reopened once, by Carl, with the reason and the time');
+ok(count($p['posted_after_reopen'] ?? []) === 1 && $p['posted_after_reopen'][0]['number'] === $lateNum && $p['posted_after_reopen'][0]['amount'] === '75.00' && $p['posted_after_reopen'][0]['by'] === 'SMOKE Carl', 'and the late entry posted into it after the reopening (' . $lateNum . ', 75.00) — not the one posted before');
+ok(count(array_filter($d['reopened_periods'], fn ($x) => $x['name'] === '2026-03')) === 0, 'a period never reopened is not listed');
+$r = array_values(array_filter($d['reversals'], fn ($x) => $x['number'] === $revNum))[0] ?? [];
+ok(($r['reason'] ?? '') === 'SMOKE: posted to the wrong account' && ($r['amount'] ?? '') === '12.00' && !empty($r['reversal_number']) && ($r['by'] ?? '') === 'SMOKE Carl', 'the reversal: the original, the reversing entry, the reason, who');
+$v = array_values(array_filter($d['voids'], fn ($x) => (int) $x['journal_entry_id'] === $dr))[0] ?? [];
+ok(($v['reason'] ?? '') === 'SMOKE: entered twice' && ($v['by'] ?? '') === 'SMOKE Bea' && ($v['amount'] ?? '') === '9.00', 'the voided draft: its reason, who and the amount');
+$ai = array_values(array_filter($d['ai_statements'], fn ($x) => $x['period'] === '2026-09'))[0] ?? [];
+ok(($ai['status'] ?? '') === 'differs' && count($ai['differences'] ?? []) === 1 && str_contains($ai['differences'][0], 'OpenAI') && str_contains($ai['differences'][0], 'void'), 'September: verdict differs, with the OpenAI sentence (' . ($ai['differences'][0] ?? '-') . ')');
+$ctl = array_values(array_filter($d['control_check'], fn ($x) => $x['control'] === 'receivable'))[0] ?? [];
+ok(($ctl['ledger'] ?? '') === '1000.00' && (float) ($ctl['subledger'] ?? 1) === 0.0 && ($ctl['difference'] ?? '') === '-1000.00', 'the receivable tie-out: the ledger 1,000.00, the documents 0.00, the difference -1,000.00');
+$cl = array_values(array_filter($d['control_lines'], fn ($x) => $x['number'] === $openNum))[0] ?? [];
+ok(($cl['account'] ?? '') === '1200' && ($cl['debit'] ?? '') === '1000.00' && ($cl['source'] ?? '') === 'manual', 'the line with no document behind it: the opening entry ' . $openNum . ' puts 1,000.00 on 1200');
+ok(($d['posted_after_close'] ?? -1) === 0, 'no entry was posted after its period closed (0)');
+[$c, $d2] = screen($ann, '/audit?from=2026-03-01&to=2026-03-31');
+ok(count($d2['reopened_periods']) === 0 && count(array_filter($d2['reversals'], fn ($x) => $x['number'] === $revNum)) === 1 && count($d2['ai_statements']) === 0, 'a narrower range shows only March: no reopening, the reversal, no AI month');
+[$c, $d3] = screen($ann, '/audit');
+ok($c === 200 && $d3['range']['from'] === '2026-01-01' && $d3['range']['to'] === '2026-12-31', 'the default range is the fiscal year');
+ok(screen($ann, '/audit?from=2026-05-01&to=2026-04-01')[0] === 422, 'a range that ends before it starts: 422');
+$body = page($ann, '/audit?from=2026-01-01&to=2026-12-31')['body'];
+ok(str_contains($body, 'id="audit-reopened-' . $febP . '"') && str_contains($body, 'SMOKE: a late vendor bill') && str_contains($body, 'id="audit-reversal-' . $rev . '"') && str_contains($body, 'id="audit-void-' . $dr . '"') && str_contains($body, 'id="audit-tie-receivable"') && str_contains($body, 'id="audit-closed-count"'), 'the page renders each part with its reason');
+ok(str_contains(html_entity_decode($body), $openNum) && str_contains($body, '/journal/' . $opening), 'the tie-out names the opening entry and links to it');
+finish();

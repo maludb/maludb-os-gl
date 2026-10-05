@@ -34,10 +34,22 @@ None new: every screen is a GET; the exports' downloads log `export.download` (`
 `export.download`, `screen.view`.
 
 ## Proof (`tests/phase3/slice9/run.sh`)
-- [ ] The audit page lists February's reopen with the reason and the late entry posted after it; the reversal with its reason; the voided draft; September's AI verdict `differs` with the OpenAI difference; the tie-out naming the opening entry's 1,000 on 1200 with the entry number; a Bookkeeper → 403; the Accountant → 200.
-- [ ] Exports: each file's row count equals the view's; the ledger detail sums to the trial balance; the ZIP holds twelve files; each logged; a Viewer → 403 (`exports.download`).
-- [ ] The home's every region filled with the world's figures; This month's net income equals `gl_net_income()`; the agents page shows the two agents and the last morning note's time.
-- [ ] 375 and 1280; the registry reads the four screens as built; every earlier suite still green; the installer's `plan` clean.
+- [x] The audit page lists February's reopen with the reason and the late entry posted after it; the reversal with its reason; the voided draft; September's AI verdict `differs` with the OpenAI difference; the tie-out naming the opening entry's 1,000 on 1200 with the entry number; a Bookkeeper → 403; the Accountant → 200.
+- [x] Exports: each file's row count equals the view's; the ledger detail sums to the trial balance; the ZIP holds twelve files; each logged; a Viewer → 403 (`exports.download`).
+- [x] The home's every region filled with the world's figures; This month's net income equals `gl_net_income()`; the agents page shows the two agents and the last morning note's time.
+- [x] 375 and 1280; the registry reads the four screens as built; every earlier suite still green; the installer's `plan` clean.
+
+## Built and proven 2026-10-05 by the worker: 101 checks green (audit 23, exports 26, home 26, browser 26)
+The registry reads **92 screens (92 built), 124 actions (124 built)**: every screen of the manifest is built. No schema change. Phase 2's last placeholder hop now goes to `/audit` and its gate proof no longer needs a placeholder to exist.
+
+## Decisions taken while building (2026-10-05)
+- **The audit's parts** (`app/features/audit/queries.php`): a reopened period is read from `mcp_fiscal_periods` (`reopen_count > 0`, overlapping the range) with each reopening from the activity log (`period.reopen`: who, when, `after.reason`) — the view keeps only the latest reason — and the entries posted into it after, from `journal_entry.post` rows with `after.reopened_period`. Reversals are the originals with status `reversed` in the range (reason, reversing entry, who posted it); voids are drafts voided in the range, their amount summed from the lines (a voided draft's totals are zero). Each AI month in the range shows its stored verdict, and a differing one the sentence per provider from `ai_difference_sentence()`. The control tie-out is `gl_control_check()` as of the range's end with every figure written to the cent; the lines "with no document behind them" are posted lines on the receivable and payable accounts of source manual, opening, import, recurring or closing.
+- **Posted into a closed period** is a count of entries whose `posted_at` is after their closed period's `closed_at` — the invariant the trigger keeps, shown as 0 — with the rule in words: a refused post is not a post and is not logged as one.
+- **The default range** is the open fiscal year containing today, else this calendar year. The page needs `periods.manage` or `journal.override` (a person lacking both gets the first right's sentence); the activity log is read through `mcp_activity_log`, whole for a holder of `reports.view`.
+- **The exports** (`app/features/exports/`): twelve files from the same views and functions the screens read — ledger detail, journal, chart with balances, trial balance, profit and loss, balance sheet, receivables and payables aging, invoices, bills, receipts, payments. A flat file is a header and its rows; a statement is its page's table through `statement_csv()`. Dated files take the period's `from`/`to` (a fiscal period or year, or custom dates); balances and aging take its end. The documents' files hold every row in the range with its status (drafts included, marked). Files are named `<file>-<period>.csv`, the ZIP `ledger-<period>.zip`; each download is logged `export.download` with `what`, `period`, `format`, the range and the row count (a ZIP: `files`) — never the data.
+- **The trial balance is not the ledger detail's sum**: a trial balance lists each account's net on one side, so the proof compares each account's net in the detail with the trial balance's row, and checks the detail's debits equal its credits.
+- **The home** gained revenue and spend beside net income under This month (revenue and spend from the profit and loss, net income still `gl_net_income()`). The agents page shows each agent's last morning note's time from the activity log (`morning_note.send` by that agent).
+- **Not built**: the agents page does not show a morning note's text (the home shows it to its recipient only; the log never holds the body).
 
 ## Open questions
 - (none)

@@ -64,6 +64,6 @@ function present_site(array $s): array
 function present_agent_here(array $a): array
 {
     $d = $a['last_dispatch'];
-    return ['member_id' => $a['member_id'], 'name' => $a['display_name'], 'job_title' => $a['job_title'], 'roles' => $a['roles'],
+    return ['member_id' => $a['member_id'], 'name' => $a['display_name'], 'job_title' => $a['job_title'], 'roles' => $a['roles'], 'last_morning_note' => json_ts($a['last_morning_note'] ?? null),
             'last_dispatch' => $d === null ? null : ['kind' => $d['kind'], 'via' => $d['via'], 'status' => $d['status'], 'record_type' => $d['record_type'], 'record_id' => $d['record_id'] === null ? null : (int) $d['record_id'], 'created_at' => json_ts($d['created_at']), 'answered_at' => json_ts($d['answered_at'])]];
 }

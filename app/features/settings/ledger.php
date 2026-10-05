@@ -415,6 +415,9 @@ function find_agents_here(PDO $pdo): array
         $d = $pdo->prepare('SELECT agent_dispatch_id, record_type, record_id, kind, via, status, created_at, answered_at FROM mcp_agent_dispatches WHERE agent_member_id = :m ORDER BY created_at DESC LIMIT 1');
         $d->execute(['m' => $a['member_id']]);
         $a['last_dispatch'] = $d->fetch() ?: null;
+        $n = $pdo->prepare("SELECT max(occurred_at) FROM mcp_activity_log WHERE action = 'morning_note.send' AND actor_member_id = :m");
+        $n->execute(['m' => $a['member_id']]);
+        $a['last_morning_note'] = $n->fetchColumn() ?: null;
     }
     unset($a);
     return $rows;

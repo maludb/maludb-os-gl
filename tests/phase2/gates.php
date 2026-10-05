@@ -44,7 +44,7 @@ ok(str_contains(page($jUser, '/settings/general')['body'], 'change the ledger&#0
 ok(str_contains(page($jBook, '/audit')['body'], 'You may not close or reopen a period.'), 'a right joined by | refuses in the first right\'s sentence');
 $stubs = array_filter(explode("\n", (string) shell_exec('grep -rl "render_nav_stub(" ' . escapeshellarg(dirname(__DIR__, 2) . '/html') . ' 2>/dev/null')));
 $unnamed = array_filter($stubs, static fn (string $f): bool => !str_contains((string) file_get_contents($f), 'slice'));
-ok($stubs !== [] && $unnamed === [], count($stubs) . ' placeholder screens remain and every one names the slice that builds it (30 at Phase 2; each slice replaces its own)');
+ok($unnamed === [], count($stubs) . ' placeholder screens remain and every one names the slice that builds it (30 at Phase 2; each slice replaced its own, and slice 9 the last)');
 $menu = fn (string $j): array => (preg_match_all('/id="nav-([a-z-]+)"/', page($j, '/')['body'], $m) ? $m[1] : []);
 $groups = fn (string $j): array => (preg_match_all('/nxl-caption"><label>([^<]+)</', page($j, '/')['body'], $m) ? $m[1] : []);
 ok($groups($jUser) === ['Books', 'Receivables', 'Payables', 'Cash', 'Settings', 'Me'] && !in_array('match', $menu($jUser), true) && !in_array('general', $menu($jUser), true) && in_array('my-settings', $menu($jUser), true), 'a Viewer sees Books, Receivables, Payables, Cash, Settings (My settings only) and Me: ' . implode(', ', $groups($jUser)));

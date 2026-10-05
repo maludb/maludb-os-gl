@@ -18,7 +18,10 @@ function home_summary(PDO $pdo): array
         $to = date('Y-m-t');
         $st = $pdo->prepare('SELECT gl_net_income(:f, :t) AS net');
         $st->execute(['f' => $from, 't' => $to]);
-        $thisMonth = ['from' => $from, 'to' => $to, 'net_income' => $st->fetchColumn()];
+        require_once __DIR__ . '/../statements/periods.php';
+        require_once __DIR__ . '/../statements/queries.php';
+        $pl = profit_and_loss($pdo, $from, $to, null, null, null);
+        $thisMonth = ['from' => $from, 'to' => $to, 'net_income' => $st->fetchColumn(), 'revenue' => $pl['income_total'], 'spend' => $pl['expense_total']];
     }
     $ar = $pdo->query('SELECT currency, sum(total) AS total, sum(days_over_90) AS over_90, sum(open_invoices) AS open_count FROM gl_ar_aging() GROUP BY currency ORDER BY currency')->fetchAll();
     $ap = $pdo->query('SELECT currency, sum(total) AS total, sum(days_over_90) AS over_90, sum(open_bills) AS open_count FROM gl_ap_aging() GROUP BY currency ORDER BY currency')->fetchAll();
@@ -43,7 +46,7 @@ function present_home(array $h): array
             'last_reconciled_through' => $c['last_reconciled_through'], 'unmatched_lines' => (int) $c['unmatched_lines']], $h['cash']),
         'receivables' => array_map(static fn (array $r): array => ['currency' => $r['currency'], 'total' => $r['total'], 'over_90' => $r['over_90'], 'open_invoices' => (int) $r['open_count']], $h['ar']),
         'payables' => array_map(static fn (array $r): array => ['currency' => $r['currency'], 'total' => $r['total'], 'over_90' => $r['over_90'], 'open_bills' => (int) $r['open_count']], $h['ap']),
-        'this_month' => $h['this_month'] === null ? null : ['from' => $h['this_month']['from'], 'to' => $h['this_month']['to'], 'net_income' => $h['this_month']['net_income']],
+        'this_month' => $h['this_month'] === null ? null : ['from' => $h['this_month']['from'], 'to' => $h['this_month']['to'], 'net_income' => $h['this_month']['net_income'], 'revenue' => $h['this_month']['revenue'], 'spend' => $h['this_month']['spend']],
         'ai_statement' => $h['ai'] === null ? null : ['ai_statement_id' => (int) $h['ai']['ai_statement_id'], 'period' => $h['ai']['period'], 'kernel_status' => $h['ai']['kernel_status'], 'status' => $h['ai']['status'], 'bill_count' => (int) $h['ai']['bill_count']],
         'morning_note' => $h['morning_note'] === null ? null : ['title' => $h['morning_note']['title'], 'body' => $h['morning_note']['body'], 'created_at' => json_ts($h['morning_note']['created_at'])],
     ];

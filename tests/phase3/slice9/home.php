@@ -1,0 +1,46 @@
+<?php
+/** Proof — the home and the agents page (spec "Proof" 3): every region filled with the world's figures, This month's net income equal to gl_net_income(), revenue and spend, the agents page with the two agents and the last morning note's time. */
+require __DIR__ . '/lib.php';
+$owner = as_member(1); $bea = as_member(27); $carl = as_member(28); $vera = as_member(26);
+ensure_year($owner); $fx = ar_fixture();
+echo "1. A month of books\n";
+$m1 = date('Y-m-01'); $d1 = date('Y-m-02'); $today = date('Y-m-d');
+$cust = mk_customer('SMOKE Home Customer'); $vend = mk_vendor('SMOKE Home Vendor');
+post_as_carl($d1, [line('1010', '4000.00', '0.00'), line('4100', '0.00', '4000.00')], 'SMOKE this month sale');
+post_as_carl($d1, [line('6200', '650.25', '0.00'), line('1010', '0.00', '650.25')], 'SMOKE this month spend');
+$inv = mk_invoice($cust, [['Work', '1', '900.00']], ['issue_date' => $d1, 'due_date' => date('Y-m-d', strtotime('+20 days'))]); issue($inv);
+$bill = ready_bill($vend, [['Rent', '1', '300.00']], ['bill_date' => $d1, 'due_date' => date('Y-m-d', strtotime('+10 days'))]);
+$draft = mk_bill($vend, [['Draft thing', '1', '5.00']]);
+$bank = $fx['bank'];
+echo "2. The regions\n";
+[$c, $h] = screen($carl, '/');
+$net = (string) (function () use ($m1) { pdo()->exec("SELECT set_config('app.member_id', '28', false)"); return one('SELECT gl_net_income(:f, :t)', ['f' => $m1, 't' => date('Y-m-t')]); })();
+ok($c === 200 && ($h['this_month']['net_income'] ?? 'x') === $net, 'This month: net income ' . ($h['this_month']['net_income'] ?? '?') . ' equals gl_net_income() (' . $net . ')');
+ok(m_cmp((string) $h['this_month']['revenue'], '4900.00') === 0 && m_cmp((string) $h['this_month']['spend'], '950.25') === 0 && m_cmp(m_sub($h['this_month']['revenue'], $h['this_month']['spend']), $h['this_month']['net_income']) === 0, 'revenue 4,900.00 (the sale and the invoice), spend 950.25 (the entry and the bill): net is their difference');
+ok(count($h['cash'] ?? []) >= 1 && isset($h['cash_totals']) && $h['cash_trend'] !== null, 'cash: the bank accounts, the totals and the twelve-month trend');
+ok(count($h['receivables']) === 1 && $h['receivables'][0]['open_invoices'] >= 1 && m_cmp((string) $h['receivables'][0]['total'], '900.00') >= 0, 'who owes us: the open invoice in the aging');
+ok(count($h['payables']) === 1 && $h['payables'][0]['open_bills'] >= 1, 'whom we owe: the approved bill in the aging');
+ok($h['waiting']['draft_bills'] >= 1 && array_key_exists('unmatched_bank_lines', $h['waiting']) && array_key_exists('open_claims', $h['waiting']) && array_key_exists('bills_awaiting_approval', $h['waiting']), 'what waits: the draft bill and every other count');
+ok($h['posted_through'] !== null && $h['fiscal_year']['name'] === 'FY2026', 'posted through a date; the open fiscal year named');
+ledger_state(['2026-10' => ai_doc('2026-10', 'open', [ai_line('openai', 'gpt-5', 'IT', 'Sysadmin', 5, 0, '2.5000')])]);
+act($bea, '/ap/ai/pull.php', ['period' => '2026-10']);
+[$c, $h] = screen($carl, '/');
+ok(($h['ai_statement']['period'] ?? '') === '2026-10' && ($h['ai_statement']['status'] ?? '') === 'pulled', 'the AI bill: the latest month and its state');
+$agent = ['X-Action-Token: ' . person_token(40)];
+[$c, $b] = act_token('/settings/agents/morning-note.php', ['body' => "SMOKE morning: nothing needs you.", 'to_member' => 28], $agent);
+[$c, $h] = screen($carl, '/');
+ok(str_contains(json_encode($h['morning_note'] ?? []), 'nothing needs you'), 'the morning note: the newest, to its recipient');
+$body = page($carl, '/')['body'];
+foreach (['home-cash', 'home-receivables', 'home-payables', 'home-waiting', 'home-this-month', 'home-ai', 'home-morning-note', 'home-posted-through', 'home-net-income', 'home-revenue', 'home-spend'] as $id) { ok(str_contains($body, 'id="' . $id . '"'), "the page has #$id"); }
+ok(str_contains(html_entity_decode($body), '4,900.00') && str_contains(html_entity_decode($body), '950.25'), 'and shows the revenue and spend figures');
+ok(!str_contains($body, 'home-this-month-empty') && !str_contains($body, 'home-cash-empty'), 'no empty-state card where there are books');
+echo "3. The agents page\n";
+[$c, $d] = screen($owner, '/settings/agents');
+$agents = $d['agents'] ?? [];
+$book = array_values(array_filter($agents, fn ($a) => (int) $a['member_id'] === 40))[0] ?? [];
+ok($c === 200 && count($agents) >= 1 && ($book['name'] ?? '') === 'SMOKE Bookkeeper' && in_array('bookkeeper', $book['roles'] ?? [], true), 'the agents page lists the Bookkeeper with its roles');
+ok(!empty($book['last_morning_note']) && abs(strtotime((string) $book['last_morning_note']) - time()) < 120, 'and the time of its last morning note (' . ($book['last_morning_note'] ?? '-') . ')');
+$page = page($owner, '/settings/agents')['body'];
+ok(str_contains($page, 'id="agent-card-40-note"') && str_contains($page, 'Last morning note:'), 'the card says "Last morning note: …"');
+ok(screen($bea, '/settings/agents')[0] === 403, 'the Bookkeeper cannot open it (settings.manage)');
+finish();

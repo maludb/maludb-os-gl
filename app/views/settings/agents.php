@@ -9,6 +9,7 @@
                 <div class="d-flex align-items-center gap-2"><span class="avatar-text avatar-md rounded bg-soft-info text-info"><i class="feather-cpu"></i></span>
                     <div class="min-w-0"><div class="fw-bold text-truncate" id="agent-card-<?= $id ?>-name"><?= e($a['display_name']) ?></div><div class="fs-12 text-muted" id="agent-card-<?= $id ?>-roles"><?= e($a['job_title'] ?? 'Agent') ?><?= $a['roles'] !== [] ? ' · ' . e(implode(', ', $a['roles'])) : '' ?></div></div></div>
                 <div class="fs-12 text-muted mt-2" id="agent-card-<?= $id ?>-dispatch"><?= $d === null ? 'Never dispatched' : 'Last: ' . e($d['kind']) . ' via ' . e($d['via']) . ', ' . e(format_ts($d['created_at'], $tz, 'M j, g:i A')) . ' · ' . e($d['status']) ?></div>
+                <div class="fs-12 text-muted" id="agent-card-<?= $id ?>-note"><?= $a['last_morning_note'] === null ? 'No morning note yet' : 'Last morning note: ' . e(format_ts($a['last_morning_note'], $tz, 'M j, g:i A')) ?></div>
             </div></div></div>
         <?php endforeach; ?>
     </div>
