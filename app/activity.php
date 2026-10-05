@@ -61,12 +61,12 @@ function default_activity_source(): string
     return PHP_SAPI === 'cli' ? 'cron' : 'web';
 }
 
-function log_screen_view(PDO $pdo, string $screen): void
+function log_screen_view(PDO $pdo, string $screen, array $opts = []): void
 {
     if (wants_json() && ($_SERVER['HTTP_X_SCREEN_VIEW'] ?? '') !== '1') {
         return;
     }
-    log_activity($pdo, 'screen.view', null, null, ['screen' => $screen]);
+    log_activity($pdo, 'screen.view', null, null, ['screen' => $screen] + $opts);      // $opts: after (the statement's name, the record), keys like journal_entry_id
 }
 
 /**

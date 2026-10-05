@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T01:31:41+00:00",
+    "generated_at": "2026-10-05T08:46:33+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -337,8 +337,8 @@
             "section": "Statements and reports (slice 3)",
             "when": "the four statements as cards with the current period's headline figures and posted-through",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "statement": {
             "screen": "statement",
@@ -354,7 +354,7 @@
                 "site",
                 "format"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "reports": {
@@ -371,8 +371,8 @@
                 "vendor",
                 "format"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "customers-list": {
             "screen": "customers-list",

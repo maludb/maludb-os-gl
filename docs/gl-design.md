@@ -509,6 +509,8 @@ Every recommendation of §13 was taken, in one sitting, the same day the plan wa
 
 ## 16. State
 
+**SLICE 3 — the statements, BUILT 2026-10-05 by the worker (Sonnet 5.5)** (`docs/build-specs/statements.md`): the Statements page (four cards with their state and the posted-through line), the profit and loss (compare previous / last year, department and site), the balance sheet (the equation, current earnings, an as-of compare), the trial balance, the cash flow with its check; the reports — who owes us / whom we owe (per currency, linked), sales tax, spend, revenue, the customer statement, the control check; the table, the CSV (logged `export.download`) and the print page from one table shape. **127 checks green** (`tests/phase3/slice3/run.sh`); slices 1–2, Phase 2 and Phase 0 still green. **ONE QUESTION FOR THE OWNER, written in the spec's Open questions: the statement functions of db/015 carry no currency, so the four statements are one base-currency table (with a warning when another currency is in the books) rather than one per currency; the agings do split.** Next: slice 4 (receivables).
+
 **SLICE 2 — journal core, THE EXEMPLAR, BUILT and proven 2026-10-05** (`docs/build-specs/journal-core.md`): the journal as a ledger (drafts first, filters, 50 a page, totals per
 currency, the CSV), the entry page (head, the lines editor with the balance strip and Post, the source document, the reversal links, attachments, notes, the timeline, the actions
 by status), draft / update / line save / line remove / post / post batch / reverse / void with the database as the referee, attachments and notes generic over the record map

@@ -62,13 +62,13 @@ const groupsOf = async (page) => (await page.locator('.nxl-navbar .nxl-caption l
   await page.screenshot({ path: `${SHOTS}/phone-dashboard-bookkeeper.png` });
   await page.click('#tab-statements');
   await page.waitForURL(BASE + '/statements/');
-  await page.waitForSelector('#statements-coming');
+  await page.waitForSelector('#statements-cards');
   ok(page.url() === BASE + '/statements/', 'the Statements tab pushed /statements/ without a page load');
   ok((await page.title()).startsWith('Statements'), 'and set the title (' + (await page.title()) + ')');
   ok(await page.evaluate(() => document.querySelector('#tab-statements').classList.contains('active')), 'and highlighted the tab');
   ok(await page.evaluate(() => !document.querySelector('#nav-home .nxl-link').classList.contains('active') && document.querySelector('#nav-statements .nxl-link').classList.contains('active')), 'and the sidebar highlights the screen, not Home');
   ok(await page.evaluate(() => document.getElementById('page-content').dataset.screen === 'statements'), 'and re-stamped #page-content data-screen for the command bar');
-  await page.screenshot({ path: `${SHOTS}/phone-statements-placeholder.png` });
+  await page.screenshot({ path: `${SHOTS}/phone-statements.png` });
   await page.click('#tab-invoices');
   await page.waitForURL(BASE + '/invoices/');
   await page.waitForSelector('#invoices-coming');

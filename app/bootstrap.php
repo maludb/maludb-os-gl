@@ -75,6 +75,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', env('APP_DEBUG') === '1' ? '1' : '0');
 ini_set('log_errors', '1');
 
+require_once __DIR__ . '/money_math.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/http.php';
 require_once __DIR__ . '/handler.php';
