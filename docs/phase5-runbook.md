@@ -1,7 +1,7 @@
 # Phase 5 — putting General Ledger live (the owner's runbook)
 
 2026-10-05. Everything Phases 0–4 could prove is proven on scratch databases (`tests/phase*/run.sh`, the whole story in `tests/phase5/e2e.php`, 23 checks). What is left needs root, DNS, a mail key and people — it is yours, in this order.
-Nothing here has been run. The classifier refuses `apply` for the worker; the commands below are for you.
+The classifier refuses `apply` for the worker; the commands below are for you. **Applied 2026-10-05 14:17** (steps 0–2 done, twice: `subello_gl`, application 59, the vhost, the eight units, the roles read back, both agents hired; the AI poll has pulled two months); steps 3–5 remain — the MaluMail key, the Bookkeeper's duty, the grants to people, DNS/TLS at the proxy, the settings' blanks (business name and address, the control accounts, the morning-note recipient), the first entries and the live proof.
 
 ## 0. Before anything (read-only)
 ```
@@ -24,7 +24,7 @@ What it does that you should know about: creates `subello_gl` with the **20** mi
 registers the application, mints its token, imports the seven skills, writes `mcp/registries/gl.json` and **restarts `certstudy-actions-mcp`**. That restart loads the kernel's `application_actions.py`, which had a missing `import re` until commit 4635a06 (fixed 2026-10-05): confirm the kernel is at that commit or later before you apply.
 
 ## 3. Keys and decisions (any time after 2)
-- MaluMail: `MALUMAIL_API_KEY`, `MAIL_FROM`, `MAIL_FROM_NAME` into `/srv/apps/gl/config/.env` (invoices, statements, reminders and the morning note's email go through it; the worker sends once a minute).
+- MaluMail: `MALUMAIL_API_KEY`, `MAIL_FROM`, `MAIL_FROM_NAME` into `/srv/apps/gl/config/.env` (invoices, statements, reminders and the morning note's email go through it; the worker sends once a minute). **Since 2026-10-05 the installer writes them**: put the key in `~/.malumail` (one line) and run step 2's `apply` once more — its `mail` step fills the three keys (the pages and the worker read `config/.env` on every request and pass, so nothing needs a restart); the key is never printed.
 - Texts (optional): `php /var/www/bin/notify_endpoint_set.php` if no application has set the notification number yet.
 - DNS and TLS for `gl.subello.com` at the proxy (until then `/etc/hosts` maps it to this host).
 - Grants, in the kernel (super-admin): Viewer, Bookkeeper, Controller, Accountant — **and one person with the admin role** (settings, tokens). Nobody has the books by default.
