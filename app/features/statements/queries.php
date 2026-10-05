@@ -308,7 +308,8 @@ function customer_statement(PDO $pdo, int $customerId, string $from, string $to)
     $sql = "SELECT d, kind, number, id, amount, memo FROM (
                 SELECT issue_date AS d, 'invoice' AS kind, number, invoice_id AS id, total AS amount, NULL AS memo FROM mcp_invoices WHERE customer_id = :c AND status NOT IN ('draft', 'void')
                 UNION ALL SELECT received_on, 'receipt', number, receipt_id, -amount, reference FROM mcp_receipts WHERE customer_id = :c AND status = 'recorded'
-                UNION ALL SELECT issue_date, 'credit_note', number, credit_note_id, -total, NULL FROM mcp_credit_notes WHERE customer_id = :c AND status = 'issued') t
+                UNION ALL SELECT issue_date, 'credit_note', number, credit_note_id, -total, NULL FROM mcp_credit_notes WHERE customer_id = :c AND status = 'issued'
+                UNION ALL SELECT written_off_at::date, 'write_off', number, invoice_id, -balance_due, write_off_reason FROM mcp_invoices WHERE customer_id = :c AND status = 'written_off') t
             ORDER BY d, id";
     $st = $pdo->prepare($sql);
     $st->execute(['c' => $customerId]);

@@ -12,6 +12,9 @@ const PARTIAL_UPDATE_TARGETS = [
     // Each slice adds its own save endpoints here (the manifest's `any field of`): the table, the form's id field, the read view, its id column.
     '/journal/save.php'         => ['journal_entries', 'entry', 'mcp_journal_entries', 'journal_entry_id'],
     '/customers/save.php'       => ['customers', 'customer', 'mcp_customers', 'customer_id'],
+    '/invoices/save.php'        => ['invoices', 'invoice', 'mcp_invoices', 'invoice_id'],
+    '/credit-notes/save.php'    => ['credit_notes', 'credit_note', 'mcp_credit_notes', 'credit_note_id'],
+    '/deposits/save.php'        => ['deposits', 'deposit', 'mcp_deposits', 'deposit_id'],
     '/vendors/save.php'         => ['vendors', 'vendor', 'mcp_vendors', 'vendor_id'],
     '/accounts/save.php'        => ['accounts', 'account', 'mcp_accounts', 'account_id'],
     '/settings/items/save.php'  => ['items', 'item', 'mcp_items', 'item_id'],

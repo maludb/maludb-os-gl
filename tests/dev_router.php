@@ -16,6 +16,7 @@ $rel = rtrim($path, '/') ?: '/';
 if (preg_match('#^/i/([a-f0-9]{48})(?:/(claim|print))?$#', $path, $m)) { $_GET['token'] = $m[1]; $_REQUEST['token'] = $m[1]; $target = isset($m[2]) ? "/i/{$m[2]}.php" : '/i.php'; }
 elseif (preg_match('#^/statements/([a-z_-]+)$#', $path, $m) && !is_file($root . "/statements/{$m[1]}.php")) { $_GET['statement'] = $m[1]; $_REQUEST['statement'] = $m[1]; $target = '/statements/statement.php'; }
 elseif (preg_match('#^/reports/([a-z_-]+)$#', $path, $m) && !is_file($root . "/reports/{$m[1]}.php")) { $_GET['report'] = $m[1]; $_REQUEST['report'] = $m[1]; $target = '/reports/report.php'; }
+elseif (preg_match('#^/(.+)/([0-9]+)/([a-z_-]+)$#', $rel, $m) && is_file($root . '/' . $m[1] . '/' . $m[3] . '.php')) { $target = '/' . $m[1] . '/' . $m[3] . '.php'; $_GET['id'] = $m[2]; $_REQUEST['id'] = $m[2]; }   // a page of a record: /invoices/{id}/print → invoices/print.php?id=
 elseif (isset($map[$rel])) { $target = $map[$rel]; }
 elseif ($rel === '/') { $target = '/index.php'; }
 elseif (preg_match('#^/(.+)/new$#', $rel, $m) && is_file($root . '/' . $m[1] . '/form.php')) { $target = '/' . $m[1] . '/form.php'; }

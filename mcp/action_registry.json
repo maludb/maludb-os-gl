@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-10-05T08:46:33+00:00",
+    "generated_at": "2026-10-05T09:15:21+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -383,8 +383,8 @@
                 "q",
                 "include_archived"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "customer-add": {
             "screen": "customer-add",
@@ -392,7 +392,7 @@
             "section": "Receivables (slice 4)",
             "when": "to add a customer",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "customer-view": {
@@ -401,7 +401,7 @@
             "section": "Receivables (slice 4)",
             "when": "one customer: contacts, open invoices, receipts, credits, claims, notes, attachments",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "customer-edit": {
@@ -410,7 +410,7 @@
             "section": "Receivables (slice 4)",
             "when": "to change a customer",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "customer-statement": {
@@ -423,7 +423,7 @@
                 "to",
                 "format"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "invoices-list": {
@@ -439,8 +439,8 @@
                 "to",
                 "q"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "invoice-add": {
             "screen": "invoice-add",
@@ -451,7 +451,7 @@
                 "customer",
                 "copy_of"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "invoice-view": {
@@ -460,7 +460,7 @@
             "section": "Receivables (slice 4)",
             "when": "one invoice: lines, receipts and credits applied, claims, the secure link's state, attachments, notes, the timeline, the actions by status",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "invoice-edit": {
@@ -469,7 +469,7 @@
             "section": "Receivables (slice 4)",
             "when": "to change a draft invoice and its lines",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "invoice-print": {
@@ -478,7 +478,7 @@
             "section": "Receivables (slice 4)",
             "when": "the print-ready invoice page (the same page the customer sees on the link)",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "credit-notes-list": {
@@ -490,8 +490,8 @@
                 "status",
                 "customer"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "credit-note-add": {
             "screen": "credit-note-add",
@@ -502,7 +502,7 @@
                 "customer",
                 "invoice"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "credit-note-view": {
@@ -511,7 +511,7 @@
             "section": "Receivables (slice 4)",
             "when": "one credit note: lines, where it is applied",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "credit-note-edit": {
@@ -520,7 +520,7 @@
             "section": "Receivables (slice 4)",
             "when": "to change a draft credit note",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "receipts-list": {
@@ -535,8 +535,8 @@
                 "unapplied",
                 "undeposited"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "receipt-add": {
             "screen": "receipt-add",
@@ -549,7 +549,7 @@
                 "amount",
                 "claim"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "receipt-view": {
@@ -558,7 +558,7 @@
             "section": "Receivables (slice 4)",
             "when": "one receipt: its applications, its entry, its deposit",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "claims": {
@@ -569,7 +569,7 @@
             "params": [
                 "status"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "deposits-list": {
@@ -581,8 +581,8 @@
                 "bank_account",
                 "status"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "deposit-add": {
             "screen": "deposit-add",
@@ -592,7 +592,7 @@
             "params": [
                 "bank_account"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "deposit-view": {
@@ -601,7 +601,7 @@
             "section": "Receivables (slice 4)",
             "when": "one deposit: its receipts, its entry, the bank line it matched",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "vendors-list": {
@@ -2223,7 +2223,7 @@
             "approval": null,
             "log_event": "customer.save",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "customer_archive": {
             "action": "customer_archive",
@@ -2248,7 +2248,7 @@
             "approval": null,
             "log_event": "customer.archive",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "customer_delete": {
             "action": "customer_delete",
@@ -2267,7 +2267,7 @@
             "approval": "deletion",
             "log_event": "customer.delete",
             "who": "override",
-            "built": false
+            "built": true
         },
         "contact_save": {
             "action": "contact_save",
@@ -2328,7 +2328,7 @@
             "approval": null,
             "log_event": "contact.save",
             "who": "ar for a customer and ap for a vendor",
-            "built": false
+            "built": true
         },
         "contact_remove": {
             "action": "contact_remove",
@@ -2347,7 +2347,7 @@
             "approval": null,
             "log_event": "contact.remove",
             "who": "ar or ap",
-            "built": false
+            "built": true
         },
         "invoice_draft": {
             "action": "invoice_draft",
@@ -2414,7 +2414,7 @@
             "approval": null,
             "log_event": "invoice.draft",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_update": {
             "action": "invoice_update",
@@ -2487,7 +2487,7 @@
             "approval": null,
             "log_event": "invoice.update",
             "who": "ar",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "invoice_line_save": {
@@ -2561,7 +2561,7 @@
             "approval": null,
             "log_event": "invoice.line_save",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_line_remove": {
             "action": "invoice_line_remove",
@@ -2586,7 +2586,7 @@
             "approval": null,
             "log_event": "invoice.line_remove",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_issue": {
             "action": "invoice_issue",
@@ -2605,7 +2605,7 @@
             "approval": "money_out",
             "log_event": "invoice.issue",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_send": {
             "action": "invoice_send",
@@ -2636,7 +2636,7 @@
             "approval": "external_send",
             "log_event": "invoice.send",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_remind": {
             "action": "invoice_remind",
@@ -2661,7 +2661,7 @@
             "approval": "external_send",
             "log_event": "invoice.remind",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "invoice_void": {
             "action": "invoice_void",
@@ -2686,7 +2686,7 @@
             "approval": "money_out",
             "log_event": "invoice.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "invoice_write_off": {
             "action": "invoice_write_off",
@@ -2717,7 +2717,7 @@
             "approval": "money_out",
             "log_event": "invoice.write_off",
             "who": "override",
-            "built": false
+            "built": true
         },
         "invoice_delete": {
             "action": "invoice_delete",
@@ -2736,7 +2736,7 @@
             "approval": "deletion",
             "log_event": "invoice.delete",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "secure_link_rotate": {
             "action": "secure_link_rotate",
@@ -2755,7 +2755,7 @@
             "approval": null,
             "log_event": "invoice.secure_link_rotate",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "statement_send": {
             "action": "statement_send",
@@ -2792,7 +2792,7 @@
             "approval": "external_send",
             "log_event": "statement.send",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_draft": {
             "action": "credit_note_draft",
@@ -2847,7 +2847,7 @@
             "approval": null,
             "log_event": "credit_note.draft",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_update": {
             "action": "credit_note_update",
@@ -2908,7 +2908,7 @@
             "approval": null,
             "log_event": "credit_note.update",
             "who": "ar",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "credit_note_line_save": {
@@ -2982,7 +2982,7 @@
             "approval": null,
             "log_event": "credit_note.line_save",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_line_remove": {
             "action": "credit_note_line_remove",
@@ -3007,7 +3007,7 @@
             "approval": null,
             "log_event": "credit_note.line_remove",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_issue": {
             "action": "credit_note_issue",
@@ -3032,7 +3032,7 @@
             "approval": "money_out",
             "log_event": "credit_note.issue",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_apply": {
             "action": "credit_note_apply",
@@ -3063,7 +3063,7 @@
             "approval": "money_out",
             "log_event": "credit_note.apply",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_unapply": {
             "action": "credit_note_unapply",
@@ -3088,7 +3088,7 @@
             "approval": "money_out",
             "log_event": "credit_note.unapply",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "credit_note_void": {
             "action": "credit_note_void",
@@ -3113,7 +3113,7 @@
             "approval": "money_out",
             "log_event": "credit_note.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "credit_note_delete": {
             "action": "credit_note_delete",
@@ -3132,7 +3132,7 @@
             "approval": "deletion",
             "log_event": "credit_note.delete",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "receipt_record": {
             "action": "receipt_record",
@@ -3205,7 +3205,7 @@
             "approval": "money_out",
             "log_event": "receipt.record",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "receipt_apply": {
             "action": "receipt_apply",
@@ -3236,7 +3236,7 @@
             "approval": "money_out",
             "log_event": "receipt.apply",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "receipt_unapply": {
             "action": "receipt_unapply",
@@ -3261,7 +3261,7 @@
             "approval": "money_out",
             "log_event": "receipt.unapply",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "receipt_void": {
             "action": "receipt_void",
@@ -3286,7 +3286,7 @@
             "approval": "money_out",
             "log_event": "receipt.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "claim_confirm": {
             "action": "claim_confirm",
@@ -3317,7 +3317,7 @@
             "approval": "money_out",
             "log_event": "claim.confirm",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "claim_dismiss": {
             "action": "claim_dismiss",
@@ -3342,7 +3342,7 @@
             "approval": null,
             "log_event": "claim.dismiss",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "deposit_draft": {
             "action": "deposit_draft",
@@ -3379,7 +3379,7 @@
             "approval": null,
             "log_event": "deposit.draft",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "deposit_add_receipt": {
             "action": "deposit_add_receipt",
@@ -3404,7 +3404,7 @@
             "approval": null,
             "log_event": "deposit.add_receipt",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "deposit_remove_receipt": {
             "action": "deposit_remove_receipt",
@@ -3429,7 +3429,7 @@
             "approval": null,
             "log_event": "deposit.remove_receipt",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "deposit_record": {
             "action": "deposit_record",
@@ -3448,7 +3448,7 @@
             "approval": "money_out",
             "log_event": "deposit.record",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "deposit_void": {
             "action": "deposit_void",
@@ -3473,7 +3473,7 @@
             "approval": "money_out",
             "log_event": "deposit.void",
             "who": "override",
-            "built": false
+            "built": true
         },
         "deposit_delete": {
             "action": "deposit_delete",
@@ -3492,7 +3492,7 @@
             "approval": "deletion",
             "log_event": "deposit.delete",
             "who": "ar",
-            "built": false
+            "built": true
         },
         "vendor_save": {
             "action": "vendor_save",

@@ -161,8 +161,8 @@ function control_table(array $d, string $currency): array
 
 function customer_statement_table(array $d): array
 {
-    $words = ['invoice' => 'Invoice', 'receipt' => 'Receipt', 'credit_note' => 'Credit note'];
-    $urls = ['invoice' => '/invoices/', 'receipt' => '/receipts/', 'credit_note' => '/credit-notes/'];
+    $words = ['invoice' => 'Invoice', 'receipt' => 'Receipt', 'credit_note' => 'Credit note', 'write_off' => 'Write-off of'];
+    $urls = ['invoice' => '/invoices/', 'receipt' => '/receipts/', 'credit_note' => '/credit-notes/', 'write_off' => '/invoices/'];
     $rows = [t_row('row', [format_date($d['from']), 'Opening balance', '', '', $d['opening']])];
     foreach ($d['rows'] as $r) {
         $rows[] = t_row('row', [format_date($r['date']), ($words[$r['kind']] ?? $r['kind']) . ' ' . $r['number'], $r['debit'] ?? '', $r['credit'] ?? '', $r['balance']], ($urls[$r['kind']] ?? '/') . $r['id']);

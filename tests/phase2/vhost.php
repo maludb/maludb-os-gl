@@ -19,7 +19,8 @@ ok(page($j, '/reports/ar-aging')['code'] === 200 && page($j, '/reports/ap-aging'
 ok(req('GET', '/statements/pl', ['jar' => $j])['code'] === 200 && req('GET', '/statements/nonsense', ['jar' => $j])['code'] === 404, '/statements/{statement} is rewritten to statements/statement.php (slice 3; an unknown name: 404)');
 ok(req('GET', '/journal/new', ['jar' => $j])['code'] === 200 && req('GET', '/journal/999999', ['jar' => $j])['code'] === 404, '/journal/new reaches form.php (slice 2) and /journal/{id} view.php (an unknown id: 404)');
 ok(req('GET', '/nosuchscreen', ['jar' => $j])['code'] === 404, 'an unknown path: 404');
-ok(req('GET', '/i/' . str_repeat('ab', 24))['code'] === 404 && req('GET', '/i/' . str_repeat('ab', 24) . '/claim')['code'] === 404 && req('GET', '/i/short')['code'] === 404, '/i/{token} and /i/{token}/claim are rewritten (slice 4; 404 until then); a short token is 404');
+$dead = req('GET', '/i/' . str_repeat('ab', 24));
+ok($dead['code'] === 404 && str_contains($dead['body'], 'This link has expired.') && req('GET', '/i/' . str_repeat('ab', 24) . '/claim')['code'] === 405 && req('GET', '/i/' . str_repeat('ab', 24) . '/print')['code'] === 404 && req('GET', '/i/short')['code'] === 404 && !str_contains(req('GET', '/i/short')['body'], 'This link has expired.'), '/i/{token}, /claim (POST only: 405 to a GET) and /print are rewritten (slice 4): an unknown token is the one dead-link page, 404; a short token is not routed');
 $h = req('GET', '/api/v1/health');
 ok($h['code'] === 200 && json_decode($h['body'], true)['application'] === 'gl', '/api/v1/health answers');
 ok(req('GET', '/api/v1/health.php')['code'] === 200, '/api/v1/health.php answers too');
