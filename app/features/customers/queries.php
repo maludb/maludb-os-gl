@@ -108,3 +108,29 @@ function customers_for_select(PDO $pdo): array
 {
     return array_map(static function (array $c): array { $c['customer_id'] = (int) $c['customer_id']; return $c; }, $pdo->query('SELECT customer_id, name, currency, terms_days FROM mcp_customers WHERE archived_at IS NULL ORDER BY lower(name)')->fetchAll());
 }
+
+/** A page of the live customers the record picker offers, by name (the same ILIKE as find_customers(), without the balances a list card carries): currency and terms as the detail. */
+function customers_pick_page(PDO $pdo, string $q, int $page): array
+{
+    $where = 'archived_at IS NULL';
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (name ILIKE :q OR legal_name ILIKE :q)';
+        $args['q'] = picker_like($q);
+    }
+    $r = picker_paged_query($pdo, 'customer_id, name, currency, terms_days', 'FROM mcp_customers WHERE ' . $where, $args, 'lower(name), customer_id', $page);
+    $r['rows'] = array_map(static fn (array $c): array => [
+        'id' => (int) $c['customer_id'], 'label' => $c['name'],
+        'detail' => implode(' · ', array_filter([trim((string) $c['currency']), $c['terms_days'] === null ? null : 'Net ' . (int) $c['terms_days']])),
+    ], $r['rows']);
+    return $r;
+}
+
+/** One customer's name for the picker field (archived or not). */
+function customer_pick_label(PDO $pdo, int $id): ?string
+{
+    $st = $pdo->prepare('SELECT name FROM mcp_customers WHERE customer_id = :id');
+    $st->execute(['id' => $id]);
+    $n = $st->fetchColumn();
+    return $n === false ? null : (string) $n;
+}

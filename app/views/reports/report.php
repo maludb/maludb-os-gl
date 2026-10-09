@@ -8,14 +8,10 @@ if ($slug === 'spend' || $slug === 'revenue') {
     $fields .= '</select></div>';
 }
 if ($slug === 'customer-statement' || $slug === 'ar-aging') {
-    $fields .= '<div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="period-picker-customer">Customer</label><select name="customer" id="period-picker-customer" class="form-select btn-touch"><option value="">' . ($slug === 'ar-aging' ? 'All' : 'Choose a customer…') . '</option>';
-    foreach ($customers as $c) { $fields .= '<option value="' . (int) $c['customer_id'] . '"' . ($customer === (int) $c['customer_id'] ? ' selected' : '') . '>' . e($c['name']) . '</option>'; }
-    $fields .= '</select></div>';
+    $fields .= '<div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="period-picker-customer">Customer</label>' . customer_select(db(), 'customer', $customer, '', $slug === 'ar-aging' ? 'All' : 'Choose a customer…', 'period-picker-customer') . '</div>';
 }
 if ($slug === 'ap-aging') {
-    $fields .= '<div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="period-picker-vendor">Vendor</label><select name="vendor" id="period-picker-vendor" class="form-select btn-touch"><option value="">All</option>';
-    foreach ($vendors as $v) { $fields .= '<option value="' . (int) $v['vendor_id'] . '"' . ($vendor === (int) $v['vendor_id'] ? ' selected' : '') . '>' . e($v['name']) . '</option>'; }
-    $fields .= '</select></div>';
+    $fields .= '<div class="col-12 col-md-3"><label class="form-label fs-12 text-muted" for="period-picker-vendor">Vendor</label>' . vendor_select(db(), 'vendor', $vendor, '', 'All', 'period-picker-vendor') . '</div>';
 }
 $range2 = $range; $range2['as_of'] = $asOf; ?>
 <?= view('shared/header.php', ['id' => 'report', 'title' => $title, 'crumbs' => [['Home', '/'], ['Statements', '/statements/'], [$title, null]], 'back' => back_link() ?? ['/statements/', 'Statements']]) ?>

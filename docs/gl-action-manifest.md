@@ -15,7 +15,9 @@
 - **Ids** are kebab-case `{entity}-list`, `{entity}-add`, `{entity}-view`, `{entity}-edit`, plus named screens.
 - **Canonical URLs** need the rewrites in `deploy/apache-gl.conf`: `/{x}/new` → `form.php`, `/{x}/{id}/edit` → `form.php?id=`,
   `/{x}/{id}` → `view.php?id=`, `/{x}/{id}/{page}` → `{page}.php?id=`, `/statements/{name}` → `statement.php?statement=`,
-  `/reports/{name}` → `report.php?report=`. Every screen is a page, never a modal; designed at 375 px first; cards for
+  `/reports/{name}` → `report.php?report=`; `/pick/?source=&q=&page=&<params>` → `pick/index.php` (the record picker's rows — a fragment, not a screen: `app/pickers.php` names the sources, the rights
+  that admit a caller and their filter params; a search logs nothing and is no action). Every screen is a page, never a modal — the one exception is the record picker
+  (`app/picker.php`, `docs/record-picker.md`), which only chooses a record and closes; designed at 375 px first; cards for
   named things (accounts, parties, bank accounts, periods), tables for ledgers and lines.
 - **Prefill params** become query-string values the GET controller reads.
 - **Every screen partial stamps** `data-screen`, `data-entity`, `data-record-id` on `#page-content`, so "that", "this

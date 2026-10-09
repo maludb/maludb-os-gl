@@ -429,3 +429,56 @@ function find_members_for_select(PDO $pdo): array
     return array_map(static function (array $m): array { $m['member_id'] = (int) $m['member_id']; return $m; },
         $pdo->query("SELECT member_id, display_name, member_kind FROM mcp_members WHERE status = 'active' AND capability IS NOT NULL ORDER BY member_kind, display_name")->fetchAll());
 }
+
+// ---- the record picker's sources: items and members (app/pickers.php) ------------------------------------------------------------
+/** A page of the live items by name (find_items()'s code-or-name search): code, kind and the unit price as the detail. */
+function items_pick_page(PDO $pdo, string $q, int $page): array
+{
+    $where = 'archived_at IS NULL';
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (name ILIKE :q OR code ILIKE :q)';
+        $args['q'] = picker_like($q);
+    }
+    $r = picker_paged_query($pdo, 'item_id, code, name, kind, unit, unit_price', 'FROM mcp_items WHERE ' . $where, $args, 'lower(name), item_id', $page);
+    $r['rows'] = array_map(static fn (array $i): array => [
+        'id' => (int) $i['item_id'], 'label' => $i['name'],
+        'detail' => implode(' · ', array_filter([$i['code'], ITEM_KINDS[$i['kind']] ?? null, fmt_money($i['unit_price'], 'USD', false) . ($i['unit'] ? ' / ' . $i['unit'] : '')])),
+    ], $r['rows']);
+    return $r;
+}
+
+/** One item's name for the picker field (archived or not). */
+function item_pick_label(PDO $pdo, int $id): ?string
+{
+    $st = $pdo->prepare('SELECT name FROM mcp_items WHERE item_id = :id');
+    $st->execute(['id' => $id]);
+    $n = $st->fetchColumn();
+    return $n === false ? null : (string) $n;
+}
+
+/** A page of the people and agents a settings field may name (find_members_for_select()'s set): people first, then agents. */
+function members_pick_page(PDO $pdo, string $q, int $page): array
+{
+    $where = "status = 'active' AND capability IS NOT NULL";
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (display_name ILIKE :q OR job_title ILIKE :q)';
+        $args['q'] = picker_like($q);
+    }
+    $r = picker_paged_query($pdo, 'member_id, display_name, member_kind, job_title', 'FROM mcp_members WHERE ' . $where, $args, 'member_kind, lower(display_name), member_id', $page);
+    $r['rows'] = array_map(static fn (array $m): array => [
+        'id' => (int) $m['member_id'], 'label' => $m['display_name'], 'detail' => (string) ($m['job_title'] ?? ''),
+        'badge' => $m['member_kind'] === 'agent' ? 'Agent' : 'Person', 'color' => $m['member_kind'] === 'agent' ? 'info' : 'secondary',
+    ], $r['rows']);
+    return $r;
+}
+
+/** One member's name for the picker field. */
+function member_pick_label(PDO $pdo, int $id): ?string
+{
+    $st = $pdo->prepare('SELECT display_name FROM mcp_members WHERE member_id = :id');
+    $st->execute(['id' => $id]);
+    $n = $st->fetchColumn();
+    return $n === false ? null : (string) $n;
+}

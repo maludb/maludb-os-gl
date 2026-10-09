@@ -337,7 +337,7 @@ same SQL functions the screens call.
   `/mcp/records`, `/mcp/activity`. Each is CSRF-protected or signature-checked, rate-limited, and logged with
   `source = 'portal'`.
 
-## 9. Screens (the nxl look; designed at 375 px first; no modals; cards for named things — accounts, parties,
+## 9. Screens (the nxl look; designed at 375 px first; no modals — except the record picker (2026-10-09, `docs/record-picker.md`), which only chooses a record; cards for named things — accounts, parties,
 bank accounts, periods —, tables for ledgers and lines; every name a link; every page a way back)
 
 **Home** — cash position (each bank account: ledger, cleared, last reconciled), AR and AP totals with their aging

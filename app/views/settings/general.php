@@ -42,7 +42,7 @@
             <input type="hidden" name="ai_statement_poll" value="no">
             <label class="d-flex align-items-center gap-2 border rounded px-3 mb-3 btn-touch" for="settings-form-field-aipoll"><input type="checkbox" class="form-check-input mt-0" name="ai_statement_poll" value="yes" id="settings-form-field-aipoll" <?= $s['ai_statement_poll'] ? 'checked' : '' ?>>Pull the OS's AI statement each closed month</label>
             <label class="form-label fs-12 text-muted" for="settings-form-field-note">Who receives the Bookkeeper's morning note</label>
-            <select name="morning_note_member" id="settings-form-field-note" class="form-select btn-touch"><option value="">Nobody</option><?php foreach ($members as $m): ?><option value="<?= (int) $m['member_id'] ?>" <?= $s['morning_note_member_id'] === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?> (<?= $m['member_kind'] === 'agent' ? 'agent' : 'person' ?>)</option><?php endforeach; ?></select>
+            <?= member_select($pdo, 'morning_note_member', $s['morning_note_member_id'], '', 'Nobody', 'settings-form-field-note') ?>
         </div></div>
         <button type="submit" class="btn btn-primary btn-touch w-100" id="settings-form-save-btn">Save</button>
     </form>

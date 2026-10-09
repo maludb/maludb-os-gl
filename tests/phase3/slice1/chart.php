@@ -78,8 +78,8 @@ ok(count(activity('account.archive', $since)) === 1 && str_contains((string) act
 ok(!in_array($empty, array_column($d['accounts'], 'account_id'), true), 'it is gone from the chart');
 [$c, $d] = screen($owner, '/accounts/?include_archived=1');
 ok(in_array($empty, array_column($d['accounts'], 'account_id'), true), 'include_archived shows it');
-$body = page($owner, '/settings/items/new')['body'];
-ok(!str_contains($body, 'value="' . $empty . '"') && str_contains($body, 'value="' . $sw . '"'), 'the account picker leaves it out (6150 is offered, the archived one not)');
+$body = page($owner, '/pick/?source=account&types=16&q=6')['body'];       // the record picker's rows (2026-10-09): the item form's expense field is a picker typed to expense accounts
+ok(!str_contains($body, 'data-value="' . $empty . '"') && str_contains($body, 'data-value="' . $sw . '"'), 'the account picker leaves it out (6150 is offered, the archived one not)');
 [$c, $b] = act($owner, '/accounts/archive.php', ['account' => $empty, 'archived' => 'no']);
 ok($c === 200 && one('SELECT archived_at FROM accounts WHERE id = :i', ['i' => $empty]) === null, 'restored with archived=no');
 [$c, $b] = act($owner, '/accounts/archive.php', ['account' => $empty, 'archived' => 'no']);

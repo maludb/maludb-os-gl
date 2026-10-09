@@ -106,3 +106,30 @@ function vendors_for_select(PDO $pdo): array
 {
     return array_map(static function (array $v): array { $v['vendor_id'] = (int) $v['vendor_id']; return $v; }, $pdo->query('SELECT vendor_id, name, kind, currency, terms_days, expense_account_id, pay_method FROM mcp_vendors WHERE archived_at IS NULL ORDER BY lower(name)')->fetchAll());
 }
+
+/** A page of the live vendors the record picker offers, by name (the same ILIKE as find_vendors(), without the balances a list card carries): kind, currency and terms as the detail. */
+function vendors_pick_page(PDO $pdo, string $q, int $page): array
+{
+    $where = 'archived_at IS NULL';
+    $args = [];
+    if ($q !== '') {
+        $where .= ' AND (name ILIKE :q OR legal_name ILIKE :q)';
+        $args['q'] = picker_like($q);
+    }
+    $r = picker_paged_query($pdo, 'vendor_id, name, kind, currency, terms_days', 'FROM mcp_vendors WHERE ' . $where, $args, 'lower(name), vendor_id', $page);
+    $r['rows'] = array_map(static fn (array $v): array => [
+        'id' => (int) $v['vendor_id'], 'label' => $v['name'],
+        'detail' => implode(' · ', array_filter([VENDOR_KINDS[$v['kind']] ?? null, trim((string) $v['currency']), $v['terms_days'] === null ? null : 'Net ' . (int) $v['terms_days']])),
+        'badge' => $v['kind'] === 'ai_provider' ? 'AI provider' : null, 'color' => 'info',
+    ], $r['rows']);
+    return $r;
+}
+
+/** One vendor's name for the picker field (archived or not). */
+function vendor_pick_label(PDO $pdo, int $id): ?string
+{
+    $st = $pdo->prepare('SELECT name FROM mcp_vendors WHERE vendor_id = :id');
+    $st->execute(['id' => $id]);
+    $n = $st->fetchColumn();
+    return $n === false ? null : (string) $n;
+}

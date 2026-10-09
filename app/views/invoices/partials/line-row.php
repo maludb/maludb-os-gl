@@ -2,7 +2,7 @@
 $exp = ($side ?? 'income') === 'expense'; $lid = $l === null ? 'new' : (int) $l[$kind . '_line_id']; $p = $prefix; $f = $p . '-line-form-' . $lid; $rid = $p . '-line-' . $lid; ?>
 <tr id="<?= e($rid) ?>" class="<?= $l === null ? 'table-light' : '' ?>">
     <td class="text-muted fs-12 align-middle"><?= $l === null ? '+' : (int) $l['sort_order'] ?></td>
-    <td><select form="<?= e($f) ?>" name="item" class="form-select form-select-sm" id="<?= e($rid) ?>-item"><option value="">—</option><?php foreach ($items as $it): ?><option value="<?= $it['item_id'] ?>" <?= ($l['item_id'] ?? null) === $it['item_id'] ? 'selected' : '' ?>><?= e($it['name']) ?></option><?php endforeach; ?></select></td>
+    <td><?= item_select($pdo, 'item', $l['item_id'] ?? null, 'form="' . e($f) . '"', '—', $rid . '-item') ?></td>
     <td><input form="<?= e($f) ?>" type="text" name="description" class="form-control form-control-sm" maxlength="300" value="<?= e($l['description'] ?? '') ?>" id="<?= e($rid) ?>-description"></td>
     <td><input form="<?= e($f) ?>" type="text" inputmode="decimal" name="quantity" class="form-control form-control-sm text-end" value="<?= e($l === null ? '1' : rtrim(rtrim((string) $l['quantity'], '0'), '.')) ?>" id="<?= e($rid) ?>-quantity"></td>
     <td><input form="<?= e($f) ?>" type="text" inputmode="decimal" name="unit_price" class="form-control form-control-sm text-end" value="<?= e($l['unit_price'] ?? '') ?>" id="<?= e($rid) ?>-price"></td>

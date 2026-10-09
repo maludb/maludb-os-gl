@@ -4,6 +4,7 @@
 import { createRequire } from 'node:module';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { pickRecord } from '../../picker/pick.mjs';
 const require = createRequire('/var/www/web/node_modules/');
 const { chromium } = require('playwright');
 const BASE = 'http://127.0.0.1:8391';
@@ -53,11 +54,9 @@ const api = async (page, path, headers = {}) => (await (await page.request.get(B
   await widthOK(page, 'New entry', 375); await touch(page, 'New entry');
   await page.fill('#entry-form-field-date', '2026-10-01');
   await page.fill('#entry-form-field-memo', 'SMOKE browser entry');
-  const sixOne = await page.locator('#entry-form-line-0-account option', { hasText: '6100' }).getAttribute('value');
-  const bank = await page.locator('#entry-form-line-1-account option', { hasText: '1010' }).getAttribute('value');
-  await page.selectOption('#entry-form-line-0-account', sixOne);
+  await pickRecord(page, '#entry-form-line-0-account', '6100');       // the record picker (2026-10-09)
   await page.fill('#entry-form-line-0-debit', '1,000.00');
-  await page.selectOption('#entry-form-line-1-account', bank);
+  await pickRecord(page, '#entry-form-line-1-account', '1010');
   await page.fill('#entry-form-line-1-credit', '900');
   await page.click('#entry-form-save-btn');
   await page.waitForSelector('#entry-lines');
@@ -68,7 +67,7 @@ const api = async (page, path, headers = {}) => (await (await page.request.get(B
   const tableScrolls = await page.evaluate(() => { const t = document.querySelector('#entry-lines .table-responsive'); return t && t.scrollWidth > t.clientWidth; });
   ok(tableScrolls, 'the lines editor scrolls inside .table-responsive on a phone');
   // add a line through the editor (HTMX re-renders the region and the strip out of band)
-  await page.selectOption('#entry-line-new-account', bank);
+  await pickRecord(page, '#entry-line-new-account', '1010');
   await page.fill('#entry-line-new-credit', '100');
   await page.click('#entry-line-new-save-btn');
   await page.waitForFunction(() => document.querySelector('#entry-balance-state') && document.querySelector('#entry-balance-state').textContent === 'balances');
@@ -77,7 +76,7 @@ const api = async (page, path, headers = {}) => (await (await page.request.get(B
   ok((await page.locator('[id^="entry-line-"][id$="-save-btn"]').count()) === 4, 'three lines plus the add row in the editor');
   await page.screenshot({ path: `${SHOTS}/phone-entry-balanced.png` });
   // a refused line write shows in #flash and keeps the editor
-  await page.selectOption('#entry-line-new-account', bank);
+  await pickRecord(page, '#entry-line-new-account', '1010');
   await page.fill('#entry-line-new-debit', '5');
   await page.fill('#entry-line-new-credit', '5');
   await page.click('#entry-line-new-save-btn');
@@ -133,8 +132,8 @@ const api = async (page, path, headers = {}) => (await (await page.request.get(B
   await page.click('#entry-form-save-btn');
   await page.waitForSelector('#entry-lines');
   ok(page.url().includes('notice=saved'), 'a plain form post lands on the entry');
-  const bank = await page.locator('#entry-line-new-account option', { hasText: '1010' }).getAttribute('value');
-  await page.selectOption('#entry-line-new-account', bank);
+  // With JavaScript off the record picker cannot open (its modal is script); the field is a hidden input, and the handler resolves a code, so the proof sets it as a no-script client would post it.
+  await page.$eval('#entry-line-new-account', (el) => { el.value = '1010'; });
   await page.fill('#entry-line-new-debit', '12');
   await page.press('#entry-line-new-debit', 'Enter');          // implicit submission of the row's form (the inputs carry form="line-form-new")
   await page.waitForSelector('#entry-lines');

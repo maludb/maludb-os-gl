@@ -24,6 +24,7 @@ kernel owns identity, the directory, the agents and approvals; this application 
   `gl_*` writer functions (db/008–013) — PHP calls them and presents their refusals; it never re-implements them.
 - Proofs: `tests/setup_dev.sh` (the scratch database `gl_dev`, never the installed one), `tests/phase0/run.sh` (schema + kit), `tests/phase2/run.sh`
   (the shell; `GL_APP=apache` for the real vhost); every slice adds `tests/phase3/sliceN/run.sh` and keeps the earlier ones green. The scratch ports are 8391–8397.
+- **A form that chooses a record uses the record picker** (2026-10-09, `docs/record-picker.md`): `account_select()`, `vendor_select()`, `customer_select()`, `party_select()`, `item_select()` and `member_select()` in `app/views/shared/` are pickers (one modal in the shell, `app/picker.php`, the sources in `app/pickers.php`, `GET /pick/`); the hidden input keeps the select's name and id. The one sanctioned modal — screens are otherwise pages. A new record source = a registry entry over the feature's own query; banks, departments, sites, tax rates and periods stay selects. `scripts/prove-picker.sh` is its proof (scratch database only).
 - Agents draft; a person posts, pays, sends, closes (approval categories in design §5).
 - Commit after every finished step on `main`; never push unless the owner asks.
 

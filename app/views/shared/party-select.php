@@ -1,21 +1,10 @@
 <?php
 declare(strict_types=1);
-/** The ONE party picker (slice 2): party_select($pdo, 'customer'|'vendor', $name, $selected, $attrs, $empty, $id) over mcp_customers / mcp_vendors (live ones). */
+/** The ONE party field (slice 2; the record picker since 2026-10-09): party_select($pdo, 'customer'|'vendor', $name, $selected, $attrs, $empty, $id) — the customer or vendor picker; $attrs: form="…", required (a class styled the select and is dropped). */
 function party_select(PDO $pdo, string $kind, string $name, ?int $selected, string $attrs = '', ?string $empty = 'None', string $id = ''): string
 {
-    $view = $kind === 'vendor' ? 'mcp_vendors' : 'mcp_customers';
-    $col = $kind === 'vendor' ? 'vendor_id' : 'customer_id';
+    $kind = $kind === 'vendor' ? 'vendor' : 'customer';
     $id = $id !== '' ? $id : 'field-' . preg_replace('/[^a-z0-9_-]/', '-', $name);
-    $h = '<select name="' . e($name) . '" id="' . e($id) . '" class="form-select form-select-sm"' . ($attrs !== '' ? ' ' . $attrs : '') . '>';
-    if ($empty !== null) {
-        $h .= '<option value="">' . e($empty) . '</option>';
-    }
-    try {
-        foreach ($pdo->query("SELECT {$col} AS id, name FROM {$view} WHERE archived_at IS NULL ORDER BY lower(name)")->fetchAll() as $p) {
-            $h .= '<option value="' . (int) $p['id'] . '"' . ($selected === (int) $p['id'] ? ' selected' : '') . '>' . e($p['name']) . '</option>';
-        }
-    } catch (PDOException) {
-        // the parties' views exist from Phase 0; nothing to list is not an error
-    }
-    return $h . '</select>';
+    [$required, $extra] = picker_attrs($attrs);
+    return picker_field(['id' => $id, 'name' => $name, 'source' => $kind, 'value' => $selected, 'placeholder' => $empty ?? 'Choose a ' . $kind, 'required' => $required || $empty === null, 'extra' => $extra]);
 }

@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
+import { pickRecord } from '../../picker/pick.mjs';
 const require = createRequire('/var/www/web/node_modules/');
 const { chromium } = require('playwright');
 const BASE = 'http://127.0.0.1:8391';
@@ -58,7 +59,7 @@ const idOf = (ref) => sql(`SELECT id FROM bank_transactions WHERE external_ref =
   await widthOK(page, 'Add a bank account', 1280);
   ok((await page.locator('#bank-form-opening-note').innerText()).includes('DR the bank account / CR 3000 Owner equity'), 'the form explains the opening entry');
   await page.fill('#bank-form-field-name', 'SMOKE Browser Bank');
-  await page.selectOption('#bank-form-field-account', { label: '1095 — SMOKE Browser ledger' });
+  await pickRecord(page, '#bank-form-field-account', '1095');
   await page.fill('#bank-form-field-institution', 'SMOKE Browser CU');
   await page.fill('#bank-form-field-last4', '5555');
   await page.fill('#bank-form-field-opening-date', '2026-01-01');
@@ -69,7 +70,7 @@ const idOf = (ref) => sql(`SELECT id FROM bank_transactions WHERE external_ref =
   await page.fill('#bank-form-field-name', 'SMOKE Browser Savings');
   await page.selectOption('#bank-form-field-kind', 'savings');
   await page.fill('#bank-form-field-opening-date', '2026-01-01');
-  await page.selectOption('#bank-form-field-account', { label: '1096 — SMOKE Browser savings ledger' });
+  await pickRecord(page, '#bank-form-field-account', '1096');
   await page.click('#bank-form-save-btn');
   await page.waitForSelector('#bank-settings-cards');
   bank = sql("SELECT id FROM bank_accounts WHERE name = 'SMOKE Browser Bank'");
@@ -125,7 +126,7 @@ for (const [amt, date] of [['1234.56', '2026-06-10'], ['250.00', '2026-06-11'], 
   ok(sql("SELECT count(*) FROM bank_transactions WHERE external_ref IN ('BR-1','BR-2','BR-3') AND status = 'matched'") === '3', 'the button matched both sure ones, each its own click');
   const br4 = idOf('BR-4');
   await page.click(`#bank-line-${br4}-entry summary`);
-  await page.selectOption(`#bank-line-${br4}-entry-account`, { label: '6500 — Bank and payment fees' });
+  await pickRecord(page, `#bank-line-${br4}-entry-account`, '6500');
   page.once('dialog', (d) => d.accept());
   await page.click(`#bank-line-${br4}-entry-btn`);
   await page.waitForSelector(`#bank-line-${br4}`, { state: 'detached' });

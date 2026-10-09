@@ -177,3 +177,66 @@ function accounts_for_select(PDO $pdo, array $types = [], array $flags = []): ar
         return $a;
     }, $st->fetchAll());
 }
+
+// ---- the record picker's account source (app/pickers.php 'account') --------------------------------------------------------------
+/** The account types as bits (a picker's `types` param is their sum) and the two flags as bit pairs (`flags`: is_bank true 1 / false 2, is_control true 4 / false 8). */
+const ACCOUNT_PICK_TYPE_BITS = ['asset' => 1, 'liability' => 2, 'equity' => 4, 'income' => 8, 'expense' => 16];
+const ACCOUNT_PICK_FLAG_BITS = ['is_bank' => [true => 1, false => 2], 'is_control' => [true => 4, false => 8]];
+
+/** accounts_for_select()'s $types and $flags as the two integers a picker field carries. A flag listed without a truth value (['is_bank']) filters nothing, as it never did. */
+function account_pick_masks(array $types, array $flags): array
+{
+    $t = 0;
+    foreach ($types as $type) {
+        $t |= ACCOUNT_PICK_TYPE_BITS[$type] ?? 0;
+    }
+    $f = 0;
+    foreach ($flags as $flag => $want) {
+        if (is_string($flag) && isset(ACCOUNT_PICK_FLAG_BITS[$flag])) {
+            $f |= ACCOUNT_PICK_FLAG_BITS[$flag][(bool) $want];
+        }
+    }
+    return ['types' => $t, 'flags' => $f];
+}
+
+/** A page of the live accounts the picker offers, by code: "code — name", the type as the detail. Same filter as accounts_for_select(). */
+function accounts_pick_page(PDO $pdo, string $q, ?int $typesMask, ?int $flagsMask, int $page): array
+{
+    $where = ['archived_at IS NULL'];
+    $args = [];
+    if ($typesMask) {
+        $types = array_keys(array_filter(ACCOUNT_PICK_TYPE_BITS, static fn (int $bit): bool => ($typesMask & $bit) !== 0));
+        if ($types !== []) {
+            $in = [];
+            foreach ($types as $i => $t) {
+                $in[] = ':t' . $i;
+                $args['t' . $i] = $t;
+            }
+            $where[] = 'account_type IN (' . implode(', ', $in) . ')';
+        }
+    }
+    foreach (ACCOUNT_PICK_FLAG_BITS as $flag => [true => $yes, false => $no]) {
+        if (($flagsMask ?? 0) & $yes) {
+            $where[] = $flag . ' = true';
+        }
+        if (($flagsMask ?? 0) & $no) {
+            $where[] = $flag . ' = false';
+        }
+    }
+    if ($q !== '') {
+        $where[] = '(code ILIKE :q OR name ILIKE :q)';
+        $args['q'] = picker_like($q);
+    }
+    $r = picker_paged_query($pdo, 'account_id, code, name, type_label, subtype', 'FROM mcp_accounts WHERE ' . implode(' AND ', $where), $args, 'code', $page);
+    $r['rows'] = array_map(static fn (array $a): array => ['id' => (int) $a['account_id'], 'label' => $a['code'] . ' — ' . $a['name'], 'detail' => $a['type_label']], $r['rows']);
+    return $r;
+}
+
+/** One account's picker label ("code — name"), archived or not — a saved choice keeps its name. */
+function account_pick_label(PDO $pdo, int $id): ?string
+{
+    $st = $pdo->prepare('SELECT code, name FROM mcp_accounts WHERE account_id = :id');
+    $st->execute(['id' => $id]);
+    $a = $st->fetch();
+    return $a === false ? null : $a['code'] . ' — ' . $a['name'];
+}

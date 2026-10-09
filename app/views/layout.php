@@ -173,6 +173,33 @@ $navlink = function (string $id, string $url, string $icon, string $label) use (
     </main>
     <!--! [End] Main Content !-->
 
+    <?php /* The record picker (app/picker.php, assets/js/record-picker.js): the ONE modal that chooses a record for any picker field on the
+             screen — outside #page-content so swaps keep it. It only chooses and closes; the second exemption to the no-modal rule, beside hx-confirm. */ ?>
+    <div class="modal fade" id="record-picker" tabindex="-1" aria-labelledby="record-picker-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="record-picker-title">Choose</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="record-picker-close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="record-picker-search p-3 border-bottom">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="feather-search"></i></span>
+                            <input type="search" class="form-control" id="record-picker-search" placeholder="Search…" autocomplete="off" aria-controls="record-picker-results"
+                                   hx-get="/pick/" hx-trigger="input changed delay:300ms, search, pickerload" hx-target="#record-picker-results" hx-swap="innerHTML"
+                                   hx-sync="this:replace" hx-vals="js:{...recordPickerValues()}" />
+                        </div>
+                    </div>
+                    <div id="record-picker-results" aria-live="polite"></div>
+                </div>
+                <div class="modal-footer d-none" id="record-picker-footer">
+                    <button type="button" class="btn btn-light-brand" id="record-picker-create-btn"><i class="feather-plus me-1"></i>New</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?= view('shared/assistant-bar.php') ?>
     <?= view('shared/tab-bar.php', ['activeNav' => $activeNav]) ?>
 
@@ -219,6 +246,12 @@ $navlink = function (string $id, string $url, string $icon, string $label) use (
             var nav = document.querySelector('nav.nxl-navigation');
             if (nav && nav.classList.contains('mob-navigation-active')) { nav.classList.remove('mob-navigation-active'); var ov = document.querySelector('.nxl-menu-overlay'); if (ov) ov.remove(); }
         });
+        // The record picker's refusals (404 unknown list, 403 no right) are small fragments meant for the modal: swap them there. Nothing else changes —
+        // every other 4xx keeps the responseHandling above.
+        document.body.addEventListener('htmx:beforeSwap', function (e) {
+            var s = e.detail.xhr && e.detail.xhr.status;
+            if ((s === 403 || s === 404) && e.detail.target && e.detail.target.id === 'record-picker-results') { e.detail.shouldSwap = true; e.detail.isError = false; }
+        });
         // A refused request (4xx) is retargeted to #flash by the server; a network failure says so.
         document.body.addEventListener('htmx:responseError', function (e) {
             var f = document.getElementById('flash');
@@ -226,6 +259,7 @@ $navlink = function (string $id, string $url, string $icon, string $label) use (
         });
     </script>
     <script src="/assets/js/common-init.min.js"></script>
+    <script src="/assets/js/record-picker.js?v=20261009a"></script>
     <script src="/assets/js/theme-customizer-init.min.js"></script>
 </body>
 </html>

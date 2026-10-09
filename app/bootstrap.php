@@ -79,6 +79,10 @@ require_once __DIR__ . '/money_math.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/http.php';
 require_once __DIR__ . '/handler.php';
+require_once __DIR__ . '/picker.php';                    // the record picker (a form chooses a record through one modal; app/pickers.php names what can be picked)
+foreach (['account', 'vendor', 'customer', 'party', 'item', 'member'] as $kind) {     // the six picker helpers (a view may call any; a handler no longer has to remember which to load)
+    require_once __DIR__ . '/views/shared/' . $kind . '-select.php';
+}
 require_once __DIR__ . '/views/shared/money.php';      // the ONE money formatter (fmt_money, fmt_money_cell, parse_money): every screen and handler
 require_once __DIR__ . '/activity.php';
 require_once __DIR__ . '/auth.php';

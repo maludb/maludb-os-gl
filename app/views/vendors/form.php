@@ -31,7 +31,7 @@ $id = $cur['vendor_id'] ?? null; $screen = $cur === null ? 'vendor-add' : 'vendo
             <label class="form-label fs-12 text-muted" for="vendor-form-field-pay">Usual pay method</label>
             <select name="pay_method" id="vendor-form-field-pay" class="form-select btn-touch mb-3"><option value="">None</option><?php foreach (PAY_METHODS as $k => $label): ?><option value="<?= e($k) ?>" <?= ($cur['pay_method'] ?? null) === $k ? 'selected' : '' ?>><?= e($label) ?></option><?php endforeach; ?></select>
             <label class="form-label fs-12 text-muted" for="vendor-form-field-member">Is this a member? (an employee reimbursed through bills)</label>
-            <select name="member" id="vendor-form-field-member" class="form-select btn-touch"><option value="">No</option><?php foreach ($members as $m): ?><option value="<?= (int) $m['member_id'] ?>" <?= ($cur['member_id'] ?? null) === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?></option><?php endforeach; ?></select>
+            <?= member_select($pdo, 'member', $cur['member_id'] ?? null, '', 'No', 'vendor-form-field-member') ?>
         </div></div>
         <div class="card mb-3"><div class="card-header"><h5 class="card-title mb-0">Notes</h5></div><div class="card-body"><textarea name="notes" id="vendor-form-field-notes" class="form-control" rows="3" maxlength="2000"><?= e($cur['notes'] ?? '') ?></textarea></div></div>
         <button type="submit" class="btn btn-primary btn-touch w-100 mb-2" id="vendor-form-save-btn">Save</button>

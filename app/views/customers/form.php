@@ -30,7 +30,7 @@ $id = $cur['customer_id'] ?? null; $screen = $cur === null ? 'customer-add' : 'c
             <label class="form-label fs-12 text-muted" for="customer-form-field-tax">Tax rate (the default for their lines)</label>
             <select name="tax_rate" id="customer-form-field-tax" class="form-select btn-touch mb-3"><option value="">The default rate</option><?php foreach ($taxRates as $t): ?><option value="<?= (int) $t['tax_rate_id'] ?>" <?= ($cur['tax_rate_id'] ?? null) === (int) $t['tax_rate_id'] ? 'selected' : '' ?>><?= e($t['name']) ?></option><?php endforeach; ?></select>
             <label class="form-label fs-12 text-muted" for="customer-form-field-member">Is this a member? (an employee or an invited external who is this customer)</label>
-            <select name="member" id="customer-form-field-member" class="form-select btn-touch"><option value="">No</option><?php foreach ($members as $m): ?><option value="<?= (int) $m['member_id'] ?>" <?= ($cur['member_id'] ?? null) === (int) $m['member_id'] ? 'selected' : '' ?>><?= e($m['display_name']) ?></option><?php endforeach; ?></select>
+            <?= member_select($pdo, 'member', $cur['member_id'] ?? null, '', 'No', 'customer-form-field-member') ?>
         </div></div>
         <div class="card mb-3"><div class="card-header"><h5 class="card-title mb-0">Notes</h5></div><div class="card-body">
             <textarea name="notes" id="customer-form-field-notes" class="form-control" rows="3" maxlength="2000"><?= e($cur['notes'] ?? '') ?></textarea>
