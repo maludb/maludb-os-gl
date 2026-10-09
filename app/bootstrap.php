@@ -86,6 +86,7 @@ foreach (['account', 'vendor', 'customer', 'party', 'item', 'member'] as $kind) 
 require_once __DIR__ . '/views/shared/money.php';      // the ONE money formatter (fmt_money, fmt_money_cell, parse_money): every screen and handler
 require_once __DIR__ . '/activity.php';
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/switcher.php';          // the application switcher (K31): os_my_applications(), the header's Helpdesk button and menu
 require_once __DIR__ . '/directory.php';
 require_once __DIR__ . '/mail.php';
 require_once __DIR__ . '/features/shell/nav.php';
